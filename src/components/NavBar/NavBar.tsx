@@ -12,7 +12,7 @@ const NavBar: React.FC = () => {
   return (
     <Flex bg="black" h="60px" padding="10px 15px" color="white">
       {/* Logo Starts  */}
-      <Flex align="center">
+      <Flex align="center" mr={2}>
         <Image
           src="./images/favicon-liko.png"
           height="40px"
