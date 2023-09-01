@@ -5,7 +5,7 @@ import { User, signOut } from "firebase/auth";
 import { auth } from "@/firebase/clientApp";
 
 type RightContentProps = {
-  user: User;
+  user?: User | null;
 };
 
 const RightContent: React.FC<RightContentProps> = ({ user }) => {
