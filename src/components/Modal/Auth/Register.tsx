@@ -3,6 +3,11 @@ import { Input, Button, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/clientApp";
+import { color } from "framer-motion";
+import { Firebase_Errors } from "@/firebase/error";
+
 interface RegisterForm {
   email: string;
   password: string;
@@ -16,10 +21,26 @@ const Register: React.FC = () => {
     confirmPassword: "",
   });
 
+  const [error, setError] = useState("");
+  const [createUserWithEmailAndPassword, user, loading, userError] =
+    useCreateUserWithEmailAndPassword(auth);
+
   const setAuthModalState = useSetRecoilState(authModalState);
 
-  const onSubmit = () => {};
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (error) setError("");
+    if (registerForm.password !== registerForm.confirmPassword) {
+      setError("Passwords are not match...");
+      return;
+    }
+    createUserWithEmailAndPassword(registerForm.email, registerForm.password);
+  };
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    /**
+     * Todo: Reset userError message...
+     */
+    setError("");
     setRegisterForm((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -95,13 +116,18 @@ const Register: React.FC = () => {
         bg="gray.50"
       />
 
+      <Text textAlign="center" color="red" fontSize="10pt">
+        {error ||
+          Firebase_Errors[userError?.message as keyof typeof Firebase_Errors]}
+      </Text>
+
       <Button
         type="submit"
-        onSubmit={onSubmit}
         width="100%"
         height="36px"
         mt={2}
         mb={2}
+        isLoading={loading}
       >
         Register
       </Button>
