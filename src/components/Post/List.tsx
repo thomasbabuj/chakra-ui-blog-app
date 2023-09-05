@@ -1,7 +1,7 @@
 import { Post, PostStatus } from "@/atoms/postsAtom";
 import { auth, firestore } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import PostItem from "./Item";
@@ -34,9 +34,6 @@ const PostList: React.FC<PostListProps> = () => {
 
       const postDocs = await getDocs(postQuery);
       const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
-      console.log("inside get posts...");
-      console.log(posts);
 
       setPostStateValue((prev) => ({
         ...prev,

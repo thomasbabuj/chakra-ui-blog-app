@@ -11,11 +11,11 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
 
   return (
     <Flex justify="center" p="16px 0px">
-      <Flex width="95%" justify="center" maxW="860px">
+      <Flex width="95%" justify="left" maxW="1200px">
         {/* LHS */}
         <Flex
           direction={"column"}
-          width={{ base: "100%", md: "65%" }}
+          width={{ base: "100%", md: "75%" }}
           mr={{ base: 0, md: 6 }}
         >
           {children && children[0 as keyof typeof children]}
@@ -23,8 +23,10 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
         {/* RHS * */}
         <Flex
           direction={"column"}
-          display={{ base: "100%", md: "flex" }}
+          display={{ base: "none", md: "flex" }}
           flexGrow={"1px"}
+          width={"250px"}
+          border="1px solid green"
         >
           {children && children[1 as keyof typeof children]}
         </Flex>

@@ -56,7 +56,9 @@ const PostItem: React.FC<PostItemProps> = ({
           onClick={onVote}
           cursor={"pointer"}
         />
-        <Text fontSize={"9pt"}>{post.voteStatus}</Text>
+        <Text fontSize={"9pt"} fontWeight={500}>
+          {post.voteStatus}
+        </Text>
         <Icon
           as={
             userVoteValue === -1
@@ -78,14 +80,16 @@ const PostItem: React.FC<PostItemProps> = ({
           >
             {/* Add condition to show the category */}
             <Text>Posted By l/{post.creatorDisplayName}</Text>
-            <Text>
+            <Text pl="2" fontWeight={"700"}>
               {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
             </Text>
           </Stack>
-          <Text fontSize={"12pt"} fontWeight={600}>
+          <Text fontSize={"12pt"} fontWeight={600} height={"15%"}>
             {post.title}
           </Text>
-          <Text fontSize={"10pt"}>{post.body}</Text>
+          <Text fontSize={"10pt"} height={"20%"}>
+            {/* {post.body} */}
+          </Text>
           {post.imageUrl && (
             <Flex justify={"center"} align={"center"} p={2}>
               {loadingImage && <Skeleton height={"200px"} width={"100%"} />}
@@ -99,7 +103,7 @@ const PostItem: React.FC<PostItemProps> = ({
             </Flex>
           )}
         </Stack>
-        <Flex ml={1} mb={0.5} color={"gray.500"}>
+        <Flex ml={1} mb={0.5} color={"gray.500"} mt="10">
           <Flex
             align={"center"}
             p="8px 10px"
