@@ -42,7 +42,7 @@ const PostItem: React.FC<PostItemProps> = ({
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
-  const [error, setError] = useState(true);
+  const [error, setError] = useState(false);
 
   const handleDelete = async () => {
     setLoadingDelete(true);
