@@ -1,10 +1,16 @@
 import { atom } from "recoil";
 
-interface Question {
+export enum QuestionStatus {
+  "SUBMITTED" = "submitted",
+  "APPROVED" = "approved",
+  "CONVERT_TO_POST" = "convert_to_post",
+}
+export interface Question {
   id: string;
   question: string;
-  isPublished: boolean;
-  creatorId: string;
+  status: QuestionStatus;
+  creatorId?: string;
+  email?: string;
 }
 
 interface QuestionState {

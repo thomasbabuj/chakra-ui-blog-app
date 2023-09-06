@@ -1,3 +1,7 @@
 .grIcon path {
   stroke: #fff;
 }
+
+.bsPersonIcon path {
+  stroke: "gray.300";
+}

@@ -1,10 +1,10 @@
+"use client";
+
 import { Post, PostStatus } from "@/atoms/postsAtom";
 import { auth, firestore } from "@/firebase/clientApp";
 import {
   Alert,
-  AlertDescription,
   AlertIcon,
-  AlertTitle,
   Button,
   Flex,
   Input,
@@ -119,8 +119,6 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
             >
               Save
             </Button>
-
-            {user?.displayName}
           </Flex>
         </Stack>
       </Flex>

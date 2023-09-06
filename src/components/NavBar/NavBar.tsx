@@ -1,12 +1,14 @@
 "use client";
 
 import { auth } from "@/firebase/clientApp";
-import { Flex, Image } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import SearchInput from "../SearchInput";
 import Directory from "./Directory/Directory";
 import RightContent from "./RightContent/RightContent";
+import Image from "next/image";
+import Link from "next/link";
 
 const NavBar: React.FC = () => {
   const [user, loading, error] = useAuthState(auth);
@@ -24,16 +26,28 @@ const NavBar: React.FC = () => {
         width={{ base: "30px", md: "auto" }}
         mr={{ base: 0, md: 2 }}
       >
-        <Image
-          src="./images/favicon-liko.png"
-          height="30px"
-          display={{ md: "none" }}
-        />
-        <Image
-          src="./images/likobuzz-logo.png"
-          height="30px"
-          display={{ base: "none", md: "unset" }}
-        />
+        <Box display={{ md: "none" }}>
+          <Link href="/">
+            <Image
+              src="/images/favicon-liko.png"
+              height="30"
+              alt="Likobuzz logo"
+              width={150}
+              placeholder="empty"
+            />
+          </Link>
+        </Box>
+        <Box display={{ base: "none", md: "unset" }}>
+          <Link href="/">
+            <Image
+              src="/images/likobuzz-logo.png"
+              height="20"
+              alt="Likobuzz logo"
+              width={150}
+              placeholder="empty"
+            />
+          </Link>
+        </Box>
       </Flex>
       {/* Logo Ends  */}
 
