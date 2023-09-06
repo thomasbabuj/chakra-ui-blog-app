@@ -13,7 +13,7 @@ export interface Question {
   email?: string;
 }
 
-interface QuestionState {
+export interface QuestionState {
   questions: Question[];
 }
 
