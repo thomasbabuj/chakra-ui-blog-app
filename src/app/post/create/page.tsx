@@ -7,12 +7,18 @@ import QuestionFrom from "@/components/Question/QuestionFrom";
 import QuestionList from "@/components/Question/QuestionList";
 import useQuestions from "@/hooks/useQuestions";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type CreatePostPageProps = {};
 
 const CreatePostPage: React.FC<CreatePostPageProps> = () => {
-  const { questionStateValue } = useQuestions();
+  const { questionStateValue, getLatestTenQuestions } = useQuestions();
+
+  useEffect(() => {
+    if (questionStateValue.questions.length === 0) {
+      getLatestTenQuestions();
+    }
+  }, []);
   return (
     <PageContent>
       <>
