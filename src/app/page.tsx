@@ -1,7 +1,7 @@
 "use client";
 
 import PageContent from "@/components/Layout/PageContent";
-import PostList from "@/components/Post/List";
+import PostList from "@/components/Post/PostList";
 import QuestionFrom from "@/components/Question/QuestionFrom";
 import QuestionList from "@/components/Question/QuestionList";
 import useQuestions from "@/hooks/useQuestions";

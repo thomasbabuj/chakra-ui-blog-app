@@ -13,8 +13,6 @@ type CreatePostPageProps = {};
 
 const CreatePostPage: React.FC<CreatePostPageProps> = () => {
   const { questionStateValue } = useQuestions();
-  console.log("Inside product page...");
-  console.log(questionStateValue);
   return (
     <PageContent>
       <>

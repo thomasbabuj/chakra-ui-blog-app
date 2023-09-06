@@ -15,7 +15,7 @@ const NavBar: React.FC = () => {
   return (
     <Flex
       bg="black"
-      h="44px"
+      h="100px"
       padding="6px 12px"
       color="white"
       justify={{ md: "space-between" }}

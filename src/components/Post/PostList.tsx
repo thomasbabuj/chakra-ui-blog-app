@@ -4,7 +4,7 @@ import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import PostItem from "./Item";
+import PostItem from "./PostListIem";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PostLoader from "./PostLoader";
 
