@@ -1,4 +1,3 @@
-import useQuestionData from "@/hooks/useQuestionData";
 import { Flex } from "@chakra-ui/react";
 import React from "react";
 
@@ -7,8 +6,6 @@ type PageContentProps = {
 };
 
 const PageContent: React.FC<PageContentProps> = ({ children }) => {
-  //const { getLatestQuestionsList, questionStateValue } = useQuestionData();
-
   return (
     <Flex justify="center" p="16px 0px">
       <Flex width="95%" justify="left" maxW="1200px">
