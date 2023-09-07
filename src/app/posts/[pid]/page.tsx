@@ -33,7 +33,7 @@ const page: React.FC<pageProps> = ({ params }) => {
   const postId = params.pid ? params.pid : "";
   const [error, setError] = useState(false);
 
-  const getThisPost = async () => {
+  const fetchPost = async (postId: string) => {
     const post = await getAPost(postId);
     if (post.exists()) {
       setPostStateValue((prev) => ({
@@ -47,10 +47,10 @@ const page: React.FC<pageProps> = ({ params }) => {
 
   // https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   useEffect(() => {
-    if (postId) {
-      getThisPost();
+    if (params.pid && !postStateValue.selectedPost) {
+      fetchPost(postId);
     }
-  }, [postId]);
+  }, [postId, !postStateValue.selectedPost]);
 
   return (
     <PageContent>
