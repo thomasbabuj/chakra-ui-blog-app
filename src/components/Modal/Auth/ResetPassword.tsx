@@ -1,6 +1,7 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
-import { Button, Flex, Image, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import Image from "next/image";
 import React, { useState } from "react";
 import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
@@ -28,10 +29,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
       width={"100%"}
     >
       <Image
-        src="./images/favicon-liko.png"
-        width={10}
-        height={10}
-        align={"center"}
+        src="/images/favicon-liko.png"
+        width={30}
+        height={30}
+        alt="Likobuzz logo"
       />
       {success ? (
         <Text m={4} fontWeight={700}>

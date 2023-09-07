@@ -23,7 +23,7 @@ import moment from "moment";
 import { BsChat } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
 
-type PostItemProps = {
+type PostPageProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
@@ -32,7 +32,7 @@ type PostItemProps = {
   onSelectPost?: (post: Post) => void;
 };
 
-const PostItem: React.FC<PostItemProps> = ({
+const PostPage: React.FC<PostPageProps> = ({
   post,
   userIsCreator,
   userVoteValue,
@@ -43,7 +43,8 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState(false);
-  const singlePostPage = !onSelectPost;
+
+  console.log(post);
 
   const handleDelete = async () => {
     setLoadingDelete(true);
@@ -67,10 +68,7 @@ const PostItem: React.FC<PostItemProps> = ({
       border="1px solid"
       bg="green.100"
       borderRadius={4}
-      _hover={{ borderColor: "blue.500" }}
-      cursor={"pointer"}
-      onClick={() => onSelectPost && onSelectPost(post)}
-      borderColor={singlePostPage ? "green.100" : "gray.300"}
+      borderColor={"green.100"}
     >
       <Flex
         direction={"column"}
@@ -125,12 +123,8 @@ const PostItem: React.FC<PostItemProps> = ({
           <Text fontSize={"12pt"} fontWeight={600} height={"15%"}>
             {post.title}
           </Text>
-          <Text
-            fontSize={"10pt"}
-            height={!singlePostPage ? "20%" : "auto"}
-            mt="4"
-          >
-            {singlePostPage ? post.body : ""}
+          <Text fontSize={"10pt"} height={"auto"} mt="4">
+            {post.body}
           </Text>
           {post.imageUrl && (
             <Flex justify={"center"} align={"center"} p={2}>
@@ -216,4 +210,4 @@ const PostItem: React.FC<PostItemProps> = ({
     </Flex>
   );
 };
-export default PostItem;
+export default PostPage;
