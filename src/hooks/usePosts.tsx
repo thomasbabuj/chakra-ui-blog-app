@@ -1,7 +1,15 @@
 import { Post, PostVote, postState } from "@/atoms/postsAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
-import { collection, deleteDoc, doc, writeBatch } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  writeBatch,
+} from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 
@@ -136,6 +144,29 @@ const usePosts = () => {
     }
   };
   const onSelectPost = () => {};
+
+  const getPostVotes = async () => {
+    const postsVotesQuery = query(
+      collection(firestore, "users", `${user?.uid}/postVotes`)
+    );
+
+    const postVotesDocs = await getDocs(postsVotesQuery);
+    const postVotes = postVotesDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setPostStateValue((prev) => ({
+      ...prev,
+      postVotes: postVotes as PostVote[],
+    }));
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    getPostVotes();
+  }, [user]);
+
   return {
     postStateValue,
     setPostStateValue,
