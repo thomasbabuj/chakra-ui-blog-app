@@ -12,7 +12,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
   const router = useRouter();
 
   const createPostBtnClick = () => {
-    router.push("/post/create");
+    router.push("/posts/create");
   };
 
   return (
