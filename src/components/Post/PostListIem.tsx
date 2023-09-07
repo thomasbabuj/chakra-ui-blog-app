@@ -27,7 +27,7 @@ type PostItemProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
-  onVote: () => {};
+  onVote: (post: Post, vote: number) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
@@ -83,7 +83,7 @@ const PostItem: React.FC<PostItemProps> = ({
             userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline
           }
           color={userVoteValue === 1 ? "brand.100" : "gray.400"}
-          onClick={onVote}
+          onClick={() => onVote(post, 1)}
           cursor={"pointer"}
         />
         <Text fontSize={"9pt"} fontWeight={500}>
@@ -96,7 +96,7 @@ const PostItem: React.FC<PostItemProps> = ({
               : IoArrowDownCircleOutline
           }
           color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
-          onClick={onVote}
+          onClick={() => onVote(post, -1)}
           cursor={"pointer"}
         />
       </Flex>

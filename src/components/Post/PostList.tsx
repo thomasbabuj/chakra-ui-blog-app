@@ -59,7 +59,10 @@ const PostList: React.FC<PostListProps> = () => {
               key={item.id}
               post={item}
               userIsCreator={user?.uid === item.creatorId}
-              userVoteValue={undefined}
+              userVoteValue={
+                postStateValue.postVotes.find((vote) => vote.postId === item.id)
+                  ?.voteValue
+              }
               onDeletePost={onDeletePost}
               onVote={onVote}
               onSelectPost={onSelectPost}
