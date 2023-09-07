@@ -10,7 +10,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import moment from "moment";
 import React, { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { BsChat } from "react-icons/bs";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
@@ -19,9 +22,6 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
-import moment from "moment";
-import { BsChat } from "react-icons/bs";
-import { AiOutlineDelete } from "react-icons/ai";
 
 type PostPageProps = {
   post: Post;
@@ -43,8 +43,6 @@ const PostPage: React.FC<PostPageProps> = ({
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState(false);
-
-  console.log(post);
 
   const handleDelete = async () => {
     setLoadingDelete(true);

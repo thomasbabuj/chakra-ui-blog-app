@@ -3,6 +3,7 @@
 import { Post } from "@/atoms/postsAtom";
 import PageContent from "@/components/Layout/PageContent";
 import PostPage from "@/components/Post/Post";
+
 import QuestionFrom from "@/components/Question/QuestionFrom";
 import QuestionList from "@/components/Question/QuestionList";
 import { auth } from "@/firebase/clientApp";
@@ -37,7 +38,7 @@ const page: React.FC<pageProps> = ({ params }) => {
     if (post.exists()) {
       setPostStateValue((prev) => ({
         ...prev,
-        selectedPost: post.data() as Post,
+        selectedPost: { id: post.id, ...(post.data() as Post) },
       }));
     } else {
       setError(true);
