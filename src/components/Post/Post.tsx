@@ -11,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat } from "react-icons/bs";
@@ -44,6 +45,7 @@ const PostPage: React.FC<PostPageProps> = ({
   onDeletePost,
   onSelectPost,
 }) => {
+  const router = useRouter();
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState(false);
@@ -58,6 +60,8 @@ const PostPage: React.FC<PostPageProps> = ({
       }
 
       console.log("Post was successfully deleted");
+      // redirect the user to home page
+      router.push("/");
     } catch (error: any) {
       console.log("Handle Delete ", error.message);
       setError(error.message);
