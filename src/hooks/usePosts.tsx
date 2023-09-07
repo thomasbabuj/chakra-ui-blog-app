@@ -1,3 +1,4 @@
+import { authModalState } from "@/atoms/authModalAtom";
 import { Post, PostVote, postState } from "@/atoms/postsAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import {
@@ -11,15 +12,20 @@ import {
 import { deleteObject, ref } from "firebase/storage";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const usePosts = () => {
   const [user] = useAuthState(auth);
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
-
-  // check for a user => if not, open auth modal
+  const setAuthModalState = useSetRecoilState(authModalState);
 
   const onVote = async (post: Post, vote: number) => {
+    // check for a user => if not, open auth modal
+    if (!user) {
+      setAuthModalState({ open: true, view: "login" });
+      return;
+    }
+
     try {
       const { voteStatus } = post;
       const existingVote = postStateValue.postVotes.find(
@@ -94,10 +100,7 @@ const usePosts = () => {
         }
       }
 
-      console.log(voteChange);
-      console.log(post.id);
       // update our post document
-
       let updatedState = { ...postStateValue, updatedPostVotes };
       const postIdx = postStateValue.posts.findIndex(
         (item) => item.id === post.id
@@ -163,7 +166,13 @@ const usePosts = () => {
   };
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      // Clear post userPostVotes
+      setPostStateValue((prev) => ({
+        ...prev,
+        postVotes: [],
+      }));
+    }
     getPostVotes();
   }, [user]);
 
