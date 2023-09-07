@@ -118,6 +118,10 @@ const usePosts = () => {
         postVotes: updatedPostVotes,
       };
 
+      if (postStateValue.selectedPost) {
+        updatedState.selectedPost = updatePost;
+      }
+
       setPostStateValue(updatedState);
 
       const postRef = doc(firestore, "posts", post.id!);

@@ -65,13 +65,12 @@ const PostPage: React.FC<PostPageProps> = ({
     <Flex
       border="1px solid"
       bg="green.100"
-      borderRadius={4}
+      borderRadius={"4px 4px 0px 0px"}
       borderColor={"green.100"}
     >
       <Flex
         direction={"column"}
         align={"center"}
-        bg="gray.100"
         p="2"
         width={"40px"}
         borderRadius={4}
