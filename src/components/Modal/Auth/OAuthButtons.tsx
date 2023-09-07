@@ -1,5 +1,6 @@
 import { auth } from "@/firebase/clientApp";
-import { Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import Image from "next/image";
 import React from "react";
 import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 
@@ -12,8 +13,13 @@ const OAuthButtons: React.FC = () => {
         isLoading={loading}
         onClick={() => signInWithGoogle()}
       >
-        <Image src="./images/google-48.png" height={10} p={2} /> Continue with
-        Google
+        <Image
+          src="/images/google-48.png"
+          height={10}
+          width={20}
+          alt="google-logo"
+        />
+        <Text ml="1">Continue with Google</Text>
       </Button>
       <Button mt="2" variant={"oauth"}>
         Continue with Facebook

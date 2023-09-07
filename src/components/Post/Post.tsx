@@ -10,7 +10,11 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import moment from "moment";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { BsChat } from "react-icons/bs";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
@@ -19,11 +23,8 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
-import moment from "moment";
-import { BsChat } from "react-icons/bs";
-import { AiOutlineDelete } from "react-icons/ai";
 
-type PostItemProps = {
+type PostPageProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
@@ -36,7 +37,7 @@ type PostItemProps = {
   onSelectPost?: (post: Post) => void;
 };
 
-const PostItem: React.FC<PostItemProps> = ({
+const PostPage: React.FC<PostPageProps> = ({
   post,
   userIsCreator,
   userVoteValue,
@@ -44,15 +45,12 @@ const PostItem: React.FC<PostItemProps> = ({
   onDeletePost,
   onSelectPost,
 }) => {
+  const router = useRouter();
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState(false);
-  const singlePostPage = !onSelectPost;
 
-  const handleDelete = async (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    event.stopPropagation();
+  const handleDelete = async () => {
     setLoadingDelete(true);
     try {
       const success = await onDeletePost(post);
@@ -62,6 +60,8 @@ const PostItem: React.FC<PostItemProps> = ({
       }
 
       console.log("Post was successfully deleted");
+      // redirect the user to home page
+      router.push("/");
     } catch (error: any) {
       console.log("Handle Delete ", error.message);
       setError(error.message);
@@ -73,16 +73,12 @@ const PostItem: React.FC<PostItemProps> = ({
     <Flex
       border="1px solid"
       bg="green.100"
-      borderRadius={4}
-      _hover={{ borderColor: "blue.500" }}
-      cursor={"pointer"}
-      onClick={() => onSelectPost && onSelectPost(post)}
-      borderColor={singlePostPage ? "green.100" : "gray.300"}
+      borderRadius={"4px 4px 0px 0px"}
+      borderColor={"green.100"}
     >
       <Flex
         direction={"column"}
         align={"center"}
-        bg="gray.100"
         p="2"
         width={"40px"}
         borderRadius={4}
@@ -106,7 +102,6 @@ const PostItem: React.FC<PostItemProps> = ({
           }
           color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
           onClick={(event) => onVote(event, post, -1)}
-          cursor={"pointer"}
         />
       </Flex>
       <Flex direction={"column"} width={"100%"}>
@@ -132,12 +127,8 @@ const PostItem: React.FC<PostItemProps> = ({
           <Text fontSize={"12pt"} fontWeight={600} height={"15%"}>
             {post.title}
           </Text>
-          <Text
-            fontSize={"10pt"}
-            height={!singlePostPage ? "20%" : "auto"}
-            mt="4"
-          >
-            {singlePostPage ? post.body : ""}
+          <Text fontSize={"10pt"} height={"auto"} mt="4">
+            {post.body}
           </Text>
           {post.imageUrl && (
             <Flex justify={"center"} align={"center"} p={2}>
@@ -223,4 +214,4 @@ const PostItem: React.FC<PostItemProps> = ({
     </Flex>
   );
 };
-export default PostItem;
+export default PostPage;
