@@ -27,7 +27,11 @@ type PostPageProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
-  onVote: (post: Post, vote: number) => void;
+  onVote: (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    post: Post,
+    vote: number
+  ) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost?: (post: Post) => void;
 };
@@ -80,7 +84,7 @@ const PostPage: React.FC<PostPageProps> = ({
             userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline
           }
           color={userVoteValue === 1 ? "brand.100" : "gray.400"}
-          onClick={() => onVote(post, 1)}
+          onClick={(event) => onVote(event, post, 1)}
           cursor={"pointer"}
         />
         <Text fontSize={"9pt"} fontWeight={500}>
@@ -93,8 +97,7 @@ const PostPage: React.FC<PostPageProps> = ({
               : IoArrowDownCircleOutline
           }
           color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
-          onClick={() => onVote(post, -1)}
-          cursor={"pointer"}
+          onClick={(event) => onVote(event, post, -1)}
         />
       </Flex>
       <Flex direction={"column"} width={"100%"}>
