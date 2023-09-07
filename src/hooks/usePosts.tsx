@@ -7,14 +7,18 @@ import {
   doc,
   getDocs,
   query,
+  getDoc,
   writeBatch,
 } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { withRouter } from "next/router";
 
 const usePosts = () => {
+  const router = useRouter();
   const [user] = useAuthState(auth);
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
   const setAuthModalState = useSetRecoilState(authModalState);
@@ -146,7 +150,14 @@ const usePosts = () => {
       return false;
     }
   };
-  const onSelectPost = () => {};
+  const onSelectPost = (post: Post) => {
+    setPostStateValue((prev) => ({
+      ...prev,
+      selectedPost: post,
+    }));
+
+    router.push(`posts/${post.id}`);
+  };
 
   const getPostVotes = async () => {
     const postsVotesQuery = query(
@@ -163,6 +174,13 @@ const usePosts = () => {
       ...prev,
       postVotes: postVotes as PostVote[],
     }));
+  };
+
+  const getAPost = async (postId: string) => {
+    const postDocRef = doc(firestore, "posts", postId);
+    const postDoc = await getDoc(postDocRef);
+
+    return postDoc;
   };
 
   useEffect(() => {
@@ -182,6 +200,7 @@ const usePosts = () => {
     onVote,
     onSelectPost,
     onDeletePost,
+    getAPost,
   };
 };
 export default usePosts;
