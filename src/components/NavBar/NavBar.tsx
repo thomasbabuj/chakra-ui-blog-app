@@ -19,6 +19,7 @@ const NavBar: React.FC = () => {
       padding="6px 12px"
       color="white"
       justify={{ md: "space-between" }}
+      borderColor={"green.300"}
     >
       {/* Logo Starts  */}
       <Flex
@@ -51,7 +52,12 @@ const NavBar: React.FC = () => {
       </Flex>
       {/* Logo Ends  */}
 
-      {user && <Directory />}
+      <Flex align={"center"}>{user && <Directory />}</Flex>
+
+      {/* <Flex border={"1px solid coral"} height="50%" align={"center"}>
+        {user && <Directory />}
+      </Flex> */}
+
       {/* Search Inputs */}
       <SearchInput user={user} />
 
