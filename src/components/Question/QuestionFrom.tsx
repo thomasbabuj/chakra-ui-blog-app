@@ -19,7 +19,9 @@ import React, { ChangeEvent, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsPerson } from "react-icons/bs";
 
-type QuestionFromProps = {};
+type QuestionFromProps = {
+  showInModal: boolean;
+};
 
 interface QuestionForm {
   email: string;
@@ -27,7 +29,7 @@ interface QuestionForm {
   question: string;
 }
 
-const QuestionFrom: React.FC<QuestionFromProps> = () => {
+const QuestionFrom: React.FC<QuestionFromProps> = ({ showInModal = false }) => {
   const [user] = useAuthState(auth);
   const [questionForm, setQuestionForm] = useState<QuestionForm>({
     email: "",
@@ -37,6 +39,7 @@ const QuestionFrom: React.FC<QuestionFromProps> = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isShowHeader] = useState(showInModal);
 
   const onChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -81,18 +84,20 @@ const QuestionFrom: React.FC<QuestionFromProps> = () => {
 
   return (
     <Box>
-      <Flex
-        justify={"space-between"}
-        align="center"
-        bg="green.500"
-        color="white"
-        p="3"
-        borderRadius={"4px 4px 0px 0px"}
-      >
-        <Text fontSize={"10pt"} fontWeight={700}>
-          Submit a Request
-        </Text>
-      </Flex>
+      {!isShowHeader && (
+        <Flex
+          justify={"space-between"}
+          align="center"
+          bg="green.500"
+          color="white"
+          p="3"
+          borderRadius={"4px 4px 0px 0px"}
+        >
+          <Text fontSize={"10pt"} fontWeight={700}>
+            Submit a Request
+          </Text>
+        </Flex>
+      )}
       <Flex
         direction={"column"}
         p="3"

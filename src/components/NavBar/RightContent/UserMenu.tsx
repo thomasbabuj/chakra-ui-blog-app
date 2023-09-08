@@ -100,7 +100,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 _hover={{ bg: "green.500", color: "white" }}
               >
                 <Flex align={"center"}>
-                  <Icon as={CgProfile} fontSize={20} mr={2} />
+                  <Icon as={CgProfile} color="white" fontSize={20} mr={2} />
                   Profile
                 </Flex>
               </MenuItem>
@@ -114,7 +114,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 onClick={logout}
               >
                 <Flex align={"center"}>
-                  <Icon as={MdOutlineLogout} fontSize={20} mr={2} />
+                  <Icon
+                    as={MdOutlineLogout}
+                    color="white"
+                    fontSize={20}
+                    mr={2}
+                  />
                   Logout
                 </Flex>
               </MenuItem>
