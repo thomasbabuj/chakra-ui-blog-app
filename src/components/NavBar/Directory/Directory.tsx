@@ -16,12 +16,12 @@ const Directory: React.FC = () => {
         borderRadius={4}
         _hover={{ outline: "1px solid", outlineColor: "green.300" }}
         mr={2}
-        ml={{ base: 0, md: 2 }}
+        ml={{ base: 2, md: 4 }}
       >
         <Flex
           align={"center"}
           justify={"space-between"}
-          w={{ base: "auto", lg: "200px" }}
+          // w={{ base: "auto", lg: "200px" }}
         >
           <Flex align={"center"}>
             <Icon as={TiHome} fontSize={24} mr={{ base: 1, md: 2 }} />
