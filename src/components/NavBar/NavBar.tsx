@@ -20,6 +20,7 @@ const NavBar: React.FC = () => {
       color="white"
       justify={{ md: "space-between" }}
       borderColor={"green.300"}
+      borderBottom="1px solid #e5e7eb"
     >
       {/* Logo Starts  */}
       <Flex
