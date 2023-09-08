@@ -2,6 +2,7 @@
 
 import { Post } from "@/atoms/postsAtom";
 import PageContent from "@/components/Layout/PageContent";
+import Comments from "@/components/Post/Comments/Comments";
 import PostPage from "@/components/Post/Post";
 
 import QuestionFrom from "@/components/Question/QuestionFrom";
@@ -10,6 +11,7 @@ import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
 import useQuestions from "@/hooks/useQuestions";
 import { Alert, AlertIcon, Box, Flex, Text } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -81,6 +83,10 @@ const page: React.FC<pageProps> = ({ params }) => {
           />
         )}
         {/* Comments */}
+        <Comments
+          user={user as User}
+          selectedPost={postStateValue.selectedPost}
+        />
       </>
       <>
         <Flex direction={"column"}>
