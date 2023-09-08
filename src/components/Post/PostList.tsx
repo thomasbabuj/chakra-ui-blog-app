@@ -4,7 +4,7 @@ import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import PostItem from "./PostListIem";
+import PostListItem from "./PostListItem";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PostLoader from "./PostLoader";
 
@@ -55,7 +55,7 @@ const PostList: React.FC<PostListProps> = () => {
       ) : (
         <Stack>
           {postStateValue?.posts?.map((item) => (
-            <PostItem
+            <PostListItem
               key={item.id}
               post={item}
               userIsCreator={user?.uid === item.creatorId}

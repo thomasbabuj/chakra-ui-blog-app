@@ -36,7 +36,7 @@ type PostItemProps = {
   onSelectPost?: (post: Post) => void;
 };
 
-const PostItem: React.FC<PostItemProps> = ({
+const PostListItem: React.FC<PostItemProps> = ({
   post,
   userIsCreator,
   userVoteValue,
@@ -223,4 +223,4 @@ const PostItem: React.FC<PostItemProps> = ({
     </Flex>
   );
 };
-export default PostItem;
+export default PostListItem;
