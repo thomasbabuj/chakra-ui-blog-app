@@ -24,68 +24,9 @@ const Icons: React.FC = () => {
           borderRadius={4}
           _hover={{ bg: "green.200" }}
         >
-          <Icon as={BsArrowUpRightCircle} fontSize={20} />
-        </Flex>
-        <Flex
-          mr="1.5"
-          ml="1.5"
-          padding="1"
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{ bg: "green.200" }}
-        >
-          <Icon as={IoFilterCircleOutline} fontSize={22} />
-        </Flex>
-        <Flex
-          mr="1.5"
-          ml="1.5"
-          padding="1"
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{ bg: "green.200" }}
-        >
-          <Icon as={IoVideocamOutline} fontSize={22} />
-        </Flex>
-      </Flex>
-      <>
-        <Flex
-          mr="1.5"
-          ml="1.5"
-          padding="1"
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{ bg: "green.200" }}
-        >
-          <Icon as={BsChatDots} fontSize={20} />
-        </Flex>
-        <Flex
-          mr="1.5"
-          ml="1.5"
-          padding="1"
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{ bg: "green.200" }}
-        >
           <Icon as={IoNotificationsOutline} fontSize={20} />
         </Flex>
-        <Flex
-          mr="1.5"
-          ml="1.5"
-          padding="1"
-          cursor="pointer"
-          borderRadius={4}
-          _hover={{ bg: "green.200" }}
-          display={{ base: "none", md: "flex" }}
-        >
-          {/* https://github.com/react-icons/react-icons/issues/404 */}
-          <Icon
-            as={GrAddCircle}
-            fontSize={20}
-            color={"red"}
-            className="grIcon"
-          />
-        </Flex>
-      </>
+      </Flex>
     </Flex>
   );
 };
