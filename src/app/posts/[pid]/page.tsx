@@ -34,14 +34,18 @@ const page: React.FC<pageProps> = ({ params }) => {
   const [error, setError] = useState(false);
 
   const fetchPost = async (postId: string) => {
-    const post = await getAPost(postId);
-    if (post.exists()) {
-      setPostStateValue((prev) => ({
-        ...prev,
-        selectedPost: { id: post.id, ...(post.data() as Post) },
-      }));
-    } else {
-      setError(true);
+    try {
+      const post = await getAPost(postId);
+      if (post.exists()) {
+        setPostStateValue((prev) => ({
+          ...prev,
+          selectedPost: { id: post.id, ...(post.data() as Post) },
+        }));
+      } else {
+        setError(true);
+      }
+    } catch (error: any) {
+      console.log("Fetch Get Post error", error.message);
     }
   };
 
