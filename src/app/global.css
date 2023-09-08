@@ -5,3 +5,7 @@
 .bsPersonIcon path {
   stroke: "gray.300";
 }
+
+.borderColor {
+  color: #e5e7eb;
+}

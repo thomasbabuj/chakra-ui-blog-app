@@ -80,12 +80,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
-      <MenuList>
+      <MenuList
+        bgColor={"black"}
+        fontSize={"10pt"}
+        fontWeight={700}
+        color={"green.300"}
+      >
         {user ? (
           <>
             <MenuItem
               fontSize={"10pt"}
               fontWeight={700}
+              bg={"black"}
               color={"green.300"}
               _hover={{ bg: "green.500", color: "white" }}
             >
@@ -96,6 +102,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             </MenuItem>
             <MenuDivider />
             <MenuItem
+              bg={"black"}
               fontSize={"10pt"}
               fontWeight={700}
               color={"green.300"}

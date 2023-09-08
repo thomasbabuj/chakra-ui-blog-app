@@ -14,7 +14,7 @@ const Directory: React.FC = () => {
         cursor={"pointer"}
         padding="0px 6px"
         borderRadius={4}
-        _hover={{ outline: "1px solid", outlineColor: "green.200" }}
+        _hover={{ outline: "1px solid", outlineColor: "green.300" }}
         mr={2}
         ml={{ base: 0, md: 2 }}
       >
@@ -34,7 +34,12 @@ const Directory: React.FC = () => {
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
-      <MenuList fontSize={"10pt"} fontWeight={700} color={"green.300"}>
+      <MenuList
+        bgColor={"black"}
+        fontSize={"10pt"}
+        fontWeight={700}
+        color={"green.300"}
+      >
         {/* Create Communities*/}
         <Communities />
       </MenuList>
