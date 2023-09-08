@@ -20,6 +20,7 @@ import { auth } from "@/firebase/clientApp";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModalAtom";
 import { IoSparkles } from "react-icons/io5";
+import AuthModal from "@/components/Modal/Auth/AuthModal";
 
 type UserMenuProps = {
   user?: User | null;
@@ -34,125 +35,128 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     // clear user related states using recoil reset
   };
   return (
-    <Menu>
-      <MenuButton
-        cursor={"pointer"}
-        padding="0px 6px"
-        borderRadius={4}
-        _hover={{ outline: "1px solid", outlineColor: "green.300" }}
-      >
-        <Flex align={"center"}>
+    <>
+      <AuthModal />
+      <Menu>
+        <MenuButton
+          cursor={"pointer"}
+          padding="0px 6px"
+          borderRadius={4}
+          _hover={{ outline: "1px solid", outlineColor: "green.300" }}
+        >
           <Flex align={"center"}>
-            {user ? (
-              <>
-                <Icon
-                  as={BiUserCircle}
-                  fontSize={24}
-                  ml={1}
-                  color={"green.300"}
-                />
-                <Flex
-                  direction={"column"}
-                  display={{ base: "none", lg: "flex" }}
-                  fontSize={"8pt"}
-                  align={"flex-start"}
-                  mr="2"
-                  ml="2"
-                >
-                  <Text fontWeight={700}>
-                    {user?.displayName || user.email?.split("@")[0]}
-                  </Text>
-                  <Flex mt="1" align={"center"}>
-                    <Icon as={IoSparkles} color={"band.100"} mr="1" />
-                    <Text color={"green.400"}>1 karma</Text>
+            <Flex align={"center"}>
+              {user ? (
+                <>
+                  <Icon
+                    as={BiUserCircle}
+                    fontSize={24}
+                    ml={1}
+                    color={"green.300"}
+                  />
+                  <Flex
+                    direction={"column"}
+                    display={{ base: "none", lg: "flex" }}
+                    fontSize={"8pt"}
+                    align={"flex-start"}
+                    mr="2"
+                    ml="2"
+                  >
+                    <Text fontWeight={700}>
+                      {user?.displayName || user.email?.split("@")[0]}
+                    </Text>
+                    <Flex mt="1" align={"center"}>
+                      <Icon as={IoSparkles} color={"band.100"} mr="1" />
+                      <Text color={"green.400"}>1 karma</Text>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </>
-            ) : (
-              <Icon
-                fontSize={24}
-                as={VscAccount}
-                mr={1}
-                color="gray.400"
-                mt="1"
-              />
-            )}
+                </>
+              ) : (
+                <Icon
+                  fontSize={24}
+                  as={VscAccount}
+                  mr={1}
+                  color="gray.400"
+                  mt="1"
+                />
+              )}
+            </Flex>
+            <ChevronDownIcon />
           </Flex>
-          <ChevronDownIcon />
-        </Flex>
-      </MenuButton>
-      <MenuList
-        bgColor={"black"}
-        fontSize={"10pt"}
-        fontWeight={700}
-        color={"green.300"}
-      >
-        {user ? (
-          <>
-            <MenuItem
-              fontSize={"10pt"}
-              fontWeight={700}
-              bg={"black"}
-              color={"green.300"}
-              _hover={{ bg: "green.500", color: "white" }}
-            >
-              <Flex align={"center"}>
-                <Icon as={CgProfile} fontSize={20} mr={2} />
-                Profile
-              </Flex>
-            </MenuItem>
-            <MenuDivider />
-            <MenuItem
-              bg={"black"}
-              fontSize={"10pt"}
-              fontWeight={700}
-              color={"green.300"}
-              _hover={{ bg: "green.500", color: "white" }}
-              onClick={logout}
-            >
-              <Flex align={"center"}>
-                <Icon as={MdOutlineLogout} fontSize={20} mr={2} />
-                Logout
-              </Flex>
-            </MenuItem>
-          </>
-        ) : (
-          <>
-            <MenuItem
-              fontSize={"10pt"}
-              fontWeight={700}
-              color={"green.300"}
-              _hover={{ bg: "green.500", color: "white" }}
-              onClick={() => {
-                setAuthModalState({ open: true, view: "login" });
-              }}
-              bg={"black"}
-            >
-              <Flex align={"center"}>
-                <Icon as={MdLogin} fontSize={20} mr={2} />
-                Login
-              </Flex>
-            </MenuItem>
-            <MenuDivider />
-            <MenuItem
-              fontSize={"10pt"}
-              fontWeight={700}
-              color={"green.300"}
-              _hover={{ bg: "green.500", color: "white" }}
-              onClick={() => {
-                setAuthModalState({ open: true, view: "register" });
-              }}
-              bg={"black"}
-            >
-              <Flex align={"center"}>
-                <Icon as={BsFillPersonPlusFill} fontSize={20} mr={2} />
-                Register
-              </Flex>
-            </MenuItem>
-          </>
-        )}
-      </MenuList>
-    </Menu>
+        </MenuButton>
+        <MenuList
+          bgColor={"black"}
+          fontSize={"10pt"}
+          fontWeight={700}
+          color={"green.300"}
+        >
+          {user ? (
+            <>
+              <MenuItem
+                fontSize={"10pt"}
+                fontWeight={700}
+                bg={"black"}
+                color={"green.300"}
+                _hover={{ bg: "green.500", color: "white" }}
+              >
+                <Flex align={"center"}>
+                  <Icon as={CgProfile} fontSize={20} mr={2} />
+                  Profile
+                </Flex>
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem
+                bg={"black"}
+                fontSize={"10pt"}
+                fontWeight={700}
+                color={"green.300"}
+                _hover={{ bg: "green.500", color: "white" }}
+                onClick={logout}
+              >
+                <Flex align={"center"}>
+                  <Icon as={MdOutlineLogout} fontSize={20} mr={2} />
+                  Logout
+                </Flex>
+              </MenuItem>
+            </>
+          ) : (
+            <>
+              <MenuItem
+                fontSize={"10pt"}
+                fontWeight={700}
+                color={"green.300"}
+                _hover={{ bg: "green.500", color: "white" }}
+                onClick={() => {
+                  setAuthModalState({ open: true, view: "login" });
+                }}
+                bg={"black"}
+              >
+                <Flex align={"center"}>
+                  <Icon as={MdLogin} fontSize={20} mr={2} />
+                  Login
+                </Flex>
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem
+                fontSize={"10pt"}
+                fontWeight={700}
+                color={"green.300"}
+                _hover={{ bg: "green.500", color: "white" }}
+                onClick={() => {
+                  setAuthModalState({ open: true, view: "register" });
+                }}
+                bg={"black"}
+              >
+                <Flex align={"center"}>
+                  <Icon as={BsFillPersonPlusFill} fontSize={20} mr={2} />
+                  Register
+                </Flex>
+              </MenuItem>
+            </>
+          )}
+        </MenuList>
+      </Menu>
+    </>
   );
 };
 export default UserMenu;
