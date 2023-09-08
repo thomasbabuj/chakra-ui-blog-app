@@ -94,8 +94,9 @@ const PostListItem: React.FC<PostItemProps> = ({
           color={userVoteValue === 1 ? "brand.100" : "gray.400"}
           onClick={(event) => onVote(event, post, 1)}
           cursor={"pointer"}
+          fontSize={25}
         />
-        <Text fontSize={"9pt"} fontWeight={500}>
+        <Text fontSize={"10pt"} fontWeight={500}>
           {post.voteStatus}
         </Text>
         <Icon
@@ -107,6 +108,7 @@ const PostListItem: React.FC<PostItemProps> = ({
           color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
           onClick={(event) => onVote(event, post, -1)}
           cursor={"pointer"}
+          fontSize={25}
         />
       </Flex>
       <Flex direction={"column"} width={"100%"}>

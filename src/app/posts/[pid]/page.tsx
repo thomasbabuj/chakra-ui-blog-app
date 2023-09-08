@@ -3,7 +3,7 @@
 import { Post } from "@/atoms/postsAtom";
 import PageContent from "@/components/Layout/PageContent";
 import Comments from "@/components/Post/Comments/Comments";
-import PostPage from "@/components/Post/Post";
+import PostPage from "@/components/Post/PostPage";
 
 import QuestionFrom from "@/components/Question/QuestionFrom";
 import QuestionList from "@/components/Question/QuestionList";
