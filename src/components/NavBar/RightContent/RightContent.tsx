@@ -16,7 +16,7 @@ const RightContent: React.FC<RightContentProps> = ({ user }) => {
       {/* <AuthModal /> */}
       <Flex justify="center" align="center">
         <Flex p="2">
-          <Link href={"#"}>About</Link>
+          <Link href={"/about"}>About</Link>
         </Flex>
         <Flex p="2">
           <Link href={"#"}>Page</Link>

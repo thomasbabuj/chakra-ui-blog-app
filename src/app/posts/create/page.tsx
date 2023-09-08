@@ -33,10 +33,6 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
           <Box>
             <QuestionList data={questionStateValue} isLoading={false} />
           </Box>
-
-          <Box mt="5">
-            <QuestionFrom />
-          </Box>
         </Flex>
       </>
     </PageContent>
