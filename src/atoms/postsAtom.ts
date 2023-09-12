@@ -13,7 +13,6 @@ export type Post = {
   creatorDisplayName: string;
   title: string;
   shortDescription?: string;
-
   body: Node[];
   numberOfComments: number;
   voteStatus: number;
