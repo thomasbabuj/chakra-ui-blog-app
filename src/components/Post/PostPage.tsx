@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat } from "react-icons/bs";
 import {
@@ -25,7 +25,15 @@ import {
   IoBookmarkOutline,
 } from "react-icons/io5";
 import { createEditor, Descendant } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import {
+  Slate,
+  Editable,
+  withReact,
+  RenderElementProps,
+  RenderLeafProps,
+} from "slate-react";
+import { Element } from "../RichTextEditor/Elements";
+import { Leaf } from "../RichTextEditor/Leaf";
 
 type PostPageProps = {
   post: Post;
@@ -65,6 +73,15 @@ const PostPage: React.FC<PostPageProps> = ({
       ],
     },
   ];
+
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <Element {...props} />,
+    []
+  );
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => <Leaf {...props} />,
+    []
+  );
 
   const handleDelete = async () => {
     setLoadingDelete(true);
@@ -151,13 +168,17 @@ const PostPage: React.FC<PostPageProps> = ({
               editor={editor}
               initialValue={post.body ? post.body : initialValue}
             >
-              <Editable readOnly />
+              <Editable
+                readOnly
+                renderElement={renderElement}
+                renderLeaf={renderLeaf}
+              />
             </Slate>
           </Box>
 
-          <Text fontSize={"10pt"} height={"auto"} mt="4">
-            {/* {post.body} */}
-          </Text>
+          {/* <Text fontSize={"10pt"} height={"auto"} mt="4">
+            {post.body}
+          </Text> */}
           {post.imageUrl && (
             <Flex justify={"center"} align={"center"} p={2}>
               {loadingImage && <Skeleton height={"200px"} width={"100%"} />}

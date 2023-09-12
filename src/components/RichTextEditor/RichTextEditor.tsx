@@ -15,6 +15,7 @@ import { Element } from "./Elements";
 import { Leaf } from "./Leaf";
 import { Toolbar, toggleMark } from "./Toolbar";
 
+//https://codesandbox.io/s/chakra-slatejs-ptpfm?file=/src/index.tsx
 export interface RichTextBlockProps {
   editorContent: any;
   passCurrentContentToParent: (content: Node[] | null) => void;
