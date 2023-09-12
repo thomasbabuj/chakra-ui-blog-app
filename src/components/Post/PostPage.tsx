@@ -4,6 +4,7 @@ import {
   AlertIcon,
   Box,
   Flex,
+  Heading,
   Icon,
   Image,
   Skeleton,
@@ -160,10 +161,12 @@ const PostPage: React.FC<PostPageProps> = ({
               {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
             </Text>
           </Stack>
-          <Text fontSize={"18pt"} fontWeight={600} height={"15%"}>
+
+          <Heading as="h1" size="3xl">
             {post.title}
-          </Text>
-          <Box fontSize={"10pt"}>
+          </Heading>
+
+          <Box fontSize={"10pt"} mt="2">
             <Slate
               editor={editor}
               initialValue={post.body ? post.body : initialValue}

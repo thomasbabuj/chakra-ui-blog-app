@@ -39,13 +39,13 @@ export const Element = ({
       return <UnorderedList {...attributes}>{children}</UnorderedList>;
     case "heading-one":
       return (
-        <Heading as="h1" size="3xl" {...attributes}>
+        <Heading as="h2" size="2xl" {...attributes}>
           {children}
         </Heading>
       );
     case "heading-two":
       return (
-        <Heading as="h2" size="2xl" {...attributes}>
+        <Heading as="h3" size="lg" {...attributes}>
           {children}
         </Heading>
       );
