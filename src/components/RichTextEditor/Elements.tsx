@@ -7,7 +7,6 @@ import {
 } from "@chakra-ui/react";
 
 import { RenderElementProps } from "slate-react";
-import { toggleMark } from "./Toolbar";
 
 const BlockquoteStyle: React.CSSProperties | undefined = {
   margin: "1.5em 10px",
@@ -48,6 +47,19 @@ export const Element = ({
         <Heading as="h3" size="lg" {...attributes}>
           {children}
         </Heading>
+      );
+    case "youtube":
+      return (
+        <div {...attributes} contentEditable={false}>
+          <iframe
+            src={`https://www.youtube.com/embed/${element.videoId}`}
+            aria-label="Youtube video"
+            frameBorder="0"
+            width={"400px"}
+            height={"250px"}
+          ></iframe>
+          {children}
+        </div>
       );
     default:
       return <p {...attributes}>{children}</p>;

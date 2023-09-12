@@ -86,6 +86,31 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
     },
     [editor]
   );
+  const youtubeRegex =
+    /^(?:(?:https?:)?\/\/)?(?:(?:www|m)\.)?(?:(?:youtube\.com|youtu.be))(?:\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(?:\S+)?$/;
+
+  const onPaste = React.useCallback(
+    (e) => {
+      const pastedText = e.clipboardData?.getData("text")?.trim();
+      const matches = pastedText.match(youtubeRegex);
+      if (matches != null) {
+        const [_, videoId] = matches;
+        e.preventDefault();
+        Transforms.insertNodes(editor, [
+          {
+            type: "youtube",
+            videoId,
+            children: [
+              {
+                text: "",
+              },
+            ],
+          },
+        ]);
+      }
+    },
+    [editor]
+  );
 
   return (
     <Box
@@ -115,6 +140,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
               overflow: "auto",
               color: "black",
             }}
+            onPaste={onPaste}
           />
         </Box>
       </Slate>
