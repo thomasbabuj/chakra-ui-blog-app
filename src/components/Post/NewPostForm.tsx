@@ -10,6 +10,7 @@ import {
   Input,
   Stack,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import {
   Timestamp,
@@ -25,15 +26,20 @@ import { Node } from "slate";
 
 type NewPostFormProps = {};
 
+interface PostFormProps {
+  title: string;
+  body: Node[];
+  shortDescription: string;
+}
+
 const NewPostForm: React.FC<NewPostFormProps> = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const [textInputs, setTextInputs] = useState<{ title: string; body: Node[] }>(
-    {
-      title: "",
-      body: [],
-    }
-  );
+  const [textInputs, setTextInputs] = useState<PostFormProps>({
+    title: "",
+    shortDescription: "",
+    body: [],
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -45,6 +51,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
       creatorDisplayName: user.email!.split("@")[0],
       title: textInputs.title,
       body: textInputs.body,
+      shortDescription: textInputs.shortDescription,
       numberOfComments: 0,
       voteStatus: 0,
       createdAt: serverTimestamp() as Timestamp,
@@ -116,14 +123,15 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
               borderColor: "black",
             }}
           />
-          {/* <Textarea
-            name="body"
-            value={textInputs.body}
+
+          <Textarea
+            name="shortDescription"
+            value={textInputs.shortDescription}
             onChange={onTextChange}
-            height={"100px"}
+            height={"50px"}
             fontSize={"10pt"}
             borderRadius={"4"}
-            placeholder="Post Message"
+            placeholder="Short Description"
             _placeholder={{
               color: "gray.500",
             }}
@@ -133,7 +141,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
               border: "1px solid",
               borderColor: "black",
             }}
-          /> */}
+          />
 
           <RichTextBlock
             editorContent={initialValue}

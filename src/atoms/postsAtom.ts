@@ -12,6 +12,8 @@ export type Post = {
   creatorId: string;
   creatorDisplayName: string;
   title: string;
+  shortDescription?: string;
+
   body: Node[];
   numberOfComments: number;
   voteStatus: number;
