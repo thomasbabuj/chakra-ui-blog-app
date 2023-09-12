@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
+import { Node } from "slate";
 
 export enum PostStatus {
   PUBLISHED = "published",
@@ -11,7 +12,9 @@ export type Post = {
   creatorId: string;
   creatorDisplayName: string;
   title: string;
-  body: string;
+  shortDescription?: string;
+
+  body: Node[];
   numberOfComments: number;
   voteStatus: number;
   imageUrl?: string;

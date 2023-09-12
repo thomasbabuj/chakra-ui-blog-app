@@ -21,18 +21,28 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
+import { Node } from "slate";
 
 type NewPostFormProps = {};
+
+interface PostFormProps {
+  title: string;
+  body: Node[];
+  shortDescription: string;
+}
 
 const NewPostForm: React.FC<NewPostFormProps> = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const [textInputs, setTextInputs] = useState({
+  const [textInputs, setTextInputs] = useState<PostFormProps>({
     title: "",
-    body: "",
+    shortDescription: "",
+    body: [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
   const handleCreatePost = async () => {
     if (!user) return;
 
@@ -41,6 +51,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
       creatorDisplayName: user.email!.split("@")[0],
       title: textInputs.title,
       body: textInputs.body,
+      shortDescription: textInputs.shortDescription,
       numberOfComments: 0,
       voteStatus: 0,
       createdAt: serverTimestamp() as Timestamp,
@@ -70,8 +81,29 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     }));
   };
 
+  const initialValue = [
+    {
+      type: "paragraph",
+      children: [{ text: "Enter your post content" }],
+    },
+  ];
+
+  const getContentFromChild = (content: Node[] | null) => {
+    if (!content) {
+      return;
+    }
+
+    textInputs.body = content;
+  };
+
   return (
-    <Flex direction={"column"} bg={"green.300"} borderRadius={4} mt={2}>
+    <Flex
+      direction={"column"}
+      bg="white"
+      color={"black"}
+      borderRadius={4}
+      mt={2}
+    >
       <Flex width={"100%"} p="4">
         <Stack width={"100%"}>
           <Input
@@ -91,14 +123,15 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
               borderColor: "black",
             }}
           />
+
           <Textarea
-            name="body"
-            value={textInputs.body}
+            name="shortDescription"
+            value={textInputs.shortDescription}
             onChange={onTextChange}
-            height={"100px"}
+            height={"50px"}
             fontSize={"10pt"}
             borderRadius={"4"}
-            placeholder="Post Message"
+            placeholder="Short Description"
             _placeholder={{
               color: "gray.500",
             }}
@@ -109,6 +142,12 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
               borderColor: "black",
             }}
           />
+
+          <RichTextBlock
+            editorContent={initialValue}
+            passCurrentContentToParent={getContentFromChild}
+          />
+
           <Flex justify={"flex-end"}>
             <Button
               height={"34px"}

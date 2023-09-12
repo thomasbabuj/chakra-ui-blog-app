@@ -29,6 +29,9 @@
     "react-firebase-hooks": "^5.1.1",
     "react-icons": "^4.10.1",
     "recoil": "^0.7.7",
+    "slate": "^0.94.1",
+    "slate-history": "^0.93.0",
+    "slate-react": "^0.98.3",
     "typescript": "5.2.2"
   }
 }
