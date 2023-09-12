@@ -7,6 +7,7 @@ import {
   Editable,
   ReactEditor,
   RenderElementProps,
+  RenderLeafProps,
   Slate,
   withReact,
 } from "slate-react";
@@ -14,7 +15,10 @@ import { Element } from "./Elements";
 import { Leaf } from "./Leaf";
 import { Toolbar, toggleMark } from "./Toolbar";
 
-export interface RichTextBlockProps {}
+export interface RichTextBlockProps {
+  editorContent: any;
+  passCurrentContentToParent: (content: Node[] | null) => void;
+}
 
 // @refresh reset
 const HOTKEYS: { [hotkey: string]: string } = {
@@ -24,49 +28,18 @@ const HOTKEYS: { [hotkey: string]: string } = {
   "mod+`": "code",
 };
 
-const exampleValue = [
-  {
-    type: "paragraph",
-    children: [
-      { text: "This is editable " },
-      { text: "rich", bold: true },
-      { text: " text, " },
-      { text: "much", italic: true },
-      { text: " better than a " },
-      { text: "!" },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: "Since it's rich text, you can do things like turn a selection of text ",
-      },
-      { text: "bold", bold: true },
-      {
-        text: ", or add a semantically rendered block quote in the middle of the page, like this:",
-      },
-    ],
-  },
-  {
-    type: "block-quote",
-    children: [{ text: "A wise quote." }],
-  },
-  {
-    type: "paragraph",
-    children: [{ text: "Try it out for yourself!" }],
-  },
-];
-
-export const RichTextBlock: React.FC<RichTextBlockProps> = ({}) => {
-  const [value, setValue] = useState<Node[]>(exampleValue);
+export const RichTextBlock: React.FC<RichTextBlockProps> = ({
+  editorContent,
+  passCurrentContentToParent,
+}) => {
+  const [value, setValue] = useState<Node[]>(editorContent);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const renderElement = useCallback(
     (props: RenderElementProps) => <Element {...props} />,
     []
   );
   const renderLeaf = useCallback(
-    (props: RenderElementProps) => <Leaf {...props} />,
+    (props: RenderLeafProps) => <Leaf {...props} />,
     []
   );
 
@@ -75,6 +48,8 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({}) => {
   //focus selection
   const [focused, setFocused] = React.useState(false);
   const savedSelection = React.useRef(editor.selection);
+
+  passCurrentContentToParent(value);
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     for (const hotkey in HOTKEYS) {
@@ -133,7 +108,12 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({}) => {
             renderLeaf={renderLeaf}
             placeholder="Enter some rich text…"
             spellCheck
-            style={{ minHeight: "150px", resize: "vertical", overflow: "auto" }}
+            style={{
+              minHeight: "150px",
+              resize: "vertical",
+              overflow: "auto",
+              color: "black",
+            }}
           />
         </Box>
       </Slate>

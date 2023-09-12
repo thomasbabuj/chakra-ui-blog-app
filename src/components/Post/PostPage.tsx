@@ -2,6 +2,7 @@ import { Post } from "@/atoms/postsAtom";
 import {
   Alert,
   AlertIcon,
+  Box,
   Flex,
   Icon,
   Image,
@@ -12,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat } from "react-icons/bs";
 import {
@@ -23,6 +24,8 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
+import { createEditor, Descendant } from "slate";
+import { Slate, Editable, withReact } from "slate-react";
 
 type PostPageProps = {
   post: Post;
@@ -49,6 +52,19 @@ const PostPage: React.FC<PostPageProps> = ({
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState(false);
+
+  const editor = useMemo(() => withReact(createEditor()), []);
+
+  const initialValue = [
+    {
+      type: "paragraph",
+      children: [
+        {
+          text: "",
+        },
+      ],
+    },
+  ];
 
   const handleDelete = async () => {
     setLoadingDelete(true);
@@ -92,6 +108,7 @@ const PostPage: React.FC<PostPageProps> = ({
           cursor={"pointer"}
           fontSize={25}
         />
+
         <Text fontSize={"9pt"} fontWeight={500}>
           {post.voteStatus}
         </Text>
@@ -126,11 +143,20 @@ const PostPage: React.FC<PostPageProps> = ({
               {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
             </Text>
           </Stack>
-          <Text fontSize={"12pt"} fontWeight={600} height={"15%"}>
+          <Text fontSize={"18pt"} fontWeight={600} height={"15%"}>
             {post.title}
           </Text>
+          <Box fontSize={"10pt"}>
+            <Slate
+              editor={editor}
+              initialValue={post.body ? post.body : initialValue}
+            >
+              <Editable readOnly />
+            </Slate>
+          </Box>
+
           <Text fontSize={"10pt"} height={"auto"} mt="4">
-            {post.body}
+            {/* {post.body} */}
           </Text>
           {post.imageUrl && (
             <Flex justify={"center"} align={"center"} p={2}>

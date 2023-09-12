@@ -10,7 +10,6 @@ import {
   Input,
   Stack,
   Text,
-  Textarea,
 } from "@chakra-ui/react";
 import {
   Timestamp,
@@ -21,18 +20,23 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
+import { Node } from "slate";
 
 type NewPostFormProps = {};
 
 const NewPostForm: React.FC<NewPostFormProps> = () => {
   const router = useRouter();
   const [user] = useAuthState(auth);
-  const [textInputs, setTextInputs] = useState({
-    title: "",
-    body: "",
-  });
+  const [textInputs, setTextInputs] = useState<{ title: string; body: Node[] }>(
+    {
+      title: "",
+      body: [],
+    }
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
   const handleCreatePost = async () => {
     if (!user) return;
 
@@ -70,8 +74,29 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     }));
   };
 
+  const initialValue = [
+    {
+      type: "paragraph",
+      children: [{ text: "Enter your post content" }],
+    },
+  ];
+
+  const getContentFromChild = (content: Node[] | null) => {
+    if (!content) {
+      return;
+    }
+
+    textInputs.body = content;
+  };
+
   return (
-    <Flex direction={"column"} bg={"green.300"} borderRadius={4} mt={2}>
+    <Flex
+      direction={"column"}
+      bg="white"
+      color={"black"}
+      borderRadius={4}
+      mt={2}
+    >
       <Flex width={"100%"} p="4">
         <Stack width={"100%"}>
           <Input
@@ -91,7 +116,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
               borderColor: "black",
             }}
           />
-          <Textarea
+          {/* <Textarea
             name="body"
             value={textInputs.body}
             onChange={onTextChange}
@@ -108,7 +133,13 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
               border: "1px solid",
               borderColor: "black",
             }}
+          /> */}
+
+          <RichTextBlock
+            editorContent={initialValue}
+            passCurrentContentToParent={getContentFromChild}
           />
+
           <Flex justify={"flex-end"}>
             <Button
               height={"34px"}

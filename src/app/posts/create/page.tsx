@@ -1,14 +1,11 @@
 "use client";
 
-import { Question } from "@/atoms/questionsAtom";
 import PageContent from "@/components/Layout/PageContent";
 import NewPostForm from "@/components/Post/NewPostForm";
-import QuestionFrom from "@/components/Question/QuestionFrom";
 import QuestionList from "@/components/Question/QuestionList";
-import { RichTextBlock } from "@/components/RichTextEditor/RichTextEditor";
 import useQuestions from "@/hooks/useQuestions";
 import { Box, Flex, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 type CreatePostPageProps = {};
 
@@ -29,10 +26,10 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
           </Text>
         </Box>
         {/* NewPost Form */}
-        {/* <NewPostForm /> */}
-        <Box>
+        <NewPostForm />
+        {/* <Box>
           <RichTextBlock />
-        </Box>
+        </Box> */}
       </>
       <>
         <Flex direction={"column"}>
