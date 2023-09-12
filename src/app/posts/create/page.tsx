@@ -5,6 +5,7 @@ import PageContent from "@/components/Layout/PageContent";
 import NewPostForm from "@/components/Post/NewPostForm";
 import QuestionFrom from "@/components/Question/QuestionFrom";
 import QuestionList from "@/components/Question/QuestionList";
+import { RichTextBlock } from "@/components/RichTextEditor/RichTextEditor";
 import useQuestions from "@/hooks/useQuestions";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -23,10 +24,15 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
     <PageContent>
       <>
         <Box p="14px 0px" borderBottom="1px solid">
-          <Text fontWeight={700}>Create a Post</Text>
+          <Text fontWeight={700} color={"white"}>
+            Create a Post
+          </Text>
         </Box>
         {/* NewPost Form */}
-        <NewPostForm />
+        {/* <NewPostForm /> */}
+        <Box>
+          <RichTextBlock />
+        </Box>
       </>
       <>
         <Flex direction={"column"}>
