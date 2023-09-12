@@ -89,6 +89,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
   const youtubeRegex =
     /^(?:(?:https?:)?\/\/)?(?:(?:www|m)\.)?(?:(?:youtube\.com|youtu.be))(?:\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(?:\S+)?$/;
 
+  // https://jkrsp.com/slate-js-youtube-embeds/
   const onPaste = React.useCallback(
     (e) => {
       const pastedText = e.clipboardData?.getData("text")?.trim();
