@@ -1,7 +1,7 @@
 "use client";
 
 import { Post, PostBody, PostStatus } from "@/atoms/postsAtom";
-import { auth, firestore } from "@/firebase/clientApp";
+import { auth, firestore, storage } from "@/firebase/clientApp";
 import {
   Alert,
   AlertIcon,
@@ -31,6 +31,8 @@ import React, {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
 import { BaseEditor, BaseElement, BaseText, Descendant, Node } from "slate";
+import ImageUpload from "./ImageUpload";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 type EditPostFormProps = {
   post: Post | null;
@@ -55,6 +57,8 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const [selectedFile, setSelectedFile] = useState<string>();
+
   let initialValue: PostBody[] = [
     {
       type: "paragraph",
@@ -70,6 +74,8 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post }) => {
         body: post.body,
         status: post.status,
       });
+
+      setSelectedFile(post.imageUrl);
     }
   }, [post]);
 
@@ -90,7 +96,7 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post }) => {
     textInputs.body = content;
   };
 
-  const handleCreatePost = async () => {
+  const handleUpdatePost = async () => {
     if (!user) return;
 
     const updatePost: Post = {
@@ -106,6 +112,20 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post }) => {
       const postDocRef = doc(firestore, "posts", post?.id!);
       console.log(postDocRef.id);
       await updateDoc(postDocRef, updatePost);
+
+      // check for selected File
+      if (selectedFile) {
+        // store in the firestorage
+        const imageRef = ref(storage, `posts/${postDocRef.id}/images`);
+        await uploadString(imageRef, selectedFile, "data_url");
+
+        const downloadUrl = await getDownloadURL(imageRef);
+
+        // update post doc by adding imageURL
+        await updateDoc(postDocRef, {
+          imageUrl: downloadUrl,
+        });
+      }
       setLoading(false);
       router.push("/");
     } catch (error: any) {
@@ -113,6 +133,20 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post }) => {
       setError(true);
     }
     setLoading(false);
+  };
+
+  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+
+    if (event.target.files?.[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      if (readerEvent.target?.result) {
+        setSelectedFile(readerEvent.target.result as string);
+      }
+    };
   };
 
   return (
@@ -162,6 +196,12 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post }) => {
             }}
           />
 
+          <ImageUpload
+            selectedFile={selectedFile}
+            onSelectImage={onSelectImage}
+            setSelectedFile={setSelectedFile}
+            currentImage={post?.imageUrl}
+          />
           <RichTextBlock
             editorContent={post !== null ? post.body : initialValue}
             passCurrentContentToParent={getContentFromChild}
@@ -189,7 +229,7 @@ const EditPostForm: React.FC<EditPostFormProps> = ({ post }) => {
               height={"34px"}
               padding={"0px 30px"}
               disabled={!textInputs.title}
-              onClick={handleCreatePost}
+              onClick={handleUpdatePost}
               isLoading={loading}
             >
               Save

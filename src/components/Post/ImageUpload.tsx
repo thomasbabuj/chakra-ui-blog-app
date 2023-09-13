@@ -5,12 +5,14 @@ type ImageUploadProps = {
   selectedFile?: string;
   onSelectImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedFile: (value: string) => void;
+  currentImage?: string;
 };
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   selectedFile,
   onSelectImage,
   setSelectedFile,
+  currentImage,
 }) => {
   const selectedFileRef = useRef<HTMLInputElement>(null);
 
