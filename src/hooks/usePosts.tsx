@@ -192,6 +192,11 @@ const usePosts = () => {
     return postDoc;
   };
 
+  const onEditPost = async (post: Post): Promise<any> => {
+    console.log("I am onEditPost");
+    console.log(post);
+  };
+
   useEffect(() => {
     if (!user) {
       // Clear post userPostVotes
@@ -210,6 +215,7 @@ const usePosts = () => {
     onSelectPost,
     onDeletePost,
     getAPost,
+    onEditPost,
   };
 };
 export default usePosts;

@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import isHotkey from "is-hotkey";
 import React, { useCallback, useMemo, useState } from "react";
-import { Editor, Node, Transforms, createEditor } from "slate";
+import { Descendant, Editor, Node, Transforms, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import {
   Editable,
@@ -14,11 +14,12 @@ import {
 import { Element } from "./Elements";
 import { Leaf } from "./Leaf";
 import { Toolbar, toggleMark } from "./Toolbar";
+import { PostBody } from "@/atoms/postsAtom";
 
 //https://codesandbox.io/s/chakra-slatejs-ptpfm?file=/src/index.tsx
 export interface RichTextBlockProps {
   editorContent: any;
-  passCurrentContentToParent: (content: Node[] | null) => void;
+  passCurrentContentToParent: (content: PostBody[] | null) => void;
 }
 
 // @refresh reset
@@ -33,7 +34,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
   editorContent,
   passCurrentContentToParent,
 }) => {
-  const [value, setValue] = useState<Node[]>(editorContent);
+  const [value, setValue] = useState<PostBody[] | Descendant[]>(editorContent);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const renderElement = useCallback(
     (props: RenderElementProps) => <Element {...props} />,

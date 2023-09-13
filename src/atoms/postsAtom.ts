@@ -1,11 +1,17 @@
 import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
-import { Node } from "slate";
+import { Descendant, Node } from "slate";
 
 export enum PostStatus {
   PUBLISHED = "published",
   DRAFT = "draft",
 }
+
+export type PostBody = {
+  type: string;
+  children: Node[];
+  videoId?: string;
+};
 
 export type Post = {
   id?: string;
@@ -13,7 +19,7 @@ export type Post = {
   creatorDisplayName: string;
   title: string;
   shortDescription?: string;
-  body: Node[];
+  body: PostBody[];
   numberOfComments: number;
   voteStatus: number;
   imageUrl?: string;

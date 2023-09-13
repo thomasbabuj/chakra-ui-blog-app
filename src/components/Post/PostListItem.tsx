@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ChangeEvent, HtmlHTMLAttributes, useState } from "react";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
@@ -21,7 +21,8 @@ import {
 } from "react-icons/io5";
 import moment from "moment";
 import { BsChat } from "react-icons/bs";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 type PostItemProps = {
   post: Post;
@@ -34,6 +35,7 @@ type PostItemProps = {
   ) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost?: (post: Post) => void;
+  onEditPost: (post: Post) => Promise<any>;
 };
 
 const PostListItem: React.FC<PostItemProps> = ({
@@ -43,9 +45,12 @@ const PostListItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
+  onEditPost,
 }) => {
+  const router = useRouter();
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
   const [error, setError] = useState(false);
   const singlePostPage = !onSelectPost;
 
@@ -67,6 +72,14 @@ const PostListItem: React.FC<PostItemProps> = ({
       setError(error.message);
     }
     setLoadingDelete(false);
+  };
+
+  const handleEdit = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    console.log("On Edit button clicked.");
+    router.push(`/posts/edit/${post.id}`);
   };
 
   return (
@@ -138,9 +151,7 @@ const PostListItem: React.FC<PostItemProps> = ({
             fontSize={"10pt"}
             height={!singlePostPage ? "20%" : "auto"}
             mt="4"
-          >
-            {singlePostPage ? post.body : ""}
-          </Text>
+          ></Text>
           {post.imageUrl && (
             <Flex justify={"center"} align={"center"} p={2}>
               {loadingImage && <Skeleton height={"200px"} width={"100%"} />}
@@ -198,27 +209,44 @@ const PostListItem: React.FC<PostItemProps> = ({
           </Flex>
 
           {userIsCreator && (
-            <Flex
-              align={"center"}
-              p="8px 10px"
-              borderRadius={4}
-              _hover={{ bg: "gray.200" }}
-              cursor={"pointer"}
-              color={"gray.700"}
-            >
-              {loadingDelete ? (
+            <>
+              <Flex
+                align={"center"}
+                p="8px 10px"
+                borderRadius={4}
+                _hover={{ bg: "gray.200" }}
+                cursor={"pointer"}
+                color={"gray.700"}
+              >
+                {loadingDelete ? (
+                  <>
+                    <Spinner size="sm" />
+                  </>
+                ) : (
+                  <>
+                    <Icon as={AiOutlineDelete} />
+                    <Text fontSize={"9pt"} pl="2" onClick={handleDelete}>
+                      Delete
+                    </Text>
+                  </>
+                )}
+              </Flex>
+              <Flex
+                align={"center"}
+                p="8px 10px"
+                borderRadius={4}
+                _hover={{ bg: "gray.200" }}
+                cursor={"pointer"}
+                color={"gray.700"}
+              >
                 <>
-                  <Spinner size="sm" />
-                </>
-              ) : (
-                <>
-                  <Icon as={AiOutlineDelete} />
-                  <Text fontSize={"9pt"} pl="2" onClick={handleDelete}>
-                    Delete
+                  <Icon as={AiFillEdit} />
+                  <Text fontSize={"9pt"} pl="2" onClick={handleEdit}>
+                    Edit
                   </Text>
                 </>
-              )}
-            </Flex>
+              </Flex>
+            </>
           )}
         </Flex>
       </Flex>

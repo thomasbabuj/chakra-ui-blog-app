@@ -20,6 +20,7 @@ const PostList: React.FC<PostListProps> = () => {
     onVote,
     onDeletePost,
     onSelectPost,
+    onEditPost,
   } = usePosts();
 
   const getPosts = async () => {
@@ -66,6 +67,7 @@ const PostList: React.FC<PostListProps> = () => {
               onDeletePost={onDeletePost}
               onVote={onVote}
               onSelectPost={onSelectPost}
+              onEditPost={onEditPost}
             />
           ))}
         </Stack>
