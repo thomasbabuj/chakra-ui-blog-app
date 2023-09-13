@@ -1,7 +1,7 @@
 "use client";
 
 import { Post, PostStatus } from "@/atoms/postsAtom";
-import { auth, firestore } from "@/firebase/clientApp";
+import { auth, firestore, storage } from "@/firebase/clientApp";
 import {
   Alert,
   AlertIcon,
@@ -17,12 +17,15 @@ import {
   addDoc,
   collection,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
 import { Node } from "slate";
+import ImageUpload from "./ImageUpload";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 type NewPostFormProps = {};
 
@@ -43,6 +46,8 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const [selectedFile, setSelectedFile] = useState<string>();
+
   const handleCreatePost = async () => {
     if (!user) return;
 
@@ -61,6 +66,20 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     try {
       // store the post in db
       const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+
+      // check for selected File
+      if (selectedFile) {
+        // store in the firestorage
+        const imageRef = ref(storage, `posts/${postDocRef.id}/images`);
+        await uploadString(imageRef, selectedFile, "data_url");
+
+        const downloadUrl = await getDownloadURL(imageRef);
+
+        // update post doc by adding imageURL
+        await updateDoc(postDocRef, {
+          imageUrl: downloadUrl,
+        });
+      }
       // redirect the user back to the community page using the router
       router.push("/");
     } catch (error: any) {
@@ -69,8 +88,6 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     }
     setLoading(false);
   };
-
-  const onSelectImage = () => {};
 
   const onTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -94,6 +111,20 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     }
 
     textInputs.body = content;
+  };
+
+  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+
+    if (event.target.files?.[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      if (readerEvent.target?.result) {
+        setSelectedFile(readerEvent.target.result as string);
+      }
+    };
   };
 
   return (
@@ -141,6 +172,12 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
               border: "1px solid",
               borderColor: "black",
             }}
+          />
+
+          <ImageUpload
+            selectedFile={selectedFile}
+            onSelectImage={onSelectImage}
+            setSelectedFile={setSelectedFile}
           />
 
           <RichTextBlock
