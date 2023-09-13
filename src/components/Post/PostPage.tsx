@@ -106,9 +106,9 @@ const PostPage: React.FC<PostPageProps> = ({
   return (
     <Flex
       border="1px solid"
-      bg="green.100"
       borderRadius={"4px 4px 0px 0px"}
       borderColor={"green.100"}
+      color={"white"}
     >
       <Flex
         direction={"column"}
@@ -149,6 +149,23 @@ const PostPage: React.FC<PostPageProps> = ({
           </Alert>
         )}
         <Stack spacing={1} p="10px">
+          {post.imageUrl && (
+            <Flex justify={"center"} align={"center"} p={2}>
+              {loadingImage && <Skeleton height={"200px"} width={"100%"} />}
+              <Image
+                src={post.imageUrl}
+                maxH={"460px"}
+                alt={"Post Image"}
+                display={loadingImage ? "none" : "unset"}
+                onLoad={() => setLoadingImage(false)}
+              />
+            </Flex>
+          )}
+
+          <Heading as="h1" size="3xl">
+            {post.title}
+          </Heading>
+
           <Stack
             direction={"row"}
             spacing={0.6}
@@ -161,10 +178,6 @@ const PostPage: React.FC<PostPageProps> = ({
               {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
             </Text>
           </Stack>
-
-          <Heading as="h1" size="3xl">
-            {post.title}
-          </Heading>
 
           <Box fontSize={"10pt"} mt="2">
             <Slate
@@ -182,27 +195,15 @@ const PostPage: React.FC<PostPageProps> = ({
           {/* <Text fontSize={"10pt"} height={"auto"} mt="4">
             {post.body}
           </Text> */}
-          {post.imageUrl && (
-            <Flex justify={"center"} align={"center"} p={2}>
-              {loadingImage && <Skeleton height={"200px"} width={"100%"} />}
-              <Image
-                src={post.imageUrl}
-                maxH={"460px"}
-                alt={"Post Image"}
-                display={loadingImage ? "none" : "unset"}
-                onLoad={() => setLoadingImage(false)}
-              />
-            </Flex>
-          )}
         </Stack>
         <Flex ml={1} mb={0.5} color={"gray.500"} mt="10">
           <Flex
             align={"center"}
             p="8px 10px"
             borderRadius={4}
-            _hover={{ bg: "gray.200" }}
+            _hover={{ bg: "brand.100" }}
             cursor={"pointer"}
-            color={"gray.700"}
+            color={"white"}
           >
             <Icon as={BsChat} />
             <Text fontSize={"9pt"} pl="2">
@@ -214,9 +215,9 @@ const PostPage: React.FC<PostPageProps> = ({
             align={"center"}
             p="8px 10px"
             borderRadius={4}
-            _hover={{ bg: "gray.200" }}
+            _hover={{ bg: "brand.100" }}
             cursor={"pointer"}
-            color={"gray.700"}
+            color={"white"}
           >
             <Icon as={IoArrowRedoOutline} />
             <Text fontSize={"9pt"} pl="2">
@@ -228,9 +229,9 @@ const PostPage: React.FC<PostPageProps> = ({
             align={"center"}
             p="8px 10px"
             borderRadius={4}
-            _hover={{ bg: "gray.200" }}
+            _hover={{ bg: "brand.100" }}
             cursor={"pointer"}
-            color={"gray.700"}
+            color={"white"}
           >
             <Icon as={IoBookmarkOutline} />
             <Text fontSize={"9pt"} pl="2">
@@ -243,9 +244,9 @@ const PostPage: React.FC<PostPageProps> = ({
               align={"center"}
               p="8px 10px"
               borderRadius={4}
-              _hover={{ bg: "gray.200" }}
+              _hover={{ bg: "brand.100" }}
               cursor={"pointer"}
-              color={"gray.700"}
+              color={"white"}
             >
               {loadingDelete ? (
                 <>
