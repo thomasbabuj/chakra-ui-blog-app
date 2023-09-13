@@ -54,7 +54,7 @@ const PostList: React.FC<PostListProps> = () => {
       {loading ? (
         <PostLoader />
       ) : (
-        <Stack>
+        <Stack direction="column">
           {postStateValue?.posts?.map((item) => (
             <PostListItem
               key={item.id}
