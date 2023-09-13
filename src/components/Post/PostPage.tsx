@@ -15,7 +15,7 @@ import {
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { BsChat } from "react-icons/bs";
 import {
   IoArrowDownCircleOutline,
@@ -101,6 +101,14 @@ const PostPage: React.FC<PostPageProps> = ({
       setError(error.message);
     }
     setLoadingDelete(false);
+  };
+
+  const handleEdit = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+    console.log("On Edit button clicked.");
+    router.push(`/posts/edit/${post.id}`);
   };
 
   return (
@@ -262,6 +270,22 @@ const PostPage: React.FC<PostPageProps> = ({
               )}
             </Flex>
           )}
+
+          <Flex
+            align={"center"}
+            p="8px 10px"
+            borderRadius={4}
+            _hover={{ bg: "brand.100" }}
+            cursor={"pointer"}
+            color={"white"}
+          >
+            <>
+              <Icon as={AiFillEdit} />
+              <Text fontSize={"9pt"} pl="2" onClick={handleEdit}>
+                Edit
+              </Text>
+            </>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
