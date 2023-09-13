@@ -99,9 +99,6 @@ const PostListItem: React.FC<PostItemProps> = ({
         border="1px solid"
         bg="green.100"
         borderRadius={4}
-        _hover={{ borderColor: "blue.500" }}
-        cursor={"pointer"}
-        onClick={() => onSelectPost && onSelectPost(post)}
         borderColor={singlePostPage ? "green.100" : "gray.300"}
       >
         <Flex
@@ -164,7 +161,14 @@ const PostListItem: React.FC<PostItemProps> = ({
           </Flex>
           <Flex direction={"column"} p="2" width={"100%"}>
             <Stack>
-              <Text width={"100%"} fontWeight={700} fontSize={"18"}>
+              <Text
+                width={"100%"}
+                fontWeight={700}
+                fontSize={"18"}
+                _hover={{ borderColor: "blue.500" }}
+                cursor={"pointer"}
+                onClick={() => onSelectPost && onSelectPost(post)}
+              >
                 {post.title}
               </Text>
               <Flex direction={"row"} fontSize={"10pt"}>
