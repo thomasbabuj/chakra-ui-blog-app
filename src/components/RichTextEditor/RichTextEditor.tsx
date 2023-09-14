@@ -121,7 +121,9 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
       ref={divRef}
       onMouseDown={focusEditor}
       borderWidth={"1px"}
-      color={"white"}
+      color={"black"}
+      fontSize="10pt"
+      borderRadius="4px"
     >
       <Slate
         editor={editor}
@@ -129,14 +131,22 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
         onChange={(newValue) => setValue(newValue)}
       >
         <Toolbar />
-        <Box padding={"15px 5px"}>
+        <Box
+          padding={"15px 5px"}
+          _focus={{
+            outline: "none",
+            bg: "white",
+            border: "1px solid",
+            borderColor: "black",
+          }}
+        >
           <Editable
             onFocus={onFocus}
             onBlur={onBlur}
             onKeyDown={onKeyDown}
             renderElement={renderElement}
             renderLeaf={renderLeaf}
-            placeholder="Enter some rich text…"
+            placeholder="Enter your post content."
             spellCheck
             style={{
               minHeight: "150px",
