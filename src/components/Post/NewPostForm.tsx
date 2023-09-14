@@ -16,7 +16,10 @@ import {
   Timestamp,
   addDoc,
   collection,
+  doc,
+  getDoc,
   serverTimestamp,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/navigation";
@@ -26,6 +29,7 @@ import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
 import { Node } from "slate";
 import ImageUpload from "./ImageUpload";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { getASlug } from "@/lib/slug";
 
 type NewPostFormProps = {};
 
@@ -45,15 +49,19 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [selectedFile, setSelectedFile] = useState<string>();
 
   const handleCreatePost = async () => {
     if (!user) return;
 
+    const slug = getASlug(textInputs.title);
+
     const newPost: Post = {
       creatorId: user.uid,
       creatorDisplayName: user.email!.split("@")[0],
+      slug,
       title: textInputs.title,
       body: textInputs.body,
       shortDescription: textInputs.shortDescription,
@@ -64,8 +72,23 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     };
     setLoading(true);
     try {
+      // Create the page document in firestore
+      // Check that page title slug is not exist
+      // If valid name, create community
+      const postDocRef = doc(firestore, "posts", slug);
+      const postDoc = await getDoc(postDocRef);
+
+      console.log(postDocRef.id);
+
+      if (postDoc.exists()) {
+        console.log("I am having error");
+        throw new Error(
+          `Sorry, article with this title is already exist. Please try a different title.`
+        );
+      }
       // store the post in db
-      const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+      //const postDocRef = await addDoc(collection(firestore, "posts"), newPost);
+      await setDoc(postDocRef, newPost);
 
       // check for selected File
       if (selectedFile) {
@@ -85,6 +108,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     } catch (error: any) {
       console.log("handle create post error", error.message);
       setError(true);
+      setErrorMessage(error.message);
     }
     setLoading(false);
   };
@@ -201,7 +225,11 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
       {error && (
         <Alert status="error">
           <AlertIcon />
-          <Text>Error creating a post.</Text>
+          {errorMessage ? (
+            <Text>{errorMessage}</Text>
+          ) : (
+            <Text>Error creating a post.</Text>
+          )}
         </Alert>
       )}
     </Flex>

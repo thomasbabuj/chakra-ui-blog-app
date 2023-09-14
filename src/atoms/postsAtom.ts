@@ -17,6 +17,7 @@ export type Post = {
   id?: string;
   creatorId: string;
   creatorDisplayName: string;
+  slug: string;
   title: string;
   shortDescription?: string;
   body: PostBody[];
