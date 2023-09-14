@@ -18,8 +18,10 @@ import { PostBody } from "@/atoms/postsAtom";
 
 //https://codesandbox.io/s/chakra-slatejs-ptpfm?file=/src/index.tsx
 export interface RichTextBlockProps {
-  editorContent: any;
-  passCurrentContentToParent: (content: PostBody[] | null) => void;
+  editorContent: PostBody[] | Descendant[];
+  passCurrentContentToParent: (
+    content: PostBody[] | Descendant[] | null
+  ) => void;
 }
 
 // @refresh reset
