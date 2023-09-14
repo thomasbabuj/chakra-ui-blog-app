@@ -82,7 +82,6 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
   };
 
   const onSubmit: SubmitHandler<PostFormProps> = async (data) => {
-    console.log(data);
     if (!user) return;
 
     if (JSON.stringify(initialValue) === JSON.stringify(textInputs.body)) {
@@ -107,19 +106,13 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
         status: data.status,
       };
 
-      console.log(newPost);
       // Create the page document in firestore
       // Check that page title slug is not exist
       // If valid name, create community
       const postDocRef = doc(firestore, "postsTitles", slug);
       const postDoc = await getDoc(postDocRef);
 
-      console.log(`Slug : ${slug}`);
-      console.log(postDocRef.id);
-
       if (postDoc.exists()) {
-        console.log("I am having error");
-
         setError("body", {
           type: "manual",
           message:
@@ -134,8 +127,6 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
       // store the post in db
       const newPostRef = await addDoc(collection(firestore, "posts"), newPost);
 
-      console.log(`New Post REf`);
-      console.log(newPostRef.id);
       // check for selected File
       if (selectedFile) {
         // store in the firestorage
