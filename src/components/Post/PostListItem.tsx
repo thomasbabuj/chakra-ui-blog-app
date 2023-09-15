@@ -1,5 +1,5 @@
 import { Post } from "@/atoms/postsAtom";
-import { Box, Flex, Heading, Icon, Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Icon, Spinner, Text } from "@chakra-ui/react";
 import moment from "moment";
 import Image from "next/image";
 
@@ -29,15 +29,6 @@ type PostItemProps = {
   onSelectPost?: (post: Post) => void;
   onEditPost: (post: Post) => Promise<any>;
 };
-
-function Feature({ title, desc, ...rest }) {
-  return (
-    <Box p={5} shadow="md" borderWidth="1px" {...rest}>
-      <Heading fontSize="xl">{title}</Heading>
-      <Text mt={4}>{desc}</Text>
-    </Box>
-  );
-}
 
 const PostListItem: React.FC<PostItemProps> = ({
   post,
@@ -135,6 +126,8 @@ const PostListItem: React.FC<PostItemProps> = ({
                 position={"relative"}
                 width={["100%", "200px"]}
                 height="200px"
+                onClick={() => onSelectPost && onSelectPost(post)}
+                cursor={"pointer"}
               >
                 {/* https://stackoverflow.com/questions/76652423/image-with-src-next-static-media-has-legacy-prop-layout-did-you-forge */}
                 <Image
@@ -176,8 +169,9 @@ const PostListItem: React.FC<PostItemProps> = ({
                   fontSize="md"
                   color="gray.600"
                   display={["flex", "none"]} // Flex on mobile, hide on desktop
+                  pb="2"
                 >
-                  by {post.creatorDisplayName} -
+                  by {post.creatorDisplayName}{" "}
                   {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
                 </Text>
 
