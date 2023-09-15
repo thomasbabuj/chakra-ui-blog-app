@@ -107,7 +107,6 @@ const PostPage: React.FC<PostPageProps> = ({
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation();
-    console.log("On Edit button clicked.");
     router.push(`/posts/edit/${post.id}`);
   };
 

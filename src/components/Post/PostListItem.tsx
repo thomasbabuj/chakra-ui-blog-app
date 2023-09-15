@@ -158,17 +158,19 @@ const PostListItem: React.FC<PostItemProps> = ({
                 justifyContent="space-between"
                 alignItems="flex-start"
               >
-                {/* Desktop Only: Post Title */}
+                {/* Mobile Only: Post Title */}
                 <Text
                   fontSize="xl"
                   fontWeight="bold"
                   mb="0.5rem"
                   display={["flex", "none"]} // Flex on mobile, hide on desktop
+                  cursor={"pointer"}
+                  onClick={() => onSelectPost && onSelectPost(post)}
                 >
                   {post.title}
                 </Text>
 
-                {/* Desktop Only: Author and Created Time */}
+                {/* Mobile Only: Author and Created Time */}
                 <Text
                   fontSize="md"
                   color="gray.600"
@@ -178,21 +180,23 @@ const PostListItem: React.FC<PostItemProps> = ({
                   {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
                 </Text>
 
-                {/* Mobile: Post Title */}
+                {/* Desktop: Post Title */}
                 <Text
                   fontSize="xl"
                   fontWeight="bold"
                   mb="0.5rem"
                   display={["none", "flex"]} // Hide on mobile, show as flex on desktop
+                  cursor={"pointer"}
+                  onClick={() => onSelectPost && onSelectPost(post)}
                 >
                   {post.title}
                 </Text>
 
-                {/* Mobile: Author and Created Time */}
+                {/* Desktop: Author and Created Time */}
                 <Text
                   fontSize="md"
                   color="gray.600"
-                  display={["none", "flex"]} // Hide on mobile, show as flex on desktop
+                  display={["none", "flex"]} // Hide on mobile, show as flex on desktop                  "
                 >
                   by {post.creatorDisplayName} -
                   {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
@@ -211,7 +215,7 @@ const PostListItem: React.FC<PostItemProps> = ({
             align={"center"}
             p="8px 10px"
             borderRadius={4}
-            _hover={{ bg: "gray.200" }}
+            _hover={{ bg: "brand.100" }}
             cursor={"pointer"}
             color={"white"}
           >
@@ -225,7 +229,7 @@ const PostListItem: React.FC<PostItemProps> = ({
             align={"center"}
             p="8px 10px"
             borderRadius={4}
-            _hover={{ bg: "gray.200" }}
+            _hover={{ bg: "brand.100" }}
             cursor={"pointer"}
             color={"white"}
           >
@@ -239,7 +243,7 @@ const PostListItem: React.FC<PostItemProps> = ({
             align={"center"}
             p="8px 10px"
             borderRadius={4}
-            _hover={{ bg: "gray.200" }}
+            _hover={{ bg: "brand.100" }}
             cursor={"pointer"}
             color={"white"}
           >
