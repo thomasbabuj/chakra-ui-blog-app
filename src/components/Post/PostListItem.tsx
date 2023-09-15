@@ -1,10 +1,11 @@
 import { Post } from "@/atoms/postsAtom";
-import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Spinner, Text } from "@chakra-ui/react";
 import moment from "moment";
 import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { BsChat } from "react-icons/bs";
 import {
   IoArrowDownCircleOutline,
@@ -252,6 +253,44 @@ const PostListItem: React.FC<PostItemProps> = ({
               Save
             </Text>
           </Flex>
+          {userIsCreator && (
+            <>
+              <Flex
+                align={"center"}
+                p="8px 10px"
+                borderRadius={4}
+                _hover={{ bg: "brand.100" }}
+                cursor={"pointer"}
+                color={"white"}
+              >
+                <Icon as={AiFillEdit} />
+                <Text fontSize={"9pt"} pl="2" onClick={handleEdit}>
+                  Edit
+                </Text>
+              </Flex>
+              <Flex
+                align={"center"}
+                p="8px 10px"
+                borderRadius={4}
+                _hover={{ bg: "brand.100" }}
+                cursor={"pointer"}
+                color={"white"}
+              >
+                {loadingDelete ? (
+                  <>
+                    <Spinner size="sm" />
+                  </>
+                ) : (
+                  <>
+                    <Icon as={AiOutlineDelete} />
+                    <Text fontSize={"9pt"} pl="2" onClick={handleDelete}>
+                      Delete
+                    </Text>
+                  </>
+                )}
+              </Flex>
+            </>
+          )}
         </Flex>
       </Flex>
     </>
