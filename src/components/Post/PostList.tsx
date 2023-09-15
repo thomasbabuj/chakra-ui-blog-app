@@ -1,18 +1,11 @@
-import { Post, PostStatus } from "@/atoms/postsAtom";
-import { auth, firestore } from "@/firebase/clientApp";
+import { Post } from "@/atoms/postsAtom";
+import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
 import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  getDocs,
-  Timestamp,
-} from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import PostListItem from "./PostListItem";
 import { useAuthState } from "react-firebase-hooks/auth";
+import PostListItem from "./PostListItem";
 import PostLoader from "./PostLoader";
 
 type PostListProps = {};
