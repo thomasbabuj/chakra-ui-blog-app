@@ -25,13 +25,13 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
-import { createEditor, Descendant } from "slate";
+import { createEditor } from "slate";
 import {
-  Slate,
   Editable,
-  withReact,
   RenderElementProps,
   RenderLeafProps,
+  Slate,
+  withReact,
 } from "slate-react";
 import { Element } from "../RichTextEditor/Elements";
 import { Leaf } from "../RichTextEditor/Leaf";

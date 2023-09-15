@@ -1,4 +1,4 @@
-import { Question, QuestionState } from "@/atoms/questionsAtom";
+import { QuestionState } from "@/atoms/questionsAtom";
 import { Box, Flex, StackDivider, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import QuestionLoader from "./QuestionLoader";

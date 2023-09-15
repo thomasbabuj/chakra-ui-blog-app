@@ -1,26 +1,26 @@
-import { BiUserCircle } from "react-icons/bi";
-import { BsFillPersonPlusFill } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
-import { MdOutlineLogout, MdLogin } from "react-icons/md";
-import { VscAccount } from "react-icons/vsc";
+import { authModalState } from "@/atoms/authModalAtom";
+import AuthModal from "@/components/Modal/Auth/AuthModal";
+import { auth } from "@/firebase/clientApp";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Flex,
+  Icon,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
-  Icon,
-  Flex,
   MenuDivider,
+  MenuItem,
+  MenuList,
   Text,
 } from "@chakra-ui/react";
 import { User, signOut } from "firebase/auth";
 import React from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { auth } from "@/firebase/clientApp";
-import { useSetRecoilState } from "recoil";
-import { authModalState } from "@/atoms/authModalAtom";
+import { BiUserCircle } from "react-icons/bi";
+import { BsFillPersonPlusFill } from "react-icons/bs";
+import { CgProfile } from "react-icons/cg";
 import { IoSparkles } from "react-icons/io5";
-import AuthModal from "@/components/Modal/Auth/AuthModal";
+import { MdLogin, MdOutlineLogout } from "react-icons/md";
+import { VscAccount } from "react-icons/vsc";
+import { useSetRecoilState } from "recoil";
 
 type UserMenuProps = {
   user?: User | null;

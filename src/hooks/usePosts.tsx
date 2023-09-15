@@ -5,22 +5,20 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
-  query,
   getDoc,
-  writeBatch,
-  where,
-  orderBy,
+  getDocs,
   limit,
-  Timestamp,
+  orderBy,
+  query,
   startAfter,
+  where,
+  writeBatch,
 } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { withRouter } from "next/router";
 
 const usePosts = () => {
   const router = useRouter();

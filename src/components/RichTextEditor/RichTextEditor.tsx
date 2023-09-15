@@ -1,7 +1,8 @@
+import { PostBody } from "@/atoms/postsAtom";
 import { Box } from "@chakra-ui/react";
 import isHotkey from "is-hotkey";
 import React, { useCallback, useMemo, useState } from "react";
-import { Descendant, Editor, Node, Transforms, createEditor } from "slate";
+import { Descendant, Editor, Transforms, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import {
   Editable,
@@ -14,7 +15,6 @@ import {
 import { Element } from "./Elements";
 import { Leaf } from "./Leaf";
 import { Toolbar, toggleMark } from "./Toolbar";
-import { PostBody } from "@/atoms/postsAtom";
 
 //https://codesandbox.io/s/chakra-slatejs-ptpfm?file=/src/index.tsx
 export interface RichTextBlockProps {

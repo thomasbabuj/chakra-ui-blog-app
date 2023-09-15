@@ -1,11 +1,9 @@
-import CreateCommunityModal from "@/components/Modal/Community/CreateCommunityModal";
+import QuestionModal from "@/components/Modal/Question/QuestionModal";
 import { Flex, Icon, MenuDivider, MenuItem } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { GrAdd } from "react-icons/gr";
 import { BiMailSend } from "react-icons/bi";
 import { TfiWrite } from "react-icons/tfi";
-import QuestionModal from "@/components/Modal/Question/QuestionModal";
 
 type CommunitiesProps = {};
 

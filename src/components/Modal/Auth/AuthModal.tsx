@@ -1,21 +1,20 @@
 import { authModalState } from "@/atoms/authModalAtom";
+import { auth } from "@/firebase/clientApp";
 import {
-  Button,
+  Flex,
   Modal,
-  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Flex,
+  ModalOverlay,
   Text,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import AuthInputs from "./AuthInputs";
 import OAuthButtons from "./OAuthButtons";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/clientApp";
 import ResetPassword from "./ResetPassword";
 
 const AuthModal: React.FC = () => {

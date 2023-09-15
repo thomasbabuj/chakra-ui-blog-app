@@ -1,12 +1,11 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import { Input, Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
-import { color } from "framer-motion";
 import { Firebase_Errors } from "@/firebase/error";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 interface RegisterForm {
   email: string;

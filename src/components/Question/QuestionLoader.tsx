@@ -1,4 +1,4 @@
-import { Box, Skeleton, SkeletonText, Stack } from "@chakra-ui/react";
+import { Box, SkeletonText, Stack } from "@chakra-ui/react";
 import React from "react";
 
 const QuestionLoader: React.FC = () => {

@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
+import { Post, PostBody, PostStatus } from "@/atoms/postsAtom";
+import { auth, firestore, storage } from "@/firebase/clientApp";
+import { getASlug } from "@/lib/slug";
 import {
   Alert,
   AlertIcon,
@@ -15,14 +18,6 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import ImageUpload from "./ImageUpload";
-import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
-import { Post, PostBody, PostStatus } from "@/atoms/postsAtom";
-import { Descendant } from "slate";
-import { useRouter } from "next/navigation";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, firestore, storage } from "@/firebase/clientApp";
-import { getASlug } from "@/lib/slug";
 import {
   Timestamp,
   addDoc,
@@ -33,8 +28,12 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { useRouter } from "next/navigation";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Descendant } from "slate";
+import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
+import ImageUpload from "./ImageUpload";
 
 type NewPostFormProps = {};
 

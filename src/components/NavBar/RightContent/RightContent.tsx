@@ -1,10 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 import { User } from "firebase/auth";
+import Link from "next/link";
 import React from "react";
-import AuthButtons from "./AuthButtons";
 import Icons from "./Icons";
 import UserMenu from "./UserMenu";
-import Link from "next/link";
 
 type RightContentProps = {
   user?: User | null;

@@ -11,7 +11,12 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { ChangeEvent, HtmlHTMLAttributes, useState } from "react";
+import moment from "moment";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
+import { BsChat } from "react-icons/bs";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
@@ -20,11 +25,6 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
-import moment from "moment";
-import { BsChat } from "react-icons/bs";
-import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 type PostItemProps = {
   post: Post;

@@ -12,27 +12,14 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import {
-  Timestamp,
-  addDoc,
-  collection,
-  doc,
-  getFirestore,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
-import { useRouter } from "next/navigation";
-import React, {
-  ChangeEvent,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
-import { BaseEditor, BaseElement, BaseText, Descendant, Node } from "slate";
-import ImageUpload from "./ImageUpload";
+import { Timestamp, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Descendant } from "slate";
+import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
+import ImageUpload from "./ImageUpload";
 
 type EditPostFormProps = {
   post: Post | null;

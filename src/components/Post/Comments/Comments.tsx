@@ -1,4 +1,5 @@
 import { Post, postState } from "@/atoms/postsAtom";
+import { firestore } from "@/firebase/clientApp";
 import {
   Box,
   Flex,
@@ -8,8 +9,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import React, { useEffect, useState } from "react";
-import CommentInput from "./CommentInput";
 import {
   Timestamp,
   collection,
@@ -22,8 +21,9 @@ import {
   where,
   writeBatch,
 } from "firebase/firestore";
-import { firestore } from "@/firebase/clientApp";
+import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
+import CommentInput from "./CommentInput";
 import CommentItem, { Comment } from "./CommentItem";
 
 type CommentsProps = {

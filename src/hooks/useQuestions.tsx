@@ -1,12 +1,12 @@
 import { Question, QuestionStatus, questionState } from "@/atoms/questionsAtom";
 import { firestore } from "@/firebase/clientApp";
 import {
-  query,
   collection,
-  where,
-  orderBy,
-  limit,
   getDocs,
+  limit,
+  orderBy,
+  query,
+  where,
 } from "firebase/firestore";
 import { useState } from "react";
 import { useRecoilState } from "recoil";

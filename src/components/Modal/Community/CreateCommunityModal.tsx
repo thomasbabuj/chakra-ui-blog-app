@@ -1,21 +1,21 @@
 import { auth, firestore } from "@/firebase/clientApp";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Button,
   Box,
-  Divider,
-  Text,
-  Input,
-  Stack,
+  Button,
   Checkbox,
+  Divider,
   Flex,
   Icon,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
