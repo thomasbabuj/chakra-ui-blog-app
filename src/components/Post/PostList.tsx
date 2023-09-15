@@ -61,12 +61,6 @@ const PostList: React.FC<PostListProps> = () => {
       if (Object.keys(key).length !== 0 && fetchAction === "next") {
         setNextPostsLoading(true);
 
-        if (key.createdAt) {
-          console.log("i have createdAt");
-        } else {
-          console.log("i dont have createdAt");
-        }
-
         const nextPosts = (await postsNextBatch(key.createdAt)) as Post[];
 
         if (nextPosts.length === 0) {
