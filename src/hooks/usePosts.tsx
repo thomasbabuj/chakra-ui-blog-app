@@ -1,5 +1,5 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import { Post, PostVote, postState } from "@/atoms/postsAtom";
+import { Post, PostStatus, PostVote, postState } from "@/atoms/postsAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import {
   collection,
@@ -9,6 +9,11 @@ import {
   query,
   getDoc,
   writeBatch,
+  where,
+  orderBy,
+  limit,
+  Timestamp,
+  startAfter,
 } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { useRouter } from "next/navigation";
@@ -197,6 +202,81 @@ const usePosts = () => {
     console.log(post);
   };
 
+  /**
+   * this function will be fired each time the user click on 'More Posts' button,
+   * it receive key of last post in previous batch, then fetch next 5 posts
+   * starting after last fetched post.
+   */
+  const postsFirstBatch = async () => {
+    try {
+      const postQuery = query(
+        collection(firestore, "posts"),
+        where("status", "==", PostStatus.PUBLISHED),
+        orderBy("createdAt", "desc"),
+        limit(5)
+      );
+
+      const postDocs = await getDocs(postQuery);
+      const posts = postDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return posts;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  /**
+   * this function will be fired each time the user click on 'More Posts' button,
+   * it receive key of last post in previous batch, then fetch next 5 posts
+   * starting after last fetched post.
+   */
+  const postsNextBatch = async (key) => {
+    try {
+      const postQuery = query(
+        collection(firestore, "posts"),
+        where("status", "==", PostStatus.PUBLISHED),
+        orderBy("createdAt", "desc"),
+        startAfter(key),
+        limit(5)
+      );
+
+      const postDocs = await getDocs(postQuery);
+
+      const posts = postDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return posts;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getPosts = async () => {
+    try {
+      // Get all published posts
+      const postQuery = query(
+        collection(firestore, "posts"),
+        where("status", "==", PostStatus.PUBLISHED),
+        orderBy("createdAt", "desc")
+      );
+
+      const postDocs = await getDocs(postQuery);
+      const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+      setPostStateValue((prev) => ({
+        ...prev,
+        posts: posts as Post[],
+      }));
+    } catch (error: any) {
+      console.log("GetPosts error", error.message);
+    }
+  };
+
   useEffect(() => {
     if (!user) {
       // Clear post userPostVotes
@@ -216,6 +296,8 @@ const usePosts = () => {
     onDeletePost,
     getAPost,
     onEditPost,
+    postsFirstBatch,
+    postsNextBatch,
   };
 };
 export default usePosts;

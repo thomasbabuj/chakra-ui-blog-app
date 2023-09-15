@@ -1,8 +1,15 @@
 import { Post, PostStatus } from "@/atoms/postsAtom";
 import { auth, firestore } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { Stack } from "@chakra-ui/react";
-import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
+import { Box, Button, Flex, Stack, Text } from "@chakra-ui/react";
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import PostListItem from "./PostListItem";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,7 +19,19 @@ type PostListProps = {};
 
 const PostList: React.FC<PostListProps> = () => {
   const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const [lastKey, setLastKey] = useState<{ id: string; createdAt: Timestamp }>({
+    id: "",
+    createdAt: {
+      seconds: 0,
+      nanoseconds: 0,
+    } as Timestamp,
+  });
+  const [nextPosts_loading, setNextPostsLoading] = useState(false);
+  const [fetchAction, setFetchAction] = useState("next");
+
+  const { postsFirstBatch, postsNextBatch } = usePosts();
 
   const {
     postStateValue,
@@ -23,31 +42,73 @@ const PostList: React.FC<PostListProps> = () => {
     onEditPost,
   } = usePosts();
 
-  const getPosts = async () => {
+  const fetchLatestPosts = async () => {
     try {
       setLoading(true);
-      // Get all published posts
-      const postQuery = query(
-        collection(firestore, "posts"),
-        where("status", "==", PostStatus.PUBLISHED),
-        orderBy("createdAt", "desc")
-      );
-
-      const postDocs = await getDocs(postQuery);
-      const posts = postDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const posts = (await postsFirstBatch()) as Post[];
 
       setPostStateValue((prev) => ({
         ...prev,
-        posts: posts as Post[],
+        posts: posts,
       }));
 
+      setLastKey({
+        id: posts[posts.length - 1].id as string,
+        createdAt: posts[posts.length - 1].createdAt as Timestamp,
+      });
       setLoading(false);
     } catch (error: any) {
-      console.log("GetPosts error", error.message);
+      console.log("Fetch Latest Posts Error ", error.message);
+      setLoading(false);
     }
   };
+
+  const fetchMorePosts = async (key) => {
+    try {
+      //console.log(key.createdAt);
+      if (Object.keys(key).length !== 0 && fetchAction === "next") {
+        setNextPostsLoading(true);
+
+        if (key.createdAt) {
+          console.log("i have createdAt");
+        } else {
+          console.log("i dont have createdAt");
+        }
+
+        const nextPosts = (await postsNextBatch(key.createdAt)) as Post[];
+
+        if (nextPosts.length === 0) {
+          setLastKey({
+            id: "",
+            createdAt: {
+              seconds: 0,
+              nanoseconds: 0,
+            } as Timestamp,
+          });
+          setFetchAction("end");
+        }
+
+        if (nextPosts.length > 0) {
+          setPostStateValue((prev) => ({
+            ...prev,
+            posts: [...prev.posts, ...nextPosts],
+          }));
+
+          setLastKey({
+            id: nextPosts[nextPosts.length - 1].id as string,
+            createdAt: nextPosts[nextPosts.length - 1].createdAt as Timestamp,
+          });
+        }
+        setNextPostsLoading(false);
+      }
+    } catch (error: any) {
+      console.log(`Fetch more posts errors`, error.message);
+      setNextPostsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    getPosts();
+    fetchLatestPosts();
   }, []);
   return (
     <>
@@ -70,6 +131,32 @@ const PostList: React.FC<PostListProps> = () => {
               onEditPost={onEditPost}
             />
           ))}
+
+          {nextPosts_loading ? (
+            <>
+              <PostLoader />
+            </>
+          ) : (
+            <Flex direction={"column"} align={"center"}>
+              <Box>
+                <>
+                  {!lastKey?.id && fetchAction === "end" ? (
+                    <>
+                      <Text color="gray.500" fontWeight={700}>
+                        You are already read all out post. Thank you.
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <Button onClick={() => fetchMorePosts(lastKey)}>
+                        Fetch More
+                      </Button>
+                    </>
+                  )}
+                </>
+              </Box>
+            </Flex>
+          )}
         </Stack>
       )}
     </>
