@@ -10,8 +10,9 @@ import QuestionList from "@/components/Question/QuestionList";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
 import useQuestions from "@/hooks/useQuestions";
-import { Alert, AlertIcon, Box, Flex, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Button, Flex, Text } from "@chakra-ui/react";
 import { User } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -22,6 +23,7 @@ type pageProps = {
 
 // https://stackoverflow.com/questions/74570835/how-to-do-dynamic-routes-with-nextjs-13/74574345#74574345
 const page: React.FC<pageProps> = ({ params }) => {
+  const router = useRouter();
   const { questionStateValue, getLatestTenQuestions } = useQuestions();
   useEffect(() => {
     if (questionStateValue.questions.length === 0) {
@@ -62,12 +64,17 @@ const page: React.FC<pageProps> = ({ params }) => {
     <PageContent>
       <>
         {error && (
-          <Flex justify="center" p="16px 0px">
-            <Alert status="error">
-              <AlertIcon />
-              <Text>Sorry, post not found.</Text>
-            </Alert>
-          </Flex>
+          <>
+            <Flex justify="center" p="16px">
+              <Alert status="error">
+                <AlertIcon />
+                <Text>Sorry, post not found.</Text>
+              </Alert>
+            </Flex>
+            <Flex direction={"column"} align={"center"} pb="16px">
+              <Button onClick={() => router.push("/")}>Back to home</Button>
+            </Flex>
+          </>
         )}
         {postStateValue.selectedPost && !error && (
           <PostPage
