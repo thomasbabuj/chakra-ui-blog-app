@@ -14,6 +14,8 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
           direction={"column"}
           width={{ base: "100%", md: "75%" }}
           mr={{ base: 0, md: 6 }}
+          border={"1px solid"}
+          p="2"
         >
           {children && children[0 as keyof typeof children]}
         </Flex>
