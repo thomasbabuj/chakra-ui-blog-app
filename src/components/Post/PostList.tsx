@@ -135,7 +135,7 @@ const PostList: React.FC<PostListProps> = () => {
                   ) : (
                     <>
                       <Button onClick={() => fetchMorePosts(lastKey)}>
-                        Fetch More
+                        Load more
                       </Button>
                     </>
                   )}
