@@ -1,4 +1,4 @@
-// components/Footer.tsx
+"use client";
 
 import { Box, Flex, IconButton, Image, Link, Text } from "@chakra-ui/react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";

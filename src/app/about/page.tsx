@@ -1,5 +1,4 @@
 "use client";
-import Footer from "@/components/Footer";
 import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 
@@ -115,7 +114,6 @@ const page: React.FC<pageProps> = () => {
           <Text>🌌 Let the buzz adventure begin! 🌌</Text>
         </Box>
       </Flex>
-      <Footer />
     </>
   );
 };
