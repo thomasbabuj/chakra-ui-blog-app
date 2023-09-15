@@ -25,8 +25,8 @@ const NavBar: React.FC = () => {
       {/* Logo Starts  */}
       <Flex
         align="center"
-        width={{ base: "30px", md: "auto" }}
-        mr={{ base: 0, md: 2 }}
+        width={{ base: "100px", md: "auto" }}
+        mr={{ base: 2, md: 4 }}
       >
         <Box display={{ md: "none" }}>
           <Link href="/">
