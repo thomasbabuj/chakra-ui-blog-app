@@ -8,6 +8,10 @@ const nextConfig = {
         port: "",
         // pathname: "/account123/**",
       },
+      {
+        protocol: "https",
+        hostname: "geeky-nextjs-demo.vercel.app",
+      },
     ],
   },
 };

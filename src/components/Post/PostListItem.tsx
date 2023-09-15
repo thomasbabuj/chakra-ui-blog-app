@@ -1,21 +1,10 @@
 import { Post } from "@/atoms/postsAtom";
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Flex,
-  Heading,
-  Icon,
-  Skeleton,
-  Spinner,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Text } from "@chakra-ui/react";
 import moment from "moment";
 import Image from "next/image";
+
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { AiFillEdit, AiOutlineDelete } from "react-icons/ai";
 import { BsChat } from "react-icons/bs";
 import {
   IoArrowDownCircleOutline,
@@ -95,183 +84,171 @@ const PostListItem: React.FC<PostItemProps> = ({
 
   return (
     <>
-      <Flex
-        border="1px solid"
-        bg="green.100"
-        borderRadius={4}
-        borderColor={singlePostPage ? "green.100" : "gray.300"}
-      >
+      <Flex direction={"column"} bg="gray.700" borderRadius={"4px"}>
         <Flex
-          direction={"column"}
+          flexDirection={["row"]}
+          color="black"
+          bg="white"
           align={"center"}
-          bg="gray.100"
-          p="2"
-          width={"40px"}
-          borderRadius={4}
+          alignItems="flex-start"
+          borderRadius={"4px 4px 0px 0px"}
         >
-          <Icon
-            as={
-              userVoteValue === 1
-                ? IoArrowUpCircleSharp
-                : IoArrowUpCircleOutline
-            }
-            color={userVoteValue === 1 ? "brand.100" : "gray.400"}
-            onClick={(event) => onVote(event, post, 1)}
-            cursor={"pointer"}
-            fontSize={25}
-          />
-          <Text fontSize={"10pt"} fontWeight={500}>
-            {post.voteStatus}
-          </Text>
-          <Icon
-            as={
-              userVoteValue === -1
-                ? IoArrowDownCircleSharp
-                : IoArrowDownCircleOutline
-            }
-            color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
-            onClick={(event) => onVote(event, post, -1)}
-            cursor={"pointer"}
-            fontSize={25}
-          />
-        </Flex>
-
-        <Flex direction="row" width={"100%"}>
-          <Flex width={150} height={"150px"}>
-            {post.imageUrl && (
-              <Flex justify={"center"} align={"center"} p={2}>
-                {loadingImage && <Skeleton height={"150px"} width={"100%"} />}
-                {/* <Image
-                  src={post.imageUrl}
-                  width={"100%"}
-                  maxH={"150px"}
-                  alt={"Post Image"}
-                  display={loadingImage ? "none" : "unset"}
-                  onLoad={() => setLoadingImage(false)}
-                /> */}
-
-                <Image
-                  src={post.imageUrl}
-                  width={150}
-                  height={150}
-                  alt={`${post.title}_image}`}
-                ></Image>
-              </Flex>
-            )}
-          </Flex>
-          <Flex direction={"column"} p="2" width={"100%"}>
-            <Stack>
-              <Text
-                width={"100%"}
-                fontWeight={700}
-                fontSize={"18"}
-                _hover={{ borderColor: "blue.500" }}
+          {/* Voting Section */}
+          <Box
+            mr={["0", "1rem"]}
+            mb={["1rem", "0"]}
+            height={"100%"}
+            alignContent={"center"}
+          >
+            <Flex direction="column" alignItems="center" p="2">
+              <Icon
+                as={
+                  userVoteValue === 1
+                    ? IoArrowUpCircleSharp
+                    : IoArrowUpCircleOutline
+                }
+                color={userVoteValue === 1 ? "brand.100" : "gray.400"}
+                onClick={(event) => onVote(event, post, 1)}
                 cursor={"pointer"}
-                onClick={() => onSelectPost && onSelectPost(post)}
+                fontSize={35}
+              />
+              <Text fontSize="lg">123</Text>
+              <Icon
+                as={
+                  userVoteValue === -1
+                    ? IoArrowDownCircleSharp
+                    : IoArrowDownCircleOutline
+                }
+                color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
+                onClick={(event) => onVote(event, post, -1)}
+                cursor={"pointer"}
+                fontSize={35}
+              />
+            </Flex>
+          </Box>
+
+          {/* Post Information */}
+          <Flex flex="1" flexDirection={["column", "row"]}>
+            <Box mr="1rem" display={["flex"]}>
+              <Box
+                position={"relative"}
+                width={["100%", "200px"]}
+                height="200px"
               >
-                {post.title}
-              </Text>
-              <Flex direction={"row"} fontSize={"10pt"}>
-                <Text>Posted By l/{post.creatorDisplayName}</Text>
-                <Text pl="2" fontWeight={"700"}>
+                {/* https://stackoverflow.com/questions/76652423/image-with-src-next-static-media-has-legacy-prop-layout-did-you-forge */}
+                <Image
+                  src={
+                    post.imageUrl
+                      ? post.imageUrl
+                      : "https://geeky-nextjs-demo.vercel.app/_next/image?url=%2Fimages%2Fpost%2Fparenting.png&w=2048&q=75"
+                  }
+                  alt="Image"
+                  // Takes the full width and height of its parent
+                  fill
+                  sizes="100vw"
+                  style={{
+                    objectFit: "contain",
+                  }} // Scales the image while maintaining aspect ratio
+                />
+              </Box>
+            </Box>
+            <Box flex="1">
+              <Flex
+                flexDir="column"
+                justifyContent="space-between"
+                alignItems="flex-start"
+              >
+                {/* Desktop Only: Post Title */}
+                <Text
+                  fontSize="xl"
+                  fontWeight="bold"
+                  mb="0.5rem"
+                  display={["flex", "none"]} // Flex on mobile, hide on desktop
+                >
+                  {post.title}
+                </Text>
+
+                {/* Desktop Only: Author and Created Time */}
+                <Text
+                  fontSize="md"
+                  color="gray.600"
+                  display={["flex", "none"]} // Flex on mobile, hide on desktop
+                >
+                  by {post.creatorDisplayName} -
+                  {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
+                </Text>
+
+                {/* Mobile: Post Title */}
+                <Text
+                  fontSize="xl"
+                  fontWeight="bold"
+                  mb="0.5rem"
+                  display={["none", "flex"]} // Hide on mobile, show as flex on desktop
+                >
+                  {post.title}
+                </Text>
+
+                {/* Mobile: Author and Created Time */}
+                <Text
+                  fontSize="md"
+                  color="gray.600"
+                  display={["none", "flex"]} // Hide on mobile, show as flex on desktop
+                >
+                  by {post.creatorDisplayName} -
                   {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
                 </Text>
               </Flex>
-              <Flex ml={1} mb={0.5} color={"gray.500"} mt="10">
-                <Flex
-                  align={"center"}
-                  p="8px 10px"
-                  borderRadius={4}
-                  _hover={{ bg: "gray.200" }}
-                  cursor={"pointer"}
-                  color={"gray.700"}
-                >
-                  <Icon as={BsChat} />
-                  <Text fontSize={"9pt"} pl="2">
-                    {post.numberOfComments}
-                  </Text>
-                </Flex>
-
-                <Flex
-                  align={"center"}
-                  p="8px 10px"
-                  borderRadius={4}
-                  _hover={{ bg: "gray.200" }}
-                  cursor={"pointer"}
-                  color={"gray.700"}
-                >
-                  <Icon as={IoArrowRedoOutline} />
-                  <Text fontSize={"9pt"} pl="2">
-                    Share
-                  </Text>
-                </Flex>
-
-                <Flex
-                  align={"center"}
-                  p="8px 10px"
-                  borderRadius={4}
-                  _hover={{ bg: "gray.200" }}
-                  cursor={"pointer"}
-                  color={"gray.700"}
-                >
-                  <Icon as={IoBookmarkOutline} />
-                  <Text fontSize={"9pt"} pl="2">
-                    Save
-                  </Text>
-                </Flex>
-
-                {userIsCreator && (
-                  <>
-                    <Flex
-                      align={"center"}
-                      p="8px 10px"
-                      borderRadius={4}
-                      _hover={{ bg: "gray.200" }}
-                      cursor={"pointer"}
-                      color={"gray.700"}
-                    >
-                      {loadingDelete ? (
-                        <>
-                          <Spinner size="sm" />
-                        </>
-                      ) : (
-                        <>
-                          <Icon as={AiOutlineDelete} />
-                          <Text fontSize={"9pt"} pl="2" onClick={handleDelete}>
-                            Delete
-                          </Text>
-                        </>
-                      )}
-                    </Flex>
-                    <Flex
-                      align={"center"}
-                      p="8px 10px"
-                      borderRadius={4}
-                      _hover={{ bg: "gray.200" }}
-                      cursor={"pointer"}
-                      color={"gray.700"}
-                    >
-                      <>
-                        <Icon as={AiFillEdit} />
-                        <Text fontSize={"9pt"} pl="2" onClick={handleEdit}>
-                          Edit
-                        </Text>
-                      </>
-                    </Flex>
-                  </>
-                )}
-              </Flex>
-            </Stack>
+            </Box>
           </Flex>
         </Flex>
-      </Flex>
-      <Flex direction={"column"} width={"100%"}>
-        {error && (
-          <Alert status="error">
-            <AlertIcon />
-            <Text>Error deleting a post.</Text>
-          </Alert>
-        )}
+
+        {/* Action Icons */}
+        <Flex
+          justifyContent={["space-between"]}
+          borderRadius={"0px 0px 4px 4px"}
+        >
+          <Flex
+            align={"center"}
+            p="8px 10px"
+            borderRadius={4}
+            _hover={{ bg: "gray.200" }}
+            cursor={"pointer"}
+            color={"white"}
+          >
+            <Icon as={BsChat} />
+            <Text fontSize={"9pt"} pl="2">
+              {post.numberOfComments}
+            </Text>
+          </Flex>
+
+          <Flex
+            align={"center"}
+            p="8px 10px"
+            borderRadius={4}
+            _hover={{ bg: "gray.200" }}
+            cursor={"pointer"}
+            color={"white"}
+          >
+            <Icon as={IoArrowRedoOutline} />
+            <Text fontSize={"9pt"} pl="2">
+              Share
+            </Text>
+          </Flex>
+
+          <Flex
+            align={"center"}
+            p="8px 10px"
+            borderRadius={4}
+            _hover={{ bg: "gray.200" }}
+            cursor={"pointer"}
+            color={"white"}
+          >
+            <Icon as={IoBookmarkOutline} />
+            <Text fontSize={"9pt"} pl="2">
+              Save
+            </Text>
+          </Flex>
+        </Flex>
       </Flex>
     </>
   );
