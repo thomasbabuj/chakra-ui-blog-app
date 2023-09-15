@@ -205,6 +205,7 @@ const usePosts = () => {
    * it receive key of last post in previous batch, then fetch next 5 posts
    * starting after last fetched post.
    */
+  // https://dev.to/hadi/infinite-scroll-in-firebase-firestore-and-react-js-55g3
   const postsFirstBatch = async () => {
     try {
       const postQuery = query(

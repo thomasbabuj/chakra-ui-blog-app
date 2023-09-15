@@ -58,7 +58,6 @@ const PostList: React.FC<PostListProps> = () => {
 
   const fetchMorePosts = async (key) => {
     try {
-      //console.log(key.createdAt);
       if (Object.keys(key).length !== 0 && fetchAction === "next") {
         setNextPostsLoading(true);
 
