@@ -32,7 +32,7 @@ const NavBar: React.FC = () => {
           <Link href="/">
             <Image
               src="/images/favicon-liko.png"
-              height="30"
+              height={20}
               alt="Likobuzz logo"
               width={150}
               placeholder="empty"
