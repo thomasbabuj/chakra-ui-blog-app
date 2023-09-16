@@ -18,13 +18,13 @@ const Footer = () => {
         <Image
           src="/images/likobuzz-logo.png"
           alt="Likobuzz logo"
-          w="100px"
+          w="150px"
           h="auto"
           pb="2"
         />
 
         {/* Company Bio */}
-        <Text fontSize="lg" mt={[4, 0]} textAlign={["center"]} pb="2">
+        <Text fontSize="md" mt={[4, 0]} textAlign={["center"]} pb="2">
           The ultimate discussion corner for the latest Filipino buzz
           enthusiasts!
         </Text>
@@ -35,23 +35,22 @@ const Footer = () => {
           justifyContent={["center", "flex-end"]}
           flexDirection={["column", "row"]}
           alignItems={["center", "flex-end"]}
-          fontSize={"10pt"}
           pb="2"
         >
-          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]}>
-            Home
+          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]} href="/">
+            <Text fontSize={"medium"}>Home</Text>
           </Link>
-          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]}>
-            About
+          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]} href="/about">
+            <Text fontSize={"medium"}>About</Text>
           </Link>
-          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]}>
-            Contact
+          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]} href="/contact">
+            <Text fontSize={"medium"}>Contact</Text>
           </Link>
-          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]}>
-            Privacy Policy
+          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]} href="/privacy">
+            <Text fontSize={"medium"}> Privacy Policy</Text>
           </Link>
-          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]}>
-            TnC
+          <Link fontSize="lg" mb={[2, 0]} mr={[0, 4]} href="/tnc">
+            <Text fontSize={"medium"}>TnC</Text>
           </Link>
         </Flex>
 
