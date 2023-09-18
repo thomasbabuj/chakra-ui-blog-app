@@ -27,9 +27,6 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
         </Box>
         {/* NewPost Form */}
         <NewPostForm />
-        {/* <Box>
-          <RichTextBlock />
-        </Box> */}
       </>
       <>
         <Flex direction={"column"}>

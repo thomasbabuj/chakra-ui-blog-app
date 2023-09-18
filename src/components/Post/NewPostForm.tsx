@@ -39,7 +39,7 @@ import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
 import ImageUpload from "./ImageUpload";
 
 type NewPostFormProps = {
-  action: "create" | "edit";
+  action?: "create" | "edit";
   post?: Post | null;
 };
 

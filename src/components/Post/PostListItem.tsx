@@ -71,7 +71,7 @@ const PostListItem: React.FC<PostItemProps> = ({
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation();
-    console.log("On Edit button clicked.");
+
     setPostStateValue((prev) => ({
       ...prev,
       selectedPost: post,

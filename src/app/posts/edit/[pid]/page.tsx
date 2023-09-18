@@ -54,7 +54,6 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           </Text>
         </Box>
         {/* NewPost Form */}
-        {/* <EditPostForm post={postStateValue.selectedPost} /> */}
         <NewPostForm action="edit" post={postStateValue.selectedPost} />
       </>
       <></>
