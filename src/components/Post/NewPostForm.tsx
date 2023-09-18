@@ -107,8 +107,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
       });
     }
 
-    console.log(`Post Form Action - ${action}`);
-
     if (action === "edit") {
       return handleEditPost(user, data);
     }
@@ -156,7 +154,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
       // check for selected File
       if (selectedFile) {
         // store in the firestorage
-        const imageRef = ref(storage, `posts/${newPostRef.id}/images`);
+        const imageRef = ref(storage, `posts/${newPostRef.id}/image`);
         await uploadString(imageRef, selectedFile, "data_url");
 
         const downloadUrl = await getDownloadURL(imageRef);
@@ -175,8 +173,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   };
 
   const handleEditPost = async (user: User, data: PostFormProps) => {
-    console.log("Inside handle edit post");
-
     // Check the userId same as post author id
     if (user.uid !== post?.creatorId) {
       setServerError({
@@ -207,8 +203,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     if (data.title !== post?.title) {
       const newSlug = getASlug(data.title);
 
-      console.log(`New Slug : ${newSlug}`);
-
       const postDocRef = doc(firestore, "postsTitles", newSlug);
       const postDoc = await getDoc(postDocRef);
 
@@ -234,7 +228,18 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     }
 
     const postDocRef = doc(firestore, "posts", post?.id!);
-    console.log(postDocRef.id);
+
+    if (selectedFile && selectedFile !== post?.imageUrl) {
+      //Upload a new image
+      const imageRef = ref(storage, `posts/${postDocRef.id}/image`);
+
+      await uploadString(imageRef, selectedFile, "data_url");
+
+      const downloadUrl = await getDownloadURL(imageRef);
+
+      // update post doc by adding imageURL
+      editedPost.imageUrl = downloadUrl;
+    }
 
     batch.update(postDocRef, editedPost);
 
