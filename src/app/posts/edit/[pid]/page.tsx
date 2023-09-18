@@ -2,11 +2,10 @@
 
 import { Post } from "@/atoms/postsAtom";
 import PageContent from "@/components/Layout/PageContent";
-import EditPostForm from "@/components/Post/EditPostForm";
 import NewPostForm from "@/components/Post/NewPostForm";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -55,10 +54,8 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           </Text>
         </Box>
         {/* NewPost Form */}
-        <EditPostForm post={postStateValue.selectedPost} />
-        {/* <Box>
-        <RichTextBlock />
-      </Box> */}
+        {/* <EditPostForm post={postStateValue.selectedPost} /> */}
+        <NewPostForm action="edit" post={postStateValue.selectedPost} />
       </>
       <></>
     </PageContent>

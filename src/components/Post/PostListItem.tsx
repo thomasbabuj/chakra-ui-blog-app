@@ -1,4 +1,5 @@
 import { Post } from "@/atoms/postsAtom";
+import usePosts from "@/hooks/usePosts";
 import { Box, Flex, Icon, Spinner, Text } from "@chakra-ui/react";
 import moment from "moment";
 import Image from "next/image";
@@ -37,7 +38,6 @@ const PostListItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
-  onEditPost,
 }) => {
   const router = useRouter();
   const [loadingImage, setLoadingImage] = useState(true);
@@ -45,6 +45,7 @@ const PostListItem: React.FC<PostItemProps> = ({
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [error, setError] = useState(false);
   const singlePostPage = !onSelectPost;
+  const { postStateValue, setPostStateValue } = usePosts();
 
   const handleDelete = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -71,6 +72,10 @@ const PostListItem: React.FC<PostItemProps> = ({
   ) => {
     event.stopPropagation();
     console.log("On Edit button clicked.");
+    setPostStateValue((prev) => ({
+      ...prev,
+      selectedPost: post,
+    }));
     router.push(`/posts/edit/${post.id}`);
   };
 

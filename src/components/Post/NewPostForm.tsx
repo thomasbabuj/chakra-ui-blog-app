@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { Post, PostBody, PostStatus } from "@/atoms/postsAtom";
+import { Post, PostBody, PostStatus, postState } from "@/atoms/postsAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import { getASlug } from "@/lib/slug";
 import {
@@ -18,6 +18,7 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 import {
   Timestamp,
   addDoc,
@@ -27,15 +28,20 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
+  writeBatch,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useSetRecoilState } from "recoil";
 import { Descendant } from "slate";
 import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
 import ImageUpload from "./ImageUpload";
 
-type NewPostFormProps = {};
+type NewPostFormProps = {
+  action: "create" | "edit";
+  post?: Post | null;
+};
 
 type PostFormProps = {
   title: string;
@@ -45,12 +51,16 @@ type PostFormProps = {
   status: PostStatus;
 };
 
-const NewPostForm: React.FC<NewPostFormProps> = () => {
+const NewPostForm: React.FC<NewPostFormProps> = ({
+  action = "create",
+  post,
+}) => {
   const {
     register,
     handleSubmit,
     watch,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<PostFormProps>();
   const router = useRouter();
@@ -63,7 +73,14 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     status: "" as PostStatus,
   });
   const [selectedFile, setSelectedFile] = useState<string>();
-  const [serverError, setServerError] = useState(false);
+  const [serverError, setServerError] = useState<{
+    status: boolean;
+    message?: string;
+  }>({
+    status: false,
+    message: "",
+  });
+  const setPostState = useSetRecoilState(postState);
 
   const initialValue = [
     {
@@ -90,6 +107,16 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
       });
     }
 
+    console.log(`Post Form Action - ${action}`);
+
+    if (action === "edit") {
+      return handleEditPost(user, data);
+    }
+
+    handleCreatePost(user, data);
+  };
+
+  const handleCreatePost = async (user: User, data: PostFormProps) => {
     try {
       const slug = getASlug(data.title);
       const newPost: Post = {
@@ -98,7 +125,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
         slug,
         title: data.title,
         body: textInputs.body,
-        shortDescription: textInputs.shortDescription,
+        shortDescription: data.shortDescription,
         numberOfComments: 0,
         voteStatus: 0,
         createdAt: serverTimestamp() as Timestamp,
@@ -142,9 +169,85 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
       // redirect the user back to the community page using the router
       router.push("/");
     } catch (error: any) {
-      setServerError(true);
+      setServerError({ status: true });
       console.log("handle create post error", error.message);
     }
+  };
+
+  const handleEditPost = async (user: User, data: PostFormProps) => {
+    console.log("Inside handle edit post");
+
+    // Check the userId same as post author id
+    if (user.uid !== post?.creatorId) {
+      setServerError({
+        status: true,
+        message: "You are not allowed to edit this post.",
+      });
+    }
+
+    const editedPost: Post = {
+      creatorId: post ? post.creatorId : user.uid,
+      creatorDisplayName: post
+        ? post.creatorDisplayName
+        : user.email!.split("@")[0],
+      slug: post?.slug,
+      title: data.title,
+      body: textInputs.body,
+      shortDescription: data.shortDescription,
+      numberOfComments: post?.numberOfComments ?? 0,
+      voteStatus: post?.voteStatus ?? 0,
+      createdAt: post?.createdAt as Timestamp,
+      updatedAt: serverTimestamp() as Timestamp,
+      status: post?.status!,
+    };
+
+    const batch = writeBatch(firestore);
+
+    // check if the edit form title slug is same as the current one
+    if (data.title !== post?.title) {
+      const newSlug = getASlug(data.title);
+
+      console.log(`New Slug : ${newSlug}`);
+
+      const postDocRef = doc(firestore, "postsTitles", newSlug);
+      const postDoc = await getDoc(postDocRef);
+
+      if (postDoc.exists()) {
+        setError("title", {
+          type: "manual",
+          message:
+            "Sorry, article with this title is already exist. Please try a different title.",
+        });
+        return;
+      }
+
+      // create a new slug in the postTitles
+      batch.set(postDocRef, {
+        createdAt: serverTimestamp() as Timestamp,
+        creatorId: user.uid,
+      });
+
+      // remove the old slug from the postTitles
+      batch.delete(doc(firestore, "postsTitles", post?.slug!));
+
+      editedPost.slug = newSlug;
+    }
+
+    const postDocRef = doc(firestore, "posts", post?.id!);
+    console.log(postDocRef.id);
+
+    batch.update(postDocRef, editedPost);
+
+    await batch.commit();
+
+    setPostState((prev) => ({
+      ...prev,
+      selectedPost: {
+        ...editedPost,
+      } as Post,
+    }));
+
+    router.push("/");
   };
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,6 +263,14 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
       }
     };
   };
+
+  useEffect(() => {
+    if (action === "edit" && post) {
+      setValue("title", post.title);
+      setValue("shortDescription", post.shortDescription);
+      setSelectedFile(post.imageUrl);
+    }
+  }, [action, post]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -247,7 +358,7 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
 
             <FormControl isInvalid={errors.body}>
               <RichTextBlock
-                editorContent={initialValue}
+                editorContent={post ? post.body : initialValue}
                 passCurrentContentToParent={getContentFromChild}
               />
               <textarea
@@ -266,14 +377,14 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
             </FormControl>
 
             <FormControl isInvalid={errors.status}>
-              <FormLabel>Status :</FormLabel>
+              <FormLabel fontSize={"10pt"}>Status :</FormLabel>
               <Select
                 placeholder="Select post status"
                 id="status"
+                defaultValue={action === "edit" ? post?.status : ""}
                 {...register("status", {
                   required: "This is required",
                 })}
-                defaultValue={"published"}
                 _placeholder={{
                   color: "gray.500",
                 }}
@@ -304,10 +415,14 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
             </Button>
           </Stack>
         </Flex>
-        {serverError && (
+        {serverError.status && (
           <Alert status="error">
             <AlertIcon />
-            <Text>Error creating a post.</Text>
+            {serverError.message ? (
+              <Text>{serverError.message}.</Text>
+            ) : (
+              <Text>Error creating / editing a post.</Text>
+            )}
           </Alert>
         )}
       </Flex>
