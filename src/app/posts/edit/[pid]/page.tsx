@@ -43,7 +43,6 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
   // https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   useEffect(() => {
     if (params.pid && !postStateValue.selectedPost) {
-      console.log(`Going to get the fetch id.`);
       fetchPost(postId);
     }
 

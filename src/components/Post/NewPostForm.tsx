@@ -92,6 +92,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     },
   ];
 
+  const [loading, setLoading] = useState(true);
+
   const getContentFromChild = (content: PostBody[] | Descendant[] | null) => {
     if (!content) {
       return;
@@ -290,16 +292,13 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
         ...prev,
         body: post.body,
       }));
+      setLoading(false);
     }
   }, [action, post]);
 
-  useEffect(() => {
-    console.log(isFetching);
-  }, [isFetching]);
-
   return (
     <>
-      {isFetching ? (
+      {loading ? (
         <>
           <SinglePostLoader />
         </>
