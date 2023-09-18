@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { Post, PostBody, PostStatus, postState } from "@/atoms/postsAtom";
+import { Post, PostBody, postState } from "@/atoms/postsAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import { getASlug } from "@/lib/slug";
 import {
@@ -49,8 +49,8 @@ type PostFormProps = {
   title: string;
   shortDescription?: string;
   imageUrl?: string;
-  body: PostBody[] | Descendant[];
-  status: PostStatus | string;
+  body?: PostBody[] | Descendant[];
+  status: string;
 };
 
 const NewPostForm: React.FC<NewPostFormProps> = ({
@@ -73,7 +73,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     shortDescription: "",
     imageUrl: "",
     body: [],
-    status: "" as PostStatus,
+    status: "",
   });
   const [selectedFile, setSelectedFile] = useState<string>();
   const [serverError, setServerError] = useState<{
@@ -285,12 +285,17 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     if (action === "edit" && post) {
       setValue("title", post.title);
       setValue("shortDescription", post.shortDescription);
-      setSelectedFile(post.imageUrl);
       setValue("status", post.status);
+
+      setSelectedFile(post.imageUrl);
       setTextInputs((prev) => ({
         ...prev,
         body: post.body,
       }));
+      setLoading(false);
+    }
+
+    if (action === "create") {
       setLoading(false);
     }
   }, [action, post]);
