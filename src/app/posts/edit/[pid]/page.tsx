@@ -46,6 +46,10 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
       console.log(`Going to get the fetch id.`);
       fetchPost(postId);
     }
+
+    if (postStateValue) {
+      setPostFetchLoading(false);
+    }
   }, [postId, !postStateValue.selectedPost]);
 
   return (
