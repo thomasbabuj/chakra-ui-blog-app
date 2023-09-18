@@ -50,7 +50,7 @@ type PostFormProps = {
   shortDescription?: string;
   imageUrl?: string;
   body: PostBody[] | Descendant[];
-  status: PostStatus;
+  status: PostStatus | string;
 };
 
 const NewPostForm: React.FC<NewPostFormProps> = ({
@@ -260,8 +260,6 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
       } as Post,
     }));
 
-    console.log(`Edit form ${isSubmitting}`);
-
     setFormSubmitting(false);
 
     router.push("/");
@@ -288,6 +286,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
       setValue("title", post.title);
       setValue("shortDescription", post.shortDescription);
       setSelectedFile(post.imageUrl);
+      setValue("status", post.status);
       setTextInputs((prev) => ({
         ...prev,
         body: post.body,
