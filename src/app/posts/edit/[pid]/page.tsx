@@ -2,11 +2,10 @@
 
 import { Post } from "@/atoms/postsAtom";
 import PageContent from "@/components/Layout/PageContent";
-import EditPostForm from "@/components/Post/EditPostForm";
-import NewPostForm from "@/components/Post/NewPostForm";
+import NewPostForm from "@/components/Post/PostForm";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -21,6 +20,7 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
 
   const postId = params?.pid ? params.pid : "";
   const [error, setError] = useState(false);
+  const [postFetchLoading, setPostFetchLoading] = useState(true);
 
   const fetchPost = async (postId: string) => {
     try {
@@ -30,8 +30,10 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           ...prev,
           selectedPost: { id: post.id, ...(post.data() as Post) },
         }));
+        setPostFetchLoading(false);
       } else {
         setError(true);
+        setPostFetchLoading(false);
       }
     } catch (error: any) {
       console.log("Fetch Get Post error", error.message);
@@ -41,8 +43,11 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
   // https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   useEffect(() => {
     if (params.pid && !postStateValue.selectedPost) {
-      console.log(`Going to get the fetch id.`);
       fetchPost(postId);
+    }
+
+    if (postStateValue) {
+      setPostFetchLoading(false);
     }
   }, [postId, !postStateValue.selectedPost]);
 
@@ -55,10 +60,11 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           </Text>
         </Box>
         {/* NewPost Form */}
-        <EditPostForm post={postStateValue.selectedPost} />
-        {/* <Box>
-        <RichTextBlock />
-      </Box> */}
+        <NewPostForm
+          action="edit"
+          post={postStateValue.selectedPost}
+          isFetching={postFetchLoading}
+        />
       </>
       <></>
     </PageContent>

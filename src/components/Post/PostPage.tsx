@@ -114,7 +114,7 @@ const PostPage: React.FC<PostPageProps> = ({
     <Flex
       border="1px solid"
       borderRadius={"4px 4px 0px 0px"}
-      borderColor={"green.100"}
+      borderColor={"red.700"}
       color={"white"}
     >
       <Flex
@@ -198,10 +198,6 @@ const PostPage: React.FC<PostPageProps> = ({
               />
             </Slate>
           </Box>
-
-          {/* <Text fontSize={"10pt"} height={"auto"} mt="4">
-            {post.body}
-          </Text> */}
         </Stack>
         <Flex ml={1} mb={0.5} color={"gray.500"} mt="10">
           <Flex

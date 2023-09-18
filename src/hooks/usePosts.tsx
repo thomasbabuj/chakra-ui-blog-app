@@ -195,10 +195,7 @@ const usePosts = () => {
     return postDoc;
   };
 
-  const onEditPost = async (post: Post): Promise<any> => {
-    console.log("I am onEditPost");
-    console.log(post);
-  };
+  const onEditPost = async (post: Post): Promise<any> => {};
 
   /**
    * this function will be fired each time the user click on 'More Posts' button,

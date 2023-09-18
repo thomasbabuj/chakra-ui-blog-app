@@ -1,7 +1,7 @@
 "use client";
 
 import PageContent from "@/components/Layout/PageContent";
-import NewPostForm from "@/components/Post/NewPostForm";
+import PostForm from "@/components/Post/PostForm";
 import QuestionList from "@/components/Question/QuestionList";
 import useQuestions from "@/hooks/useQuestions";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -26,10 +26,7 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
           </Text>
         </Box>
         {/* NewPost Form */}
-        <NewPostForm />
-        {/* <Box>
-          <RichTextBlock />
-        </Box> */}
+        <PostForm />
       </>
       <>
         <Flex direction={"column"}>
