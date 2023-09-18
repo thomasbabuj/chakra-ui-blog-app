@@ -2,7 +2,7 @@
 
 import { Post } from "@/atoms/postsAtom";
 import PageContent from "@/components/Layout/PageContent";
-import NewPostForm from "@/components/Post/NewPostForm";
+import NewPostForm from "@/components/Post/PostForm";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
 import { Box, Text } from "@chakra-ui/react";

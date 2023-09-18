@@ -53,7 +53,7 @@ type PostFormProps = {
   status: string;
 };
 
-const NewPostForm: React.FC<NewPostFormProps> = ({
+const PostForm: React.FC<NewPostFormProps> = ({
   action = "create",
   post,
   isFetching = false,
@@ -467,4 +467,4 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     </>
   );
 };
-export default NewPostForm;
+export default PostForm;
