@@ -20,6 +20,7 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
 
   const postId = params?.pid ? params.pid : "";
   const [error, setError] = useState(false);
+  const [postFetchLoading, setPostFetchLoading] = useState(true);
 
   const fetchPost = async (postId: string) => {
     try {
@@ -29,8 +30,10 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           ...prev,
           selectedPost: { id: post.id, ...(post.data() as Post) },
         }));
+        setPostFetchLoading(false);
       } else {
         setError(true);
+        setPostFetchLoading(false);
       }
     } catch (error: any) {
       console.log("Fetch Get Post error", error.message);
@@ -54,7 +57,11 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           </Text>
         </Box>
         {/* NewPost Form */}
-        <NewPostForm action="edit" post={postStateValue.selectedPost} />
+        <NewPostForm
+          action="edit"
+          post={postStateValue.selectedPost}
+          isFetching={postFetchLoading}
+        />
       </>
       <></>
     </PageContent>

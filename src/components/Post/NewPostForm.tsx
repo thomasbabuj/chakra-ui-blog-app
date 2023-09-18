@@ -37,10 +37,12 @@ import { useSetRecoilState } from "recoil";
 import { Descendant } from "slate";
 import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
 import ImageUpload from "./ImageUpload";
+import SinglePostLoader from "./SinglePostLoader";
 
 type NewPostFormProps = {
   action?: "create" | "edit";
   post?: Post | null;
+  isFetching?: boolean;
 };
 
 type PostFormProps = {
@@ -54,6 +56,7 @@ type PostFormProps = {
 const NewPostForm: React.FC<NewPostFormProps> = ({
   action = "create",
   post,
+  isFetching = false,
 }) => {
   const {
     register,
@@ -98,6 +101,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
   };
 
   const onSubmit: SubmitHandler<PostFormProps> = async (data) => {
+    setFormSubmitting(true);
     if (!user) return;
 
     if (JSON.stringify(initialValue) === JSON.stringify(textInputs.body)) {
@@ -108,6 +112,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     }
 
     if (action === "edit") {
+      console.log(`Form submitting ${isSubmitting}`);
       return handleEditPost(user, data);
     }
 
@@ -164,7 +169,8 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
           imageUrl: downloadUrl,
         });
       }
-      // redirect the user back to the community page using the router
+      setFormSubmitting(false);
+      // redirect the user back to the lading page using the router
       router.push("/");
     } catch (error: any) {
       setServerError({ status: true });
@@ -252,6 +258,10 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
       } as Post,
     }));
 
+    console.log(`Edit form ${isSubmitting}`);
+
+    setFormSubmitting(false);
+
     router.push("/");
   };
 
@@ -269,169 +279,189 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     };
   };
 
+  const [formSubmitting, setFormSubmitting] = useState(false);
+
   useEffect(() => {
     if (action === "edit" && post) {
       setValue("title", post.title);
       setValue("shortDescription", post.shortDescription);
       setSelectedFile(post.imageUrl);
+      setTextInputs((prev) => ({
+        ...prev,
+        body: post.body,
+      }));
     }
   }, [action, post]);
 
+  useEffect(() => {
+    console.log(isFetching);
+  }, [isFetching]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Flex
-        direction={"column"}
-        bg="white"
-        color={"black"}
-        borderRadius={4}
-        mt={2}
-      >
-        <Flex width={"100%"} p="4">
-          <Stack width={"100%"}>
-            <FormControl isInvalid={errors.title}>
-              <Input
-                id="title"
-                placeholder="Title"
-                {...register("title", {
-                  required: "This is required",
-                  minLength: {
-                    value: 5,
-                    message: "Minimum length should be 5",
-                  },
-                  maxLength: {
-                    value: 256,
-                    message: "Maximum length should be 256 Characters",
-                  },
-                })}
-                fontSize={"10pt"}
-                borderRadius={"4"}
-                _placeholder={{
-                  color: "gray.500",
-                }}
-                _focus={{
-                  outline: "none",
-                  bg: "white",
-                  border: "1px solid",
-                  borderColor: "black",
-                }}
-              />
-
-              <FormErrorMessage>
-                {errors.title && errors.title.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={errors.shortDescription}>
-              <Textarea
-                id="shortDescription"
-                height={"50px"}
-                fontSize={"10pt"}
-                borderRadius={"4"}
-                placeholder="Short Description"
-                _placeholder={{
-                  color: "gray.500",
-                }}
-                _focus={{
-                  outline: "none",
-                  bg: "white",
-                  border: "1px solid",
-                  borderColor: "black",
-                }}
-                {...register("shortDescription", {
-                  maxLength: {
-                    value: 150,
-                    message: "Maximum length should be 150 Characters",
-                  },
-                })}
-              />
-
-              <FormErrorMessage>
-                {errors.shortDescription && errors.shortDescription.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={errors.imageUrl}>
-              <ImageUpload
-                selectedFile={selectedFile}
-                onSelectImage={onSelectImage}
-                setSelectedFile={setSelectedFile}
-              />
-              <FormErrorMessage>
-                {errors.imageUrl && errors.imageUrl.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={errors.body}>
-              <RichTextBlock
-                editorContent={post ? post.body : initialValue}
-                passCurrentContentToParent={getContentFromChild}
-              />
-              <textarea
-                hidden
-                aria-hidden
-                id="body"
-                readOnly
-                {...register("body", {
-                  required: "This is required",
-                })}
-                value={JSON.stringify(textInputs.body)}
-              ></textarea>
-              <FormErrorMessage>
-                {errors.body && errors.body.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={errors.status}>
-              <FormLabel fontSize={"10pt"}>Status :</FormLabel>
-              <Select
-                placeholder="Select post status"
-                id="status"
-                defaultValue={action === "edit" ? post?.status : ""}
-                {...register("status", {
-                  required: "This is required",
-                })}
-                _placeholder={{
-                  color: "gray.500",
-                }}
-                _focus={{
-                  outline: "none",
-                  bg: "white",
-                  border: "1px solid",
-                  borderColor: "black",
-                }}
-                fontSize={"10pt"}
-                borderRadius={"4"}
-              >
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
-              </Select>
-              <FormErrorMessage>
-                {errors.status && errors.status.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            <Button
-              mt={4}
-              colorScheme="teal"
-              isLoading={isSubmitting}
-              type="submit"
+    <>
+      {isFetching ? (
+        <>
+          <SinglePostLoader />
+        </>
+      ) : (
+        <>
+          <form onSubmit={handleSubmit(onSubmit)} action="create">
+            <Flex
+              direction={"column"}
+              bg="white"
+              color={"black"}
+              borderRadius={4}
+              mt={2}
             >
-              Submit
-            </Button>
-          </Stack>
-        </Flex>
-        {serverError.status && (
-          <Alert status="error">
-            <AlertIcon />
-            {serverError.message ? (
-              <Text>{serverError.message}.</Text>
-            ) : (
-              <Text>Error creating / editing a post.</Text>
-            )}
-          </Alert>
-        )}
-      </Flex>
-    </form>
+              <Flex width={"100%"} p="4">
+                <Stack width={"100%"}>
+                  <FormControl isInvalid={errors.title}>
+                    <Input
+                      id="title"
+                      placeholder="Title"
+                      {...register("title", {
+                        required: "This is required",
+                        minLength: {
+                          value: 5,
+                          message: "Minimum length should be 5",
+                        },
+                        maxLength: {
+                          value: 256,
+                          message: "Maximum length should be 256 Characters",
+                        },
+                      })}
+                      fontSize={"10pt"}
+                      borderRadius={"4"}
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "black",
+                      }}
+                    />
+
+                    <FormErrorMessage>
+                      {errors.title && errors.title.message}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={errors.shortDescription}>
+                    <Textarea
+                      id="shortDescription"
+                      height={"50px"}
+                      fontSize={"10pt"}
+                      borderRadius={"4"}
+                      placeholder="Short Description"
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "black",
+                      }}
+                      {...register("shortDescription", {
+                        maxLength: {
+                          value: 150,
+                          message: "Maximum length should be 150 Characters",
+                        },
+                      })}
+                    />
+
+                    <FormErrorMessage>
+                      {errors.shortDescription &&
+                        errors.shortDescription.message}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={errors.imageUrl}>
+                    <ImageUpload
+                      selectedFile={selectedFile}
+                      onSelectImage={onSelectImage}
+                      setSelectedFile={setSelectedFile}
+                    />
+                    <FormErrorMessage>
+                      {errors.imageUrl && errors.imageUrl.message}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={errors.body}>
+                    <RichTextBlock
+                      editorContent={post ? textInputs.body : initialValue}
+                      passCurrentContentToParent={getContentFromChild}
+                    />
+                    <textarea
+                      hidden
+                      aria-hidden
+                      id="body"
+                      readOnly
+                      {...register("body", {
+                        required: "This is required",
+                      })}
+                      value={JSON.stringify(textInputs.body)}
+                    ></textarea>
+                    <FormErrorMessage>
+                      {errors.body && errors.body.message}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl isInvalid={errors.status}>
+                    <FormLabel fontSize={"10pt"}>Status :</FormLabel>
+                    <Select
+                      placeholder="Select post status"
+                      id="status"
+                      {...register("status", {
+                        required: "This is required",
+                      })}
+                      _placeholder={{
+                        color: "gray.500",
+                      }}
+                      _focus={{
+                        outline: "none",
+                        bg: "white",
+                        border: "1px solid",
+                        borderColor: "black",
+                      }}
+                      fontSize={"10pt"}
+                      borderRadius={"4"}
+                    >
+                      <option value="draft">Draft</option>
+                      <option value="published">Published</option>
+                    </Select>
+                    <FormErrorMessage>
+                      {errors.status && errors.status.message}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <Button
+                    mt={4}
+                    colorScheme="teal"
+                    isLoading={formSubmitting}
+                    type="submit"
+                  >
+                    Submit
+                  </Button>
+                </Stack>
+              </Flex>
+              {serverError.status && (
+                <Alert status="error">
+                  <AlertIcon />
+                  {serverError.message ? (
+                    <Text>{serverError.message}.</Text>
+                  ) : (
+                    <Text>Error creating / editing a post.</Text>
+                  )}
+                </Alert>
+              )}
+            </Flex>
+          </form>
+        </>
+      )}
+    </>
   );
 };
 export default NewPostForm;
