@@ -24,7 +24,7 @@ const useQuestions = () => {
       setFetchQuestionStatus(true);
       const questionQuery = query(
         collection(firestore, "questions"),
-        where("status", "==", QuestionStatus.SUBMITTED),
+        where("status", "==", QuestionStatus.APPROVED),
         orderBy("createdAt", "desc"),
         limit(10)
       );

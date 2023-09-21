@@ -39,11 +39,17 @@ const QuestionList: React.FC<QuestionListProps> = ({ data, isLoading }) => {
             spacing={2}
             align={"stretch"}
           >
-            {data.questions.map((item) => (
-              <Box key={item.id} width={"100%"} fontSize={"10pt"}>
-                <Text>{item.question}</Text>
+            {data.questions.length === 0 ? (
+              <Box fontSize={"10pt"}>
+                <Text>Sorry, no questions yet.</Text>
               </Box>
-            ))}
+            ) : (
+              data.questions.map((item) => (
+                <Box key={item.id} width={"100%"} fontSize={"10pt"}>
+                  <Text>{item.question}</Text>
+                </Box>
+              ))
+            )}
           </VStack>
         )}
       </Flex>
