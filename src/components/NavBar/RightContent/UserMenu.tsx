@@ -13,6 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { User, signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { BiUserCircle } from "react-icons/bi";
 import { BsFillPersonPlusFill } from "react-icons/bs";
@@ -27,12 +28,17 @@ type UserMenuProps = {
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+  const router = useRouter();
   const setAuthModalState = useSetRecoilState(authModalState);
 
   const logout = async () => {
     setAuthModalState({ open: true, view: "login" });
     await signOut(auth);
     // clear user related states using recoil reset
+  };
+
+  const handleProfileOnClick = () => {
+    router.push("/profile");
   };
   return (
     <>
@@ -98,6 +104,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 bg={"black"}
                 color={"green.300"}
                 _hover={{ bg: "green.500", color: "white" }}
+                onClick={handleProfileOnClick}
               >
                 <Flex align={"center"}>
                   <Icon as={CgProfile} color="white" fontSize={20} mr={2} />
