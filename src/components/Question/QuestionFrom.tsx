@@ -103,6 +103,7 @@ const QuestionFrom: React.FC<QuestionFromProps> = ({ showInModal = false }) => {
         p="3"
         bg="white"
         borderRadius={"0px 0px 4px 4px"}
+        color={"black"}
       >
         {success && (
           <Flex justify="center" p="16px 0px">

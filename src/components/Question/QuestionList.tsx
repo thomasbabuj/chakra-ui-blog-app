@@ -29,6 +29,7 @@ const QuestionList: React.FC<QuestionListProps> = ({ data, isLoading }) => {
         p="3"
         bg="white"
         borderRadius={"0px 0px 4px 4px"}
+        color={"black"}
       >
         {isLoading ? (
           <QuestionLoader />
