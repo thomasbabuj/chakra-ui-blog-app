@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+import { Moment } from "moment";
 import { atom } from "recoil";
 
 export enum QuestionStatus {
@@ -11,6 +13,9 @@ export interface Question {
   status: QuestionStatus;
   creatorId?: string;
   email?: string;
+  name?: string;
+  createdAt: Timestamp;
+  updatedAt?: string;
 }
 
 export interface QuestionState {
