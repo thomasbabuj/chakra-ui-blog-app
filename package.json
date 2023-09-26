@@ -37,5 +37,8 @@
     "slate-react": "^0.98.3",
     "slugify": "^1.6.6",
     "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.1.0"
   }
 }

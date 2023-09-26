@@ -3,42 +3,38 @@
 import { Question } from "@/atoms/questionsAtom";
 import PageContent from "@/components/Layout/PageContent";
 import QuestionDataTable from "@/components/Question/QuestionDataTable";
+import { auth } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type pageProps = {};
 
 const QuestionsList: React.FC<pageProps> = () => {
-  const { getAllQuestions } = useQuestions();
-  const [questions, setQuestions] = useState<Question[]>([]);
-
-  const fetchAllQuestions = async () => {
-    const newQuestions = await getAllQuestions();
-    const updatedQuestions = newQuestions.map((question) => ({
-      ...question,
-      updatedAt: moment(
-        new Date(question.createdAt.seconds * 1000)
-      ).toLocaleString(),
-    }));
-    setQuestions(updatedQuestions);
-  };
+  const [user] = useAuthState(auth);
+  const { getAllQuestions, questionStateValue } = useQuestions();
 
   useEffect(() => {
-    fetchAllQuestions();
+    getAllQuestions();
   }, []);
   return (
     <PageContent>
       <>
-        <Box p="14px 0px" borderBottom="1px solid">
-          <Text fontWeight={700} color={"white"}>
-            Manage Questions
-          </Text>
-        </Box>
-        {/* NewPost Form */}
-        {questions && <QuestionDataTable questions={questions} />}
+        {!user && <>Not authorized</>}
+
+        {user && (
+          <>
+            <Box p="14px 0px" borderBottom="1px solid">
+              <Text fontWeight={700} color={"white"}>
+                Manage Questions
+              </Text>
+            </Box>
+            {questionStateValue && <QuestionDataTable />}
+          </>
+        )}
       </>
       <>
         <Flex direction={"column"}>

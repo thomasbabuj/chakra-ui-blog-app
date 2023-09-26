@@ -1,5 +1,14 @@
 import * as React from "react";
-import { Table, Thead, Tbody, Tr, Th, Td, chakra } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  chakra,
+  Checkbox,
+} from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   useReactTable,
@@ -49,7 +58,6 @@ export function DataTable<Data extends object>({
                     header.column.columnDef.header,
                     header.getContext()
                   )}
-
                   <chakra.span pl="4">
                     {header.column.getIsSorted() ? (
                       header.column.getIsSorted() === "desc" ? (
@@ -77,6 +85,7 @@ export function DataTable<Data extends object>({
                 </Td>
               );
             })}
+            <Td>Status</Td>
           </Tr>
         ))}
       </Tbody>
