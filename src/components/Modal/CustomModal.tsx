@@ -7,6 +7,7 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Button,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
@@ -15,6 +16,7 @@ interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   modalTitle: string;
+  actionButtonTitle?: string;
 }
 
 const CustomModal: React.FC<ModalProps> = ({
@@ -22,6 +24,7 @@ const CustomModal: React.FC<ModalProps> = ({
   onClose,
   children,
   modalTitle = "Custom Modal",
+  actionButtonTitle = "Save",
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -30,9 +33,6 @@ const CustomModal: React.FC<ModalProps> = ({
         <ModalHeader>{modalTitle}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{children}</ModalBody>
-        <ModalFooter>
-          {/* Add any footer content or buttons here */}
-        </ModalFooter>
       </ModalContent>
     </Modal>
   );

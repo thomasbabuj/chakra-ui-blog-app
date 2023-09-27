@@ -1,60 +1,59 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { createColumnHelper } from "@tanstack/react-table";
-import { Question, QuestionStatus } from "@/atoms/questionsAtom";
-import { DataTable } from "../DataTable";
-import DataTableWithPagination from "./DataTableWithPagination";
+import { Question } from "@/atoms/questionsAtom";
+import useQuestions from "@/hooks/useQuestions";
 import {
   Box,
   Button,
   Flex,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
   ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Table,
-  TableContainer,
   Tbody,
   Td,
-  Text,
-  Tfoot,
   Th,
   Thead,
   Tr,
-  useDisclosure,
 } from "@chakra-ui/react";
-import Link from "next/link";
-import QuestionModal from "../Modal/Question/QuestionModal";
-import ApproveQuestionModal from "../Modal/Question/ApproveQuestionModal";
-import { Timestamp } from "firebase/firestore";
-import QuestionApproveForm from "./QuestionApproveForm";
+import React, { useEffect, useState } from "react";
 import CustomModal from "../Modal/CustomModal";
-import useQuestions from "@/hooks/useQuestions";
-import moment from "moment";
+import QuestionApproveForm from "./QuestionApproveForm";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
-type QuestionDataTableProps = {
-  //questions: Question[];
-};
+type QuestionDataTableProps = {};
 
 const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Question | null>(null); // Store the selected item here
+  const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
 
-  const { questionStateValue } = useQuestions();
+  const { questionStateValue, deleteQuestion, setQuestionStateValue } =
+    useQuestions();
 
   const handleEditQuestion = (question: Question) => {
     setSelectedItem(question);
     setIsOpen(true);
   };
 
-  const handleDeleteQuestion = () => {
-    console.log("I am here in delete modal..");
+  const handleDeleteQuestion = (questionId: string) => {
+    setDeleteItemId(questionId);
     setIsOpen(true);
   };
 
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => {
+    setSelectedItem(null);
+    setIsOpen(false);
+  };
+
+  const confirmDelete = async () => {
+    if (deleteItemId) {
+      try {
+        deleteQuestion(deleteItemId);
+        setDeleteItemId(null);
+        setIsOpen(false);
+      } catch (error: any) {
+        console.log(`Delete Question Error : ${error.message}`);
+      }
+    }
+  };
 
   useEffect(() => {}, [questionStateValue]);
 
@@ -63,13 +62,25 @@ const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
       <CustomModal
         isOpen={isOpen}
         onClose={closeModal}
-        modalTitle="Approve User Question"
+        modalTitle={!selectedItem ? "Confirm Delete" : "Approve User Question"}
       >
         {selectedItem && (
           <QuestionApproveForm data={selectedItem} closeModal={closeModal} />
         )}
 
-        {!selectedItem && <>Show Delete Modal</>}
+        {!selectedItem && <>Are you sure you want to delete?</>}
+
+        {!selectedItem && (
+          <ModalFooter>
+            {/* Add any footer content or buttons here */}
+            <Button variant="ghost" mr={3} onClick={closeModal}>
+              Close
+            </Button>
+            <Button onClick={confirmDelete}>
+              {!selectedItem && "Confirm"}
+            </Button>
+          </ModalFooter>
+        )}
       </CustomModal>
 
       <Flex direction="column" width="100%">
@@ -97,31 +108,30 @@ const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
                     <Td>{row.status}</Td>
                     <Td>
                       {/* https://stackoverflow.com/questions/52247445/how-do-i-convert-a-firestore-date-timestamp-to-a-js-date */}
-                      {/* {new Date(
-                        row.createdAt.seconds * 1000
-                      ).toLocaleDateString()} */}
+                      {row.createdAt.toDate().toLocaleDateString()}
                     </Td>
                     <Td>
-                      {/* {row.updatedAt !== undefined
-                        ? new Date(
-                            row.updatedAt.seconds * 1000
-                          ).toLocaleDateString()
-                        : ""} */}
+                      {row.updatedAt !== undefined
+                        ? row.updatedAt.toDate().toLocaleDateString()
+                        : ""}
                     </Td>
                     <Td>
                       <Box>
-                        <Link
-                          href={"#"}
+                        <Button
+                          variant="ghost"
                           onClick={() => handleEditQuestion(row)}
                         >
                           Edit
-                        </Link>
+                        </Button>
                       </Box>
 
-                      <Box>
-                        <Link href={"#"} onClick={() => handleDeleteQuestion()}>
+                      <Box mt="2">
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleDeleteQuestion(row.id)}
+                        >
                           Delete
-                        </Link>
+                        </Button>
                       </Box>
                     </Td>
                   </Tr>

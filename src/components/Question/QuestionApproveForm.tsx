@@ -2,12 +2,15 @@ import { Question, QuestionStatus } from "@/atoms/questionsAtom";
 import { firestore } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
 import {
+  Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   Select,
+  Spacer,
   Textarea,
 } from "@chakra-ui/react";
 import {
@@ -100,7 +103,7 @@ const QuestionApproveForm: React.FC<QuestionApproveFormProps> = ({
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
-          <FormLabel>Name - {data.id} </FormLabel>
+          <FormLabel>Name</FormLabel>
           <Input ref={initialRef} value={data?.name ?? ""} readOnly />
         </FormControl>
 
@@ -139,16 +142,22 @@ const QuestionApproveForm: React.FC<QuestionApproveFormProps> = ({
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl>
-          <Button
-            mt={4}
-            colorScheme="teal"
-            type="submit"
-            isLoading={formSubmit}
-          >
-            Submit
-          </Button>
-        </FormControl>
+        <Flex>
+          <Box></Box>
+          <Spacer />
+          <Box>
+            <FormControl>
+              <Button
+                mt={4}
+                colorScheme="teal"
+                type="submit"
+                isLoading={formSubmit}
+              >
+                Submit
+              </Button>
+            </FormControl>
+          </Box>
+        </Flex>
       </form>
     </>
   );

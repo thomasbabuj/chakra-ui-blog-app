@@ -7,6 +7,9 @@ import { firestore } from "@/firebase/clientApp";
 import {
   Timestamp,
   collection,
+  deleteDoc,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -76,6 +79,27 @@ const useQuestions = () => {
     setFetchQuestionStatus(false);
   };
 
+  const deleteQuestion = async (questionId: string): Promise<void> => {
+    console.log(`Delete Question id ${questionId}`);
+
+    const questionDocRef = doc(firestore, "questions", questionId);
+    const questionDoc = await getDoc(questionDocRef);
+
+    if (!questionDoc.exists()) {
+      throw new Error(`Question doesn't exist`);
+    }
+
+    await deleteDoc(questionDocRef);
+
+    let newList = [...questionStateValue.questions].filter(
+      (item) => item.id !== questionId
+    );
+
+    console.log(newList);
+
+    setQuestionStateValue({ questions: newList });
+  };
+
   return {
     // question data and its functions
     questionStateValue,
@@ -85,6 +109,7 @@ const useQuestions = () => {
     fetchQuestionStatus,
     setFetchQuestionStatus,
     getAllQuestions,
+    deleteQuestion,
   };
 };
 export default useQuestions;
