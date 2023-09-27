@@ -239,44 +239,46 @@ const PostPage: React.FC<PostPageProps> = ({
           </Flex>
 
           {userIsCreator && (
-            <Flex
-              align={"center"}
-              p="8px 10px"
-              borderRadius={4}
-              _hover={{ bg: "brand.100" }}
-              cursor={"pointer"}
-              color={"white"}
-            >
-              {loadingDelete ? (
+            <>
+              <Flex
+                align={"center"}
+                p="8px 10px"
+                borderRadius={4}
+                _hover={{ bg: "brand.100" }}
+                cursor={"pointer"}
+                color={"white"}
+              >
+                {loadingDelete ? (
+                  <>
+                    <Spinner size="sm" />
+                  </>
+                ) : (
+                  <>
+                    <Icon as={AiOutlineDelete} />
+                    <Text fontSize={"9pt"} pl="2" onClick={handleDelete}>
+                      Delete
+                    </Text>
+                  </>
+                )}
+              </Flex>
+
+              <Flex
+                align={"center"}
+                p="8px 10px"
+                borderRadius={4}
+                _hover={{ bg: "brand.100" }}
+                cursor={"pointer"}
+                color={"white"}
+              >
                 <>
-                  <Spinner size="sm" />
-                </>
-              ) : (
-                <>
-                  <Icon as={AiOutlineDelete} />
-                  <Text fontSize={"9pt"} pl="2" onClick={handleDelete}>
-                    Delete
+                  <Icon as={AiFillEdit} />
+                  <Text fontSize={"9pt"} pl="2" onClick={handleEdit}>
+                    Edit
                   </Text>
                 </>
-              )}
-            </Flex>
-          )}
-
-          <Flex
-            align={"center"}
-            p="8px 10px"
-            borderRadius={4}
-            _hover={{ bg: "brand.100" }}
-            cursor={"pointer"}
-            color={"white"}
-          >
-            <>
-              <Icon as={AiFillEdit} />
-              <Text fontSize={"9pt"} pl="2" onClick={handleEdit}>
-                Edit
-              </Text>
+              </Flex>
             </>
-          </Flex>
+          )}
         </Flex>
       </Flex>
     </Flex>
