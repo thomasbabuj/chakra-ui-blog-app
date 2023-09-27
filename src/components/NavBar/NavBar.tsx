@@ -56,7 +56,7 @@ const NavBar: React.FC = () => {
       <Flex align={"center"}>{user && <Directory />}</Flex>
 
       {/* Search Inputs */}
-      <SearchInput user={user} />
+      {/* <SearchInput user={user} /> */}
 
       <RightContent user={user} />
     </Flex>

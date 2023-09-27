@@ -18,7 +18,7 @@ const RightContent: React.FC<RightContentProps> = ({ user }) => {
           <Link href={"/about"}>About</Link>
         </Flex>
         <Flex p="2">
-          <Link href={"#"}>Page</Link>
+          <Link href={"/contact"}>Contact</Link>
         </Flex>
         {user && <Icons />}
         <UserMenu user={user} />
