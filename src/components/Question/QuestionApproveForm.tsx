@@ -1,6 +1,7 @@
 import { Question, QuestionStatus } from "@/atoms/questionsAtom";
-import { firestore } from "@/firebase/clientApp";
+import { auth, firestore } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
+import { checkUser } from "@/lib/check";
 import {
   Box,
   Button,
@@ -21,6 +22,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type QuestionApproveFormProps = {
@@ -32,6 +34,7 @@ const QuestionApproveForm: React.FC<QuestionApproveFormProps> = ({
   data,
   closeModal,
 }) => {
+  const [user] = useAuthState(auth);
   const initialRef = useRef(null);
   const {
     register,
@@ -54,6 +57,15 @@ const QuestionApproveForm: React.FC<QuestionApproveFormProps> = ({
 
   const updateQuestion = async (id: string, status: QuestionStatus) => {
     try {
+
+      if (user && checkUser(user.uid)) {
+        setServerError({
+          status: true,
+          message: "You are not allowed to edit this post.",
+        });
+        return;
+      }
+
       const questionDocRef = doc(firestore, "questions", id);
       const questionDoc = await getDoc(questionDocRef);
 

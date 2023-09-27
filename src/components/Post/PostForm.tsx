@@ -38,6 +38,7 @@ import { Descendant } from "slate";
 import { RichTextBlock } from "../RichTextEditor/RichTextEditor";
 import ImageUpload from "./ImageUpload";
 import SinglePostLoader from "./SinglePostLoader";
+import { checkUser } from "@/lib/check";
 
 type NewPostFormProps = {
   action?: "create" | "edit";
@@ -123,6 +124,16 @@ const PostForm: React.FC<NewPostFormProps> = ({
 
   const handleCreatePost = async (user: User, data: PostFormProps) => {
     try {
+      if (checkUser(user.uid)) {
+        setServerError({
+          status: true,
+          message: "You are not allowed create a post.",
+        });
+
+        router.push("/");
+        return;
+      }
+
       const slug = getASlug(data.title);
       const newPost: Post = {
         creatorId: user.uid,
@@ -187,6 +198,7 @@ const PostForm: React.FC<NewPostFormProps> = ({
         status: true,
         message: "You are not allowed to edit this post.",
       });
+      router.push("/");
       return;
     }
 

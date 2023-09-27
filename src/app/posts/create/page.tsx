@@ -6,7 +6,8 @@ import PostForm from "@/components/Post/PostForm";
 import QuestionList from "@/components/Question/QuestionList";
 import { auth } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { checkUser } from "@/lib/check";
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -23,7 +24,7 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
   }, [user]);
   return (
     <>
-      {user ? (
+      {user && checkUser(user.uid) ? (
         <>
           <PageContent>
             <>

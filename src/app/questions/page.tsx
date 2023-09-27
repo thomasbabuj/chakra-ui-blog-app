@@ -1,15 +1,13 @@
 "use client";
 
-import { Question } from "@/atoms/questionsAtom";
 import PageContent from "@/components/Layout/PageContent";
 import NotAuthorized from "@/components/NotAuthorized";
 import QuestionDataTable from "@/components/Question/QuestionDataTable";
 import { auth } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
-import { Box, Flex, Text } from "@chakra-ui/react";
-import { Timestamp } from "firebase/firestore";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
+import { checkUser } from "@/lib/check";
+import { Box, Text } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 type pageProps = {};
@@ -25,7 +23,7 @@ const QuestionsList: React.FC<pageProps> = () => {
   }, [user]);
   return (
     <>
-      {user ? (
+      {user && checkUser(user.uid) ? (
         <>
           <PageContent>
             <>

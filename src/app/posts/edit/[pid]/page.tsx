@@ -6,7 +6,8 @@ import NotAuthorized from "@/components/NotAuthorized";
 import NewPostForm from "@/components/Post/PostForm";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { checkUser } from "@/lib/check";
+import { Box, Heading } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -54,7 +55,7 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
 
   return (
     <>
-      {user ? (
+      {user && checkUser(user.uid) ? (
         <>
           <PageContent>
             <>
@@ -79,4 +80,5 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
     </>
   );
 };
+
 export default EditPostPage;
