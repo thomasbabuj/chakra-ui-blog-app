@@ -187,6 +187,7 @@ const PostForm: React.FC<NewPostFormProps> = ({
         status: true,
         message: "You are not allowed to edit this post.",
       });
+      return;
     }
 
     const editedPost: Post = {
