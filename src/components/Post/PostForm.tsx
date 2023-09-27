@@ -319,6 +319,9 @@ const PostForm: React.FC<NewPostFormProps> = ({
               <Flex width={"100%"} p="4">
                 <Stack width={"100%"}>
                   <FormControl isInvalid={errors.title}>
+                    <FormLabel>
+                      <Text fontWeight="700">Title</Text>
+                    </FormLabel>
                     <Input
                       id="title"
                       placeholder="Title"
@@ -335,6 +338,7 @@ const PostForm: React.FC<NewPostFormProps> = ({
                       })}
                       fontSize={"10pt"}
                       borderRadius={"4"}
+                      borderColor={"black"}
                       _placeholder={{
                         color: "gray.500",
                       }}
@@ -345,13 +349,15 @@ const PostForm: React.FC<NewPostFormProps> = ({
                         borderColor: "black",
                       }}
                     />
-
                     <FormErrorMessage>
                       {errors.title && errors.title.message}
                     </FormErrorMessage>
                   </FormControl>
 
                   <FormControl isInvalid={errors.shortDescription}>
+                    <FormLabel>
+                      <Text fontWeight="700">Sort Description</Text>
+                    </FormLabel>
                     <Textarea
                       id="shortDescription"
                       height={"50px"}
@@ -373,6 +379,7 @@ const PostForm: React.FC<NewPostFormProps> = ({
                           message: "Maximum length should be 150 Characters",
                         },
                       })}
+                      borderColor={"black"}
                     />
 
                     <FormErrorMessage>
@@ -382,6 +389,9 @@ const PostForm: React.FC<NewPostFormProps> = ({
                   </FormControl>
 
                   <FormControl isInvalid={errors.imageUrl}>
+                    <FormLabel>
+                      <Text fontWeight="700">Poster Image</Text>
+                    </FormLabel>
                     <ImageUpload
                       selectedFile={selectedFile}
                       onSelectImage={onSelectImage}
@@ -393,6 +403,9 @@ const PostForm: React.FC<NewPostFormProps> = ({
                   </FormControl>
 
                   <FormControl isInvalid={errors.body}>
+                    <FormLabel>
+                      <Text fontWeight="700">Content</Text>
+                    </FormLabel>
                     <RichTextBlock
                       editorContent={post ? textInputs.body : initialValue}
                       passCurrentContentToParent={getContentFromChild}
@@ -413,7 +426,9 @@ const PostForm: React.FC<NewPostFormProps> = ({
                   </FormControl>
 
                   <FormControl isInvalid={errors.status}>
-                    <FormLabel fontSize={"10pt"}>Status :</FormLabel>
+                    <FormLabel>
+                      <Text fontWeight="700">Status</Text>
+                    </FormLabel>
                     <Select
                       placeholder="Select post status"
                       id="status"
@@ -431,6 +446,7 @@ const PostForm: React.FC<NewPostFormProps> = ({
                       }}
                       fontSize={"10pt"}
                       borderRadius={"4"}
+                      borderColor={"black"}
                     >
                       <option value="draft">Draft</option>
                       <option value="published">Published</option>

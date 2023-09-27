@@ -6,7 +6,7 @@ import PostForm from "@/components/Post/PostForm";
 import QuestionList from "@/components/Question/QuestionList";
 import { auth } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -28,9 +28,9 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
           <PageContent>
             <>
               <Box p="14px 0px" borderBottom="1px solid">
-                <Text fontWeight={700} color={"white"}>
+                <Heading as="h2" size="xl" mb={4}>
                   Create a Post
-                </Text>
+                </Heading>
               </Box>
               {/* NewPost Form */}
               <PostForm />

@@ -124,6 +124,7 @@ export const Toolbar = () => {
       padding={"10px 5px"}
       spacing={"5px"}
       wrap={"wrap"}
+      borderColor={"black"}
     >
       <MarkButton format="bold" icon={<MdFormatBold />} />
       <MarkButton format="italic" icon={<MdFormatItalic />} />

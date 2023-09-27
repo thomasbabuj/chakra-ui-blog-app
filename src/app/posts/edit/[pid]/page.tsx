@@ -6,7 +6,7 @@ import NotAuthorized from "@/components/NotAuthorized";
 import NewPostForm from "@/components/Post/PostForm";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -59,9 +59,9 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           <PageContent>
             <>
               <Box p="14px 0px" borderBottom="1px solid">
-                <Text fontWeight={700} color={"white"}>
+                <Heading as="h2" size="xl" mb={4}>
                   Edit a Post
-                </Text>
+                </Heading>
               </Box>
               {/* NewPost Form */}
               <NewPostForm

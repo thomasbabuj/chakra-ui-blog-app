@@ -124,6 +124,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
       color={"black"}
       fontSize="10pt"
       borderRadius="4px"
+      borderColor={"black"}
     >
       <Slate
         editor={editor}
@@ -155,6 +156,7 @@ export const RichTextBlock: React.FC<RichTextBlockProps> = ({
               color: "black",
             }}
             onPaste={onPaste}
+            borderColor={"black"}
           />
         </Box>
       </Slate>
