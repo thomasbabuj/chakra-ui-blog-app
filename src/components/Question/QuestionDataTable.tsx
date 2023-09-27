@@ -55,7 +55,10 @@ const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
     }
   };
 
-  useEffect(() => {}, [questionStateValue]);
+  useEffect(() => {
+    console.log(`Inside Questions List:`);
+    console.log(questionStateValue);
+  }, [questionStateValue]);
 
   return (
     <>
@@ -94,7 +97,6 @@ const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
                   <Th>Question</Th>
                   <Th>Status</Th>
                   <Th>Submitted Date</Th>
-                  <Th>Approved On</Th>
                   <Th>Actions</Th>
                 </Tr>
               </Thead>
@@ -109,11 +111,6 @@ const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
                     <Td>
                       {/* https://stackoverflow.com/questions/52247445/how-do-i-convert-a-firestore-date-timestamp-to-a-js-date */}
                       {row.createdAt.toDate().toLocaleDateString()}
-                    </Td>
-                    <Td>
-                      {row.updatedAt !== undefined
-                        ? row.updatedAt.toDate().toLocaleDateString()
-                        : ""}
                     </Td>
                     <Td>
                       <Box>
