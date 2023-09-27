@@ -21,7 +21,9 @@ const Directory: React.FC = () => {
         <Flex
           align={"center"}
           justify={"space-between"}
-          // w={{ base: "auto", lg: "200px" }}
+          //w={{ base: "auto", lg: "200px" }}
+          w={{ lg: "100px" }}
+          h={10}
         >
           <Flex align={"center"}>
             <Icon as={TiHome} fontSize={24} mr={{ base: 1, md: 2 }} />
