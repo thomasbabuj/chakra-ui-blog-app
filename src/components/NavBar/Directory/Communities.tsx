@@ -1,7 +1,10 @@
 import QuestionModal from "@/components/Modal/Question/QuestionModal";
+import { auth } from "@/firebase/clientApp";
+import { checkUser } from "@/lib/check";
 import { Flex, Icon, MenuDivider, MenuItem } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { BiMailSend } from "react-icons/bi";
 import { TfiWrite } from "react-icons/tfi";
 
@@ -12,6 +15,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
   const onClose = () => {};
   const router = useRouter();
   const [showInModal, setShowInModal] = useState(false);
+  const [user] = useAuthState(auth)
 
   const createPostBtnClick = () => {
     router.push("/posts/create");
@@ -47,7 +51,9 @@ const Communities: React.FC<CommunitiesProps> = () => {
           Submit a Question?
         </Flex>
       </MenuItem>
-      <MenuDivider />
+      { user && checkUser(user.uid)  && ( <>
+      
+        <MenuDivider />
       <MenuItem
         bg={"black"}
         width="100%"
@@ -73,8 +79,9 @@ const Communities: React.FC<CommunitiesProps> = () => {
         <Flex align={"center"}>
           <Icon as={BiMailSend} color="white" fontSize={20} mr="2" />
           Manage Questions
-        </Flex>
+        </Flex>    
       </MenuItem>
+      </> ) }            
     </>
   );
 };
