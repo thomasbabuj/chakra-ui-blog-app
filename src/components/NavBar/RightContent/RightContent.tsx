@@ -16,13 +16,13 @@ const RightContent: React.FC<RightContentProps> = ({ user }) => {
       {/* <AuthModal /> */}
       <Flex justify="center" align="center">
         <Flex p="2">
-          <Directory />
-        </Flex>
-        <Flex p="2">
           <Link href={"/about"}>About</Link>
         </Flex>
         <Flex p="2">
           <Link href={"/contact"}>Contact</Link>
+        </Flex>
+        <Flex p="2">
+          <Directory />
         </Flex>
         {user && <Icons />}
         <UserMenu user={user} />
