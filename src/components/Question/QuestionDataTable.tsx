@@ -88,7 +88,7 @@ const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
 
       <Flex direction="column" width="100%">
         <Box overflowX="auto">
-          <Box borderRadius="lg" p="4">
+          <Box borderRadius="lg" p="4" maxHeight="500px" overflowY="auto">
             {/* Container */}
             <Table size="sm" layout="fixed">
               <Thead>
