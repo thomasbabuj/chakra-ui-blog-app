@@ -143,7 +143,7 @@ const Comments: React.FC<CommentsProps> = ({ user, selectedPost }) => {
     getPostComments();
   }, [selectedPost]);
   return (
-    <Box bg="white" borderRadius={"0px 0px 4px 4px"} p="2">
+    <Box bg="black" borderRadius={"0px 0px 4px 4px"} p="2">
       <Flex
         direction={"column"}
         pl={10}

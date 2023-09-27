@@ -37,18 +37,19 @@ const CommentInput: React.FC<CommentInputProps> = ({
             minHeight="160px"
             pb={10}
             _placeholder={{ color: "gray.500" }}
-            _focus={{
-              outline: "none",
-              bg: "white",
-              border: "1px solid black",
-            }}
+            // _focus={{
+            //   outline: "none",
+            //   bg: "white",
+            //   border: "1px solid black",
+            // }}
+            //color={"gray.500"}
           />
           <Flex
             left="1px"
             right={0.1}
             bottom="1px"
             justify="flex-end"
-            bg="gray.100"
+            // bg="gray.100"
             p="6px 8px"
             borderRadius="0px 0px 4px 4px"
           >
@@ -57,13 +58,20 @@ const CommentInput: React.FC<CommentInputProps> = ({
               isDisabled={!commentText.length}
               isLoading={createLoading}
               onClick={() => onCreateComment(commentText)}
+              // _disabled={{
+              //   bg: "green.100",
+              //   color: "gray.400",
+              //   _hover: {
+              //     bg: "green.100",
+              //     color: "gray.400",
+              //   },
+              // }}
               _disabled={{
-                bg: "green.100",
+                bg: "gray.100",
                 color: "gray.400",
-                _hover: {
-                  bg: "green.100",
-                  color: "gray.400",
-                },
+              }}
+              _hover={{
+                bg: "brand.100",
               }}
             >
               Comment
