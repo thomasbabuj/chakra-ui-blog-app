@@ -5,7 +5,7 @@ import PageContent from "@/components/Layout/PageContent";
 import NewPostForm from "@/components/Post/PostForm";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -42,32 +42,46 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
 
   // https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
   useEffect(() => {
-    if (params.pid && !postStateValue.selectedPost) {
+    if (params.pid && !postStateValue.selectedPost && user) {
       fetchPost(postId);
     }
 
     if (postStateValue) {
       setPostFetchLoading(false);
     }
-  }, [postId, !postStateValue.selectedPost]);
+  }, [postId, !postStateValue.selectedPost, user]);
 
   return (
-    <PageContent>
-      <>
-        <Box p="14px 0px" borderBottom="1px solid">
-          <Text fontWeight={700} color={"white"}>
-            Edit a Post
-          </Text>
-        </Box>
-        {/* NewPost Form */}
-        <NewPostForm
-          action="edit"
-          post={postStateValue.selectedPost}
-          isFetching={postFetchLoading}
-        />
-      </>
-      <></>
-    </PageContent>
+    <>
+      {user ? (
+        <>
+          <PageContent>
+            <>
+              <Box p="14px 0px" borderBottom="1px solid">
+                <Text fontWeight={700} color={"white"}>
+                  Edit a Post
+                </Text>
+              </Box>
+              {/* NewPost Form */}
+              <NewPostForm
+                action="edit"
+                post={postStateValue.selectedPost}
+                isFetching={postFetchLoading}
+              />
+            </>
+            <></>
+          </PageContent>
+        </>
+      ) : (
+        <Flex justify="center" p="16px">
+          <Box p="14px 0px">
+            <Text fontWeight={700} color={"white"}>
+              Sorry, Not Authorized!
+            </Text>
+          </Box>
+        </Flex>
+      )}
+    </>
   );
 };
 export default EditPostPage;

@@ -20,7 +20,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { BsPerson } from "react-icons/bs";
 
 type QuestionFromProps = {
-  showInModal: boolean;
+  showInModal?: boolean;
 };
 
 interface QuestionForm {

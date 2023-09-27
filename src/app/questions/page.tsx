@@ -18,30 +18,36 @@ const QuestionsList: React.FC<pageProps> = () => {
   const { getAllQuestions, questionStateValue } = useQuestions();
 
   useEffect(() => {
-    getAllQuestions();
-  }, []);
+    if (user) {
+      getAllQuestions();
+    }
+  }, [user]);
   return (
-    <PageContent>
-      <>
-        {!user && <>Not authorized</>}
-
-        {user && (
-          <>
-            <Box p="14px 0px" borderBottom="1px solid">
-              <Text fontWeight={700} color={"white"}>
-                Manage Questions
-              </Text>
-            </Box>
-            {questionStateValue && <QuestionDataTable />}
-          </>
-        )}
-      </>
-      <>
-        <Flex direction={"column"}>
-          <Box></Box>
+    <>
+      {user ? (
+        <>
+          <PageContent>
+            <>
+              <Box p="14px 0px" borderBottom="1px solid">
+                <Text fontWeight={700} color={"white"}>
+                  Manage Questions
+                </Text>
+              </Box>
+              {questionStateValue && <QuestionDataTable />}
+            </>
+            <></>
+          </PageContent>
+        </>
+      ) : (
+        <Flex justify="center" p="16px">
+          <Box p="14px 0px">
+            <Text fontWeight={700} color={"white"}>
+              Sorry, Not Authorized!
+            </Text>
+          </Box>
         </Flex>
-      </>
-    </PageContent>
+      )}
+    </>
   );
 };
 export default QuestionsList;
