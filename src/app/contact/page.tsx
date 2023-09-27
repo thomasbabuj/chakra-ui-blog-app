@@ -9,8 +9,9 @@ import {
   FormLabel,
   Heading,
   Input,
+  Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 type pageProps = {};
@@ -25,13 +26,18 @@ const Contact: React.FC<pageProps> = () => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (values) => {
+  const [success, setSuccess] = useState(false);
+
+  const onSubmit: SubmitHandler<ContactFormProps> = async (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         alert(JSON.stringify(values, null, 2));
+        setSuccess(true);
+        reset();
         resolve();
       }, 3000);
     });
@@ -52,6 +58,15 @@ const Contact: React.FC<pageProps> = () => {
           justify={{ md: "space-between" }}
           p={5}
         >
+          {success && (
+            <Flex justify="center">
+              <Box>
+                <Text fontWeight="700" color="brand.100">
+                  Thank you for your message. We get back to you soon.
+                </Text>
+              </Box>
+            </Flex>
+          )}
           <Flex
             direction={"column"}
             bg="white"
