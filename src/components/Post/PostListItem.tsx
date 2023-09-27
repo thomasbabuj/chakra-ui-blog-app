@@ -109,7 +109,7 @@ const PostListItem: React.FC<PostItemProps> = ({
                 cursor={"pointer"}
                 fontSize={35}
               />
-              <Text fontSize="lg">123</Text>
+              <Text fontSize="lg">{post.voteStatus}</Text>
               <Icon
                 as={
                   userVoteValue === -1

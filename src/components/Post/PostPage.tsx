@@ -127,10 +127,10 @@ const PostPage: React.FC<PostPageProps> = ({
           color={userVoteValue === 1 ? "brand.100" : "gray.400"}
           onClick={(event) => onVote(event, post, 1)}
           cursor={"pointer"}
-          fontSize={25}
+          fontSize={35}
         />
 
-        <Text fontSize={"9pt"} fontWeight={500}>
+        <Text fontSize="lg" fontWeight={500}>
           {post.voteStatus}
         </Text>
         <Icon
@@ -141,7 +141,7 @@ const PostPage: React.FC<PostPageProps> = ({
           }
           color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
           onClick={(event) => onVote(event, post, -1)}
-          fontSize={25}
+          fontSize={35}
         />
       </Flex>
       <Flex direction={"column"} width={"100%"}>
