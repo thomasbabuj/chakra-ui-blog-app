@@ -55,11 +55,6 @@ const QuestionDataTable: React.FC<QuestionDataTableProps> = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(`Inside Questions List:`);
-    console.log(questionStateValue);
-  }, [questionStateValue]);
-
   return (
     <>
       <CustomModal

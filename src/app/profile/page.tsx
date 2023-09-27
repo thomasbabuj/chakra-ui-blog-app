@@ -15,9 +15,11 @@ const Profile: React.FC<pageProps> = () => {
       {user ? (
         <PageContent>
           <>
-            <Heading as="h4" size={"sm"}>
-              Profile
-            </Heading>
+            <Box p="14px 0px" borderBottom="1px solid" mb="2">
+              <Heading as="h2" size="xl" mb={4}>
+                Profile
+              </Heading>
+            </Box>
           </>
           <></>
         </PageContent>
