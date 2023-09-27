@@ -64,17 +64,22 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                     direction={"column"}
                     display={{ base: "none", lg: "flex" }}
                     fontSize={"8pt"}
-                    align={"flex-start"}
+                    //align={"flex-start"}
                     mr="2"
                     ml="2"
+                    h={10}
+                    align={"center"}
                   >
-                    <Text fontWeight={700}>
-                      {user?.displayName || user.email?.split("@")[0]}
-                    </Text>
-                    <Flex mt="1" align={"center"}>
+                    <Flex mt="2" align={"center"}>
+                      <Text fontWeight={700} fontSize={"10pt"}>
+                        {user?.displayName || user.email?.split("@")[0]}
+                      </Text>
+                    </Flex>
+
+                    {/* <Flex mt="1" align={"center"}>
                       <Icon as={IoSparkles} color={"band.100"} mr="1" />
                       <Text color={"green.400"}>1 karma</Text>
-                    </Flex>
+                    </Flex> */}
                   </Flex>
                 </>
               ) : (
