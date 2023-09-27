@@ -1,14 +1,50 @@
 "use client";
 import PageContent from "@/components/Layout/PageContent";
-import { Flex, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+} from "@chakra-ui/react";
 import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type pageProps = {};
 
+type ContactFormProps = {
+  name: string;
+  email: string;
+  message: string;
+};
+
 const Contact: React.FC<pageProps> = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const onSubmit = async (values) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        alert(JSON.stringify(values, null, 2));
+        resolve();
+      }, 3000);
+    });
+  };
+
   return (
     <PageContent>
       <>
+        <Box p="14px 0px" borderBottom="1px solid" mb="2">
+          <Heading as="h2" size="xl" mb={4}>
+            Contact Us
+          </Heading>
+        </Box>
         <Flex
           direction={"column"}
           color={"white"}
@@ -16,9 +52,72 @@ const Contact: React.FC<pageProps> = () => {
           justify={{ md: "space-between" }}
           p={5}
         >
-          <Heading as="h2" size="xl" mb={4}>
-            Contact Us
-          </Heading>
+          <Flex
+            direction={"column"}
+            bg="white"
+            color={"black"}
+            borderRadius={4}
+            mt={2}
+            p={5}
+          >
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl isInvalid={errors.name}>
+                <FormLabel htmlFor="name">Full name</FormLabel>
+                <Input
+                  id="name"
+                  placeholder="name"
+                  {...register("name", {
+                    required: "This is required",
+                    minLength: {
+                      value: 4,
+                      message: "Minimum length should be 4",
+                    },
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.name && errors.name.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isInvalid={errors.name}>
+                <FormLabel htmlFor="name">Email</FormLabel>
+                <Input
+                  id="email"
+                  placeholder="email"
+                  type="email"
+                  {...register("email", {
+                    required: "This is required",
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.email && errors.email.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <FormControl isInvalid={errors.name}>
+                <FormLabel htmlFor="message">Message</FormLabel>
+                <Input
+                  id="message"
+                  placeholder="Message"
+                  {...register("message", {
+                    required: "This is required",
+                  })}
+                />
+                <FormErrorMessage>
+                  {errors.message && errors.message.message}
+                </FormErrorMessage>
+              </FormControl>
+
+              <Button
+                mt={4}
+                colorScheme="teal"
+                isLoading={isSubmitting}
+                type="submit"
+              >
+                Submit
+              </Button>
+            </form>
+          </Flex>
         </Flex>
       </>
       <></>

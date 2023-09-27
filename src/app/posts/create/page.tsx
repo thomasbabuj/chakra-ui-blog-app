@@ -28,7 +28,7 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
         <>
           <PageContent>
             <>
-              <Box p="14px 0px" borderBottom="1px solid">
+              <Box p="14px 0px" borderBottom="1px solid" mb="2">
                 <Heading as="h2" size="xl" mb={4}>
                   Create a Post
                 </Heading>

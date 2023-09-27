@@ -6,7 +6,7 @@ import QuestionDataTable from "@/components/Question/QuestionDataTable";
 import { auth } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
 import { checkUser } from "@/lib/check";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -27,11 +27,12 @@ const QuestionsList: React.FC<pageProps> = () => {
         <>
           <PageContent>
             <>
-              <Box p="14px 0px" borderBottom="1px solid">
-                <Text fontWeight={700} color={"white"}>
+              <Box p="14px 0px" borderBottom="1px solid" mb="2">
+                <Heading as="h2" size="xl" mb={4}>
                   Manage Questions
-                </Text>
+                </Heading>
               </Box>
+
               {questionStateValue && <QuestionDataTable />}
             </>
             <></>

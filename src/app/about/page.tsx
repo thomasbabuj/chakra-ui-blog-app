@@ -10,6 +10,11 @@ const page: React.FC<pageProps> = () => {
     <>
       <PageContent>
         <>
+          <Box p="14px 0px" borderBottom="1px solid" mb="2">
+            <Heading as="h2" size="xl" mb={4}>
+              About Us
+            </Heading>
+          </Box>
           <Flex
             direction={"column"}
             color={"white"}
@@ -17,9 +22,6 @@ const page: React.FC<pageProps> = () => {
             justify={{ md: "space-between" }}
             p={5}
           >
-            <Heading as="h2" size="xl" mb={4}>
-              About Us
-            </Heading>
             <Box>
               <Heading as="h3" size="lg" mb={4}>
                 Unveil the Mystery:
