@@ -2,6 +2,7 @@
 
 import { Question } from "@/atoms/questionsAtom";
 import PageContent from "@/components/Layout/PageContent";
+import NotAuthorized from "@/components/NotAuthorized";
 import QuestionDataTable from "@/components/Question/QuestionDataTable";
 import { auth } from "@/firebase/clientApp";
 import useQuestions from "@/hooks/useQuestions";
@@ -39,13 +40,7 @@ const QuestionsList: React.FC<pageProps> = () => {
           </PageContent>
         </>
       ) : (
-        <Flex justify="center" p="16px">
-          <Box p="14px 0px">
-            <Text fontWeight={700} color={"white"}>
-              Sorry, Not Authorized!
-            </Text>
-          </Box>
-        </Flex>
+        <NotAuthorized />
       )}
     </>
   );

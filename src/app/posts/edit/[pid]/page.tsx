@@ -2,6 +2,7 @@
 
 import { Post } from "@/atoms/postsAtom";
 import PageContent from "@/components/Layout/PageContent";
+import NotAuthorized from "@/components/NotAuthorized";
 import NewPostForm from "@/components/Post/PostForm";
 import { auth } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
@@ -73,13 +74,7 @@ const EditPostPage: React.FC<EditPostPageProps> = ({ params }) => {
           </PageContent>
         </>
       ) : (
-        <Flex justify="center" p="16px">
-          <Box p="14px 0px">
-            <Text fontWeight={700} color={"white"}>
-              Sorry, Not Authorized!
-            </Text>
-          </Box>
-        </Flex>
+        <NotAuthorized />
       )}
     </>
   );

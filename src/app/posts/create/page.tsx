@@ -1,6 +1,7 @@
 "use client";
 
 import PageContent from "@/components/Layout/PageContent";
+import NotAuthorized from "@/components/NotAuthorized";
 import PostForm from "@/components/Post/PostForm";
 import QuestionList from "@/components/Question/QuestionList";
 import { auth } from "@/firebase/clientApp";
@@ -44,13 +45,7 @@ const CreatePostPage: React.FC<CreatePostPageProps> = () => {
           </PageContent>
         </>
       ) : (
-        <Flex justify="center" p="16px">
-          <Box p="14px 0px">
-            <Text fontWeight={700} color={"white"}>
-              Sorry, Not Authorized!
-            </Text>
-          </Box>
-        </Flex>
+        <NotAuthorized />
       )}
     </>
   );
