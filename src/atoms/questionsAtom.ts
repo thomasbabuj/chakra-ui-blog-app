@@ -1,9 +1,12 @@
+import { Timestamp } from "firebase/firestore";
 import { atom } from "recoil";
 
 export enum QuestionStatus {
   "SUBMITTED" = "submitted",
   "APPROVED" = "approved",
   "CONVERT_TO_POST" = "convert_to_post",
+  "REJECTED" = "rejected",
+  "SPAM" = "spam",
 }
 export interface Question {
   id: string;
@@ -11,6 +14,9 @@ export interface Question {
   status: QuestionStatus;
   creatorId?: string;
   email?: string;
+  name?: string;
+  createdAt: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface QuestionState {
@@ -21,7 +27,7 @@ const defaultQuestionState: QuestionState = {
   questions: [],
 };
 
-export const questionState = atom<QuestionState>({
+export const questionsState = atom<QuestionState>({
   key: "questionsState",
   default: defaultQuestionState,
 });

@@ -1,7 +1,15 @@
-import { Question, QuestionStatus, questionState } from "@/atoms/questionsAtom";
+import {
+  Question,
+  QuestionStatus,
+  questionsState,
+} from "@/atoms/questionsAtom";
 import { firestore } from "@/firebase/clientApp";
 import {
+  Timestamp,
   collection,
+  deleteDoc,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -13,7 +21,7 @@ import { useRecoilState } from "recoil";
 
 const useQuestions = () => {
   const [questionStateValue, setQuestionStateValue] =
-    useRecoilState(questionState);
+    useRecoilState(questionsState);
   const [fetchQuestionStatus, setFetchQuestionStatus] = useState(false);
 
   const addAQuestion = () => {};
@@ -44,6 +52,54 @@ const useQuestions = () => {
     }
   };
 
+  const getAllQuestions = async (): Promise<void> => {
+    setFetchQuestionStatus(true);
+    try {
+      const questionQuery = query(
+        collection(firestore, "questions"),
+        orderBy("createdAt", "desc")
+      );
+
+      const questionDocs = await getDocs(questionQuery);
+      const questions = questionDocs.docs.map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as Question)
+      );
+
+      setQuestionStateValue((prev) => ({
+        ...prev,
+        questions: questions as Question[],
+      }));
+    } catch (error: any) {
+      console.log(`Error Fetching All Questions List `, error.message);
+    }
+    setFetchQuestionStatus(false);
+  };
+
+  const deleteQuestion = async (questionId: string): Promise<void> => {
+    console.log(`Delete Question id ${questionId}`);
+
+    const questionDocRef = doc(firestore, "questions", questionId);
+    const questionDoc = await getDoc(questionDocRef);
+
+    if (!questionDoc.exists()) {
+      throw new Error(`Question doesn't exist`);
+    }
+
+    await deleteDoc(questionDocRef);
+
+    let newList = [...questionStateValue.questions].filter(
+      (item) => item.id !== questionId
+    );
+
+    console.log(newList);
+
+    setQuestionStateValue({ questions: newList });
+  };
+
   return {
     // question data and its functions
     questionStateValue,
@@ -52,6 +108,8 @@ const useQuestions = () => {
     getLatestTenQuestions,
     fetchQuestionStatus,
     setFetchQuestionStatus,
+    getAllQuestions,
+    deleteQuestion,
   };
 };
 export default useQuestions;
