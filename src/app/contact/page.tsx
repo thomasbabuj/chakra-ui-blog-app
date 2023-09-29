@@ -10,6 +10,7 @@ import {
   Heading,
   Input,
   Text,
+  Textarea,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -88,13 +89,20 @@ const Contact: React.FC<pageProps> = () => {
                       message: "Minimum length should be 4",
                     },
                   })}
+                  border={"1px solid black"}
+                  _focus={{
+                    outline: "none",
+                    bg: "white",
+                    border: "1px solid",
+                    borderColor: "black.500",
+                  }}
                 />
                 <FormErrorMessage>
                   {errors.name && errors.name.message}
                 </FormErrorMessage>
               </FormControl>
 
-              <FormControl isInvalid={errors.name}>
+              <FormControl isInvalid={errors.email}>
                 <FormLabel htmlFor="name">Email</FormLabel>
                 <Input
                   id="email"
@@ -103,20 +111,34 @@ const Contact: React.FC<pageProps> = () => {
                   {...register("email", {
                     required: "This is required",
                   })}
+                  border={"1px solid black"}
+                  _focus={{
+                    outline: "none",
+                    bg: "white",
+                    border: "1px solid",
+                    borderColor: "black.500",
+                  }}
                 />
                 <FormErrorMessage>
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
               </FormControl>
 
-              <FormControl isInvalid={errors.name}>
+              <FormControl isInvalid={errors.message}>
                 <FormLabel htmlFor="message">Message</FormLabel>
-                <Input
+                <Textarea
                   id="message"
                   placeholder="Message"
                   {...register("message", {
                     required: "This is required",
                   })}
+                  border={"1px solid black"}
+                  _focus={{
+                    outline: "none",
+                    bg: "white",
+                    border: "1px solid",
+                    borderColor: "black.500",
+                  }}
                 />
                 <FormErrorMessage>
                   {errors.message && errors.message.message}
