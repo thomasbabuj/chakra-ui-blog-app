@@ -37,6 +37,7 @@ export const Button: ComponentStyleConfig = {
       borderColor: "green.300",
       _hover: {
         bg: "green.50",
+        color: "black",
       },
     },
   },

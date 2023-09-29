@@ -57,6 +57,7 @@ const Login: React.FC<LoginProps> = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
+        color={"black"}
       />
       <Input
         required
@@ -79,6 +80,7 @@ const Login: React.FC<LoginProps> = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
+        color={"black"}
       />
 
       <Text color={"red"} fontSize="10pt" align={"center"}>

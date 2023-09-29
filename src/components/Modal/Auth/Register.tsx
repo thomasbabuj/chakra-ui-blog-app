@@ -68,6 +68,7 @@ const Register: React.FC = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
+        color={"black"}
       />
       <Input
         required
@@ -90,6 +91,7 @@ const Register: React.FC = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
+        color={"black"}
       />
 
       <Input
@@ -113,6 +115,7 @@ const Register: React.FC = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
+        color={"black"}
       />
 
       <Text textAlign="center" color="red" fontSize="10pt">
