@@ -1,5 +1,7 @@
 "use client";
 import PageContent from "@/components/Layout/PageContent";
+import { firestore } from "@/firebase/clientApp";
+import { sanitizeInput } from "@/lib/sanitizeInput";
 import {
   Box,
   Button,
@@ -9,9 +11,11 @@ import {
   FormLabel,
   Heading,
   Input,
+  Spacer,
   Text,
   Textarea,
 } from "@chakra-ui/react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -33,15 +37,24 @@ const Contact: React.FC<pageProps> = () => {
 
   const [success, setSuccess] = useState(false);
 
-  const onSubmit: SubmitHandler<ContactFormProps> = async (values) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
+  const onSubmit: SubmitHandler<ContactFormProps> = async (
+    values: ContactFormProps
+  ) => {
+    try {
+      const contactUsRef = await addDoc(collection(firestore, "contactUs"), {
+        ...values,
+        name: sanitizeInput(values.name),
+        message: sanitizeInput(values.message),
+        createdAt: serverTimestamp(),
+        status: "Unread",
+      });
+      if (contactUsRef) {
         setSuccess(true);
         reset();
-        resolve();
-      }, 3000);
-    });
+      }
+    } catch (error: any) {
+      console.log(`Contact us form submission error ${error.message}`);
+    }
   };
 
   return (
@@ -91,10 +104,9 @@ const Contact: React.FC<pageProps> = () => {
                   })}
                   border={"1px solid black"}
                   _focus={{
-                    outline: "none",
                     bg: "white",
                     border: "1px solid",
-                    borderColor: "black.500",
+                    borderColor: "black",
                   }}
                 />
                 <FormErrorMessage>
@@ -113,10 +125,9 @@ const Contact: React.FC<pageProps> = () => {
                   })}
                   border={"1px solid black"}
                   _focus={{
-                    outline: "none",
                     bg: "white",
                     border: "1px solid",
-                    borderColor: "black.500",
+                    borderColor: "black",
                   }}
                 />
                 <FormErrorMessage>
@@ -134,10 +145,9 @@ const Contact: React.FC<pageProps> = () => {
                   })}
                   border={"1px solid black"}
                   _focus={{
-                    outline: "none",
                     bg: "white",
                     border: "1px solid",
-                    borderColor: "black.500",
+                    borderColor: "black",
                   }}
                 />
                 <FormErrorMessage>
@@ -145,14 +155,31 @@ const Contact: React.FC<pageProps> = () => {
                 </FormErrorMessage>
               </FormControl>
 
-              <Button
+              {/* <Button
                 mt={4}
                 colorScheme="teal"
                 isLoading={isSubmitting}
                 type="submit"
               >
                 Submit
-              </Button>
+              </Button> */}
+
+              <Flex>
+                <Box></Box>
+                <Spacer />
+                <Box>
+                  <FormControl>
+                    <Button
+                      mt={4}
+                      colorScheme="teal"
+                      type="submit"
+                      isLoading={isSubmitting}
+                    >
+                      Submit
+                    </Button>
+                  </FormControl>
+                </Box>
+              </Flex>
             </form>
           </Flex>
         </Flex>

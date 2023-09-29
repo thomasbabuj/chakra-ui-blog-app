@@ -1,5 +1,6 @@
 import { QuestionStatus } from "@/atoms/questionsAtom";
 import { auth, firestore } from "@/firebase/clientApp";
+import { sanitizeInput } from "@/lib/sanitizeInput";
 import { EmailIcon } from "@chakra-ui/icons";
 import {
   Alert,
@@ -69,6 +70,7 @@ const QuestionFrom: React.FC<QuestionFromProps> = ({ showInModal = false }) => {
           };
       const questionDocRef = await addDoc(collection(firestore, "questions"), {
         ...questionForm,
+        question: sanitizeInput(questionForm.question),
         ...additionalInfo,
       });
       if (questionDocRef) {
